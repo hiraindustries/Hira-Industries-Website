@@ -29,7 +29,7 @@ export default function ContactPage() {
             <div className="contact-panel">
               <div className="image-frame" style={{ minHeight: "320px" }}>
                 <img
-                  src="/images/owner.jpg"
+                  src="/images/map.png"
                   alt="Hira Industries leadership and customer relationship visual"
                 />
               </div>
