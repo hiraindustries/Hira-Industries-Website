@@ -533,16 +533,18 @@ h6 {
 .hero-title {
   margin: 1rem 0 0;
   font-family: var(--font-serif), Georgia, serif;
-  font-size: clamp(3.6rem, 8vw, 7.5rem);
-  line-height: 0.94;
+  font-size: clamp(3.6rem, 7.1vw, 6.85rem);
+  line-height: 0.96;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  max-width: 9.5ch;
-  overflow-wrap: break-word;
+  max-width: 11ch;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .hero-title span {
   display: block;
+  white-space: nowrap;
 }
 
 .hero-copy p {
@@ -2175,7 +2177,7 @@ h6 {
   }
 
   .hero-title {
-    font-size: clamp(2.8rem, 13vw, 4.3rem);
+    font-size: clamp(2.35rem, 11vw, 4.3rem);
   }
 
   .section-kicker,

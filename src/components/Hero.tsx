@@ -10,23 +10,14 @@ const heroSlides = [
   {
     src: "/images/set.jpeg",
     alt: "Black ceramic tea set with gold accents",
-    badge: "Marble Finish",
-    description:
-      "Black marble-inspired tea service with gold rim detailing and a formal dining presence.",
   },
   {
     src: "/tea.png",
     alt: "Elegant gold line tea set collection",
-    badge: "Gold Line",
-    description:
-      "Refined cup and saucer forms with a clean metallic line for premium everyday ritual.",
   },
   {
     src: "/blacktea.png",
     alt: "Classic black tea set with refined detailing",
-    badge: "Classic Black",
-    description:
-      "A timeless black collection with subtle gold accents and a sophisticated silhouette.",
   },
 ];
 
@@ -105,42 +96,6 @@ export default function Hero() {
                     transition={{ duration: 0.8, ease: "easeInOut" }}
                   />
                 </AnimatePresence>
-
-                <div
-                  style={{
-                    position: "absolute",
-                    right: "1rem",
-                    bottom: "1rem",
-                    zIndex: 3,
-                    padding: "0.85rem 1rem",
-                    borderRadius: "18px",
-                    border: "1px solid rgba(202,161,90,0.2)",
-                    background: "rgba(5,5,5,0.72)",
-                    backdropFilter: "blur(8px)",
-                    maxWidth: "13rem",
-                  }}
-                >
-                  <div
-                    style={{
-                      color: "var(--gold-strong)",
-                      fontSize: "0.72rem",
-                      letterSpacing: "0.24em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {currentSlide.badge}
-                  </div>
-                  <div
-                    style={{
-                      marginTop: "0.45rem",
-                      color: "rgba(255,255,255,0.72)",
-                      lineHeight: 1.7,
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    {currentSlide.description}
-                  </div>
-                </div>
               </div>
             </motion.div>
           </div>
