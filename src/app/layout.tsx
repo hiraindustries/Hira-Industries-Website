@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { businessInfo } from "@/lib/site-data";
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -21,11 +22,11 @@ const sans = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Hira Industries",
-    template: "%s | Hira Industries",
+    default: businessInfo.companyName,
+    template: `%s | ${businessInfo.companyName}`,
   },
   description:
-    "Premium ceramic tableware manufacturer for tea sets, dinner sets, hospitality buyers, gifting requirements, and trade-ready enquiries.",
+    `Premium ceramic tableware manufacturer in ${businessInfo.location} for tea sets, dinner sets, hospitality buyers, gifting requirements, and trade-ready enquiries.`,
 };
 
 export default function RootLayout({

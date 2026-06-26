@@ -128,7 +128,10 @@ export default function ProductShowcase() {
             </div>
 
             <div style={{ marginTop: "1rem" }} className="hero-actions">
-              <Link href="/downloads" className="site-button site-button--solid">
+              <Link
+                href="/contact?request=product-catalogue"
+                className="site-button site-button--solid"
+              >
                 Request the Catalogue
                 <FiArrowRight className="button-arrow" />
               </Link>

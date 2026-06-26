@@ -75,10 +75,10 @@ export default function Home() {
               <div className="split-copy">
                 <div className="section-kicker">Downloads</div>
                 <h2 className="section-title section-title--tight">
-                  Get the company profile and trade catalogue
+                  Request the company profile and trade catalogue
                 </h2>
                 <p className="split-copy__text">
-                  Download the documents buyers usually ask for, or reach out and we will send a tailored quote for your project.
+                  Ask for the documents buyers usually need first, or reach out and we will send a tailored quote for your project.
                 </p>
 
                 <div className="hero-actions">

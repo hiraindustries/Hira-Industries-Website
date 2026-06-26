@@ -41,8 +41,11 @@ export default function Company() {
             </div>
 
             <div className="hero-actions" style={{ marginTop: "1.4rem" }}>
-              <Link href="/downloads" className="site-button site-button--solid">
-                Download Company Profile
+              <Link
+                href="/contact?request=company-profile"
+                className="site-button site-button--solid"
+              >
+                Request Company Profile
                 <FiArrowRight className="button-arrow" />
               </Link>
               <Link href="/contact" className="site-button site-button--ghost">

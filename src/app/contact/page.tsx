@@ -1,12 +1,26 @@
 import Link from "next/link";
+import { FiArrowRight } from "react-icons/fi";
 import ContactForm from "@/components/ContactForm";
-import { contactDetails } from "@/lib/site-data";
+import { businessInfo, contactDetails, downloadResources } from "@/lib/site-data";
 
 export const metadata = {
   title: "Contact",
 };
 
-export default function ContactPage() {
+type ContactPageProps = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+function getRequestValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const requestedKey = getRequestValue((await searchParams).request);
+  const requestedResource = downloadResources.find(
+    (item) => item.requestKey === requestedKey,
+  );
+
   return (
     <main>
       <section className="page-section">
@@ -46,12 +60,45 @@ export default function ContactPage() {
               <div className="section-divider" />
 
               <div className="status-chip">
-                Business hours: Mon - Sat, 10:00 AM - 7:00 PM
+                Business hours: {businessInfo.businessHours}
+              </div>
+
+              <div className="hero-actions" style={{ marginTop: "1rem" }}>
+                <a
+                  href={businessInfo.whatsappCatalogueHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="site-button site-button--solid"
+                >
+                  WhatsApp Catalogue
+                  <FiArrowRight className="button-arrow" />
+                </a>
+                <a
+                  href={businessInfo.mapsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="site-button site-button--ghost"
+                >
+                  Open Map
+                </a>
               </div>
             </div>
 
             <div>
-              <ContactForm />
+              {requestedResource ? (
+                <div className="request-note">
+                  <div className="download-card__meta">Selected request</div>
+                  <strong>{requestedResource.title}</strong>
+                  <span>
+                    We will respond with the right file or next step for this request.
+                  </span>
+                </div>
+              ) : null}
+
+              <ContactForm
+                key={requestedResource?.requestKey ?? "general-enquiry"}
+                requestedResource={requestedResource?.title}
+              />
             </div>
           </div>
         </div>

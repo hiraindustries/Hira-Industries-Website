@@ -18,11 +18,11 @@ export default function DownloadsPage() {
           </div>
 
           <div style={{ marginTop: "0.9rem" }} className="section-kicker">
-            Download Center
+            Request Center
           </div>
           <h1 className="section-title">Documents buyers ask for first</h1>
           <p className="section-lead">
-            Use these downloads to share the brand story, product range, and care guidance with buyers, distributors, and hospitality teams.
+            Request the brand profile, product catalogue, or care guidance and our team will share the right file for your requirement.
           </p>
 
           <div style={{ marginTop: "1.5rem" }} className="download-grid">
@@ -34,12 +34,23 @@ export default function DownloadsPage() {
 
                 <div className="download-card__actions">
                   <Link href={item.href} className="site-button site-button--solid">
-                    Download
+                    {item.actionLabel}
                     <FiArrowRight className="button-arrow" />
                   </Link>
-                  <Link href="/contact" className="site-button site-button--ghost">
-                    Ask a Question
-                  </Link>
+                  {item.whatsappHref ? (
+                    <a
+                      href={item.whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="site-button site-button--ghost"
+                    >
+                      WhatsApp Catalogue
+                    </a>
+                  ) : (
+                    <Link href={item.href} className="site-button site-button--ghost">
+                      Ask a Question
+                    </Link>
+                  )}
                 </div>
               </article>
             ))}
@@ -57,7 +68,7 @@ export default function DownloadsPage() {
                   We can share specs, pricing notes, and sample pack guidance
                 </h2>
                 <p className="split-copy__text">
-                  Send us the category you need and we will point you toward the right product file, price notes, or care guidance.
+                  Send us the product segment you need and we will point you toward the right file, price notes, or care guidance.
                 </p>
               </div>
 

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
+import { businessInfo } from "@/lib/site-data";
 
 type ContactFormState = {
   name: string;
@@ -10,15 +11,23 @@ type ContactFormState = {
   message: string;
 };
 
-const initialState: ContactFormState = {
+type ContactFormProps = {
+  requestedResource?: string;
+};
+
+const createInitialState = (requestedResource?: string): ContactFormState => ({
   name: "",
   email: "",
   phone: "",
-  message: "",
-};
+  message: requestedResource
+    ? `Hello Hira Industries,\nPlease share your ${requestedResource}.`
+    : "",
+});
 
-export default function ContactForm() {
-  const [form, setForm] = useState<ContactFormState>(initialState);
+export default function ContactForm({ requestedResource }: ContactFormProps) {
+  const [form, setForm] = useState<ContactFormState>(() =>
+    createInitialState(requestedResource),
+  );
   const [status, setStatus] = useState<"idle" | "ready">("idle");
 
   const updateField = (key: keyof ContactFormState, value: string) => {
@@ -31,7 +40,11 @@ export default function ContactForm() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const subject = encodeURIComponent("Hira Industries enquiry");
+    const subject = encodeURIComponent(
+      requestedResource
+        ? `Hira Industries ${requestedResource} request`
+        : "Hira Industries enquiry",
+    );
     const body = encodeURIComponent(
       [
         `Name: ${form.name}`,
@@ -43,7 +56,7 @@ export default function ContactForm() {
     );
 
     setStatus("ready");
-    window.location.href = `mailto:info@hiraindustries.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${businessInfo.email}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -78,7 +91,7 @@ export default function ContactForm() {
           <input
             type="tel"
             name="phone"
-            placeholder="+91 98765 43210"
+            placeholder={businessInfo.phoneDisplay}
             value={form.phone}
             onChange={(event) => updateField("phone", event.target.value)}
           />

@@ -56,8 +56,8 @@ export default function QualityPage() {
               </div>
 
               <div className="hero-actions" style={{ marginTop: "1.4rem" }}>
-                <Link href="/downloads" className="site-button site-button--solid">
-                  Download Quality Notes
+                <Link href="/contact?request=care-guide" className="site-button site-button--solid">
+                  Request Care Guide
                   <FiArrowRight className="button-arrow" />
                 </Link>
                 <Link href="/contact" className="site-button site-button--ghost">

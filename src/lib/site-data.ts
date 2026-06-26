@@ -29,7 +29,26 @@ export type DownloadItem = {
   description: string;
   href: string;
   meta: string;
+  actionLabel: string;
+  requestKey: string;
+  whatsappHref?: string;
 };
+
+export const businessInfo = {
+  companyName: "Hira Industries",
+  email: "info@hiraindustries.com",
+  phoneDisplay: "+91 97838 05565",
+  phoneHref: "tel:+919783805565",
+  whatsappNumber: "919783805565",
+  whatsappHref: "https://wa.me/919783805565",
+  whatsappCatalogueHref:
+    "https://wa.me/919783805565?text=Hello%20Hira%20Industries%2C%20please%20share%20your%20product%20catalogue.",
+  location: "Khurja, Uttar Pradesh, India",
+  mapsQuery: "Hira Industries Khurja Uttar Pradesh India",
+  mapsHref:
+    "https://maps.google.com/?q=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India",
+  businessHours: "Mon - Sat, 10:00 AM - 7:00 PM",
+} as const;
 
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
@@ -248,40 +267,52 @@ export const downloadResources: DownloadItem[] = [
     title: "Company Profile",
     description:
       "A compact brand overview with company story, product segments, and manufacturing strengths.",
-    href: "/downloads/company-profile",
-    meta: "Brochure file",
+    href: "/contact?request=company-profile",
+    meta: "Profile request",
+    actionLabel: "Request Company Profile",
+    requestKey: "company-profile",
   },
   {
     title: "Product Catalogue",
     description:
       "Featured tea sets, dinner sets, cup & saucer options, and pricing notes for buyers.",
-    href: "/downloads/product-catalogue",
-    meta: "Catalogue file",
+    href: "/contact?request=product-catalogue",
+    meta: "Catalogue request",
+    actionLabel: "Request Product Catalogue",
+    requestKey: "product-catalogue",
+    whatsappHref: businessInfo.whatsappCatalogueHref,
   },
   {
     title: "Care Guide",
     description:
       "Practical cleaning, storage, and handling guidance to keep ceramic collections in premium condition.",
-    href: "/downloads/care-guide",
-    meta: "Care guide file",
+    href: "/contact?request=care-guide",
+    meta: "Care guide request",
+    actionLabel: "Request Care Guide",
+    requestKey: "care-guide",
   },
 ];
 
 export const contactDetails = [
   {
     label: "Email",
-    value: "info@hiraindustries.com",
-    href: "mailto:info@hiraindustries.com",
+    value: businessInfo.email,
+    href: `mailto:${businessInfo.email}`,
   },
   {
     label: "Phone",
-    value: "+91 98765 43210",
-    href: "tel:+919876543210",
+    value: businessInfo.phoneDisplay,
+    href: businessInfo.phoneHref,
+  },
+  {
+    label: "WhatsApp",
+    value: businessInfo.phoneDisplay,
+    href: businessInfo.whatsappHref,
   },
   {
     label: "Location",
-    value: "Guwahati, Assam, India",
-    href: "https://maps.google.com/?q=Guwahati,Assam,India",
+    value: businessInfo.location,
+    href: businessInfo.mapsHref,
   },
 ];
 

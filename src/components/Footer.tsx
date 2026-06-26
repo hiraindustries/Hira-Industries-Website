@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { footerGroups, contactDetails } from "@/lib/site-data";
+import { businessInfo, footerGroups, contactDetails } from "@/lib/site-data";
 
 export default function Footer() {
   return (
@@ -50,7 +50,7 @@ export default function Footer() {
             </div>
 
             <div style={{ marginTop: "1rem" }} className="status-chip">
-              Business hours: Mon - Sat, 10:00 AM - 7:00 PM
+              Business hours: {businessInfo.businessHours}
             </div>
           </div>
         </div>

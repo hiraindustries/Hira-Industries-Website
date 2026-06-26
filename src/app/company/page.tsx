@@ -68,8 +68,11 @@ export default function CompanyPage() {
               </ul>
 
               <div className="hero-actions" style={{ marginTop: "1.4rem" }}>
-                <Link href="/downloads" className="site-button site-button--solid">
-                  Download Profile
+                <Link
+                  href="/contact?request=company-profile"
+                  className="site-button site-button--solid"
+                >
+                  Request Profile
                   <FiArrowRight className="button-arrow" />
                 </Link>
                 <Link href="/contact" className="site-button site-button--ghost">
@@ -138,7 +141,7 @@ export default function CompanyPage() {
                   Need the full company profile?
                 </h2>
                 <p className="split-copy__text">
-                  Download the profile, browse the catalogue, or send us your requirement and we will help you choose the right product mix.
+                  Request the profile, browse the catalogue, or send us your requirement and we will help you choose the right product mix.
                 </p>
               </div>
 

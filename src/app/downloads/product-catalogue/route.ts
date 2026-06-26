@@ -1,7 +1,8 @@
 import { createTextDownload } from "@/lib/downloads";
+import { businessInfo } from "@/lib/site-data";
 
 const catalogue = `
-Hira Industries
+${businessInfo.companyName}
 Product Catalogue
 
 Featured products
@@ -19,6 +20,11 @@ Buying support
 - Collection recommendations by market
 - Packing and presentation notes
 - Product file support for distributors
+
+Contact
+${businessInfo.email}
+${businessInfo.phoneDisplay}
+${businessInfo.location}
 `.trim();
 
 export function GET() {

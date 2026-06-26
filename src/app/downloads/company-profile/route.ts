@@ -1,12 +1,13 @@
 import { createTextDownload } from "@/lib/downloads";
+import { businessInfo } from "@/lib/site-data";
 
 const profile = `
-Hira Industries
+${businessInfo.companyName}
 Company Profile
 
 Premium ceramic tableware crafted for modern homes, hospitality spaces, and export buyers.
 
-Core product categories
+Core product range
 - Tea sets
 - Dinner sets
 - Cup and saucer collections
@@ -20,9 +21,9 @@ What we focus on
 - Careful presentation for gifting and hospitality
 
 Contact
-info@hiraindustries.com
-+91 98765 43210
-Guwahati, Assam, India
+${businessInfo.email}
+${businessInfo.phoneDisplay}
+${businessInfo.location}
 `.trim();
 
 export function GET() {

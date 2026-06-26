@@ -1,7 +1,8 @@
 import { createTextDownload } from "@/lib/downloads";
+import { businessInfo } from "@/lib/site-data";
 
 const careGuide = `
-Hira Industries
+${businessInfo.companyName}
 Care Guide
 
 Cleaning
@@ -19,6 +20,11 @@ Handling
 Presentation
 - Wipe dry before display for a polished finish.
 - Handle gold rim and decorative surfaces with care.
+
+Contact
+${businessInfo.email}
+${businessInfo.phoneDisplay}
+${businessInfo.location}
 `.trim();
 
 export function GET() {
