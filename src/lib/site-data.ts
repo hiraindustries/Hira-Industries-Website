@@ -15,13 +15,23 @@ export type StatItem = {
 };
 
 export type ProductItem = {
-  title: string;
+  slug: string;
+  name: string;
   category: string;
-  price: string;
+  categoryLabel: string;
   description: string;
   image: string;
-  badge?: string;
-  objectPosition?: string;
+  imagePlaceholder?: boolean;
+  pieces: string;
+  material: string;
+  moq: string;
+  isNew: boolean;
+};
+
+export type ProductCategoryTab = {
+  label: string;
+  category: string;
+  href: string;
 };
 
 export type DownloadItem = {
@@ -107,94 +117,130 @@ export const qualityStats: StatItem[] = [
   { value: "Dispatch", label: "Order support" },
 ];
 
-export const productFilters = [
-  "All Products",
-  "Tea Set",
-  "Dinner Set",
-  "Cup & Saucer",
-  "Coffee Set",
-  "Serveware",
-  "Accessories",
+export const productCategoryTabs: ProductCategoryTab[] = [
+  { label: "All Products", category: "all", href: "/products" },
+  { label: "Tea Sets", category: "tea-sets", href: "/products?category=tea-sets" },
+  { label: "Dinner Sets", category: "dinner-sets", href: "/products?category=dinner-sets" },
+  { label: "Cup & Saucer", category: "cup-saucer", href: "/products?category=cup-saucer" },
+  { label: "Coffee Sets", category: "coffee-sets", href: "/products?category=coffee-sets" },
+  { label: "Serveware", category: "serveware", href: "/products?category=serveware" },
+  { label: "Accessories", category: "accessories", href: "/products?category=accessories" },
 ];
 
 export const featuredProducts: ProductItem[] = [
   {
-    title: "Royal Marble Tea Set",
-    category: "Tea Set",
-    price: "INR 4,995",
+    slug: "royal-marble-tea-set",
+    name: "Royal Marble Tea Set",
+    category: "tea-sets",
+    categoryLabel: "Tea Set",
     description: "Statement tea service with gold rim detailing and a deep black marble finish.",
     image: "/images/set.jpeg",
-    badge: "New",
-    objectPosition: "center center",
+    pieces: "6 pcs / set",
+    material: "Ceramic",
+    moq: "10 sets",
+    isNew: true,
   },
   {
-    title: "Golden Essence Tea Set",
-    category: "Tea Set",
-    price: "INR 5,200",
+    slug: "golden-essence-tea-set",
+    name: "Golden Essence Tea Set",
+    category: "tea-sets",
+    categoryLabel: "Tea Set",
     description: "Elegant curves with a warm metallic accent made for premium hospitality settings.",
     image: "/tea.png",
-    objectPosition: "center center",
+    pieces: "6 pcs / set",
+    material: "Ceramic",
+    moq: "10 sets",
+    isNew: false,
   },
   {
-    title: "Classic Black Tea Set",
-    category: "Tea Set",
-    price: "INR 3,999",
+    slug: "classic-black-tea-set",
+    name: "Classic Black Tea Set",
+    category: "tea-sets",
+    categoryLabel: "Tea Set",
     description: "Bold, contemporary, and versatile for everyday tea service or premium gifting.",
     image: "/blacktea.png",
-    objectPosition: "center center",
+    pieces: "6 pcs / set",
+    material: "Ceramic",
+    moq: "10 sets",
+    isNew: false,
   },
   {
-    title: "Ivory Grace Tea Set",
-    category: "Tea Set",
-    price: "INR 4,800",
+    slug: "ivory-grace-tea-set",
+    name: "Ivory Grace Tea Set",
+    category: "tea-sets",
+    categoryLabel: "Tea Set",
     description: "A softer palette for refined interiors, boutique hotels, and special occasions.",
-    image: "/tea.png",
-    objectPosition: "center center",
+    image: "/images/ivory-grace.jpg",
+    imagePlaceholder: true,
+    pieces: "6 pcs / set",
+    material: "Ceramic",
+    moq: "10 sets",
+    isNew: false,
   },
   {
-    title: "Royal Gold Dinner Set",
-    category: "Dinner Set",
-    price: "INR 12,500",
+    slug: "royal-gold-dinner-set",
+    name: "Royal Gold Dinner Set",
+    category: "dinner-sets",
+    categoryLabel: "Dinner Set",
     description: "Formal dinnerware crafted for memorable gatherings and premium dining rooms.",
-    image:
-      "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTFxXNFs8wE4jdCpMYXAONhuSAstdWfqBuqh-L1Ex2hHf79qHJ1Prtd7Nl9FVHi8PIB4DndXvixD72UKztEfZ6E2ZW1IFhQ0ouL5r15S8JCRPaLM4VROGt6yao3QFUoyU1fTnrgoA&usqp=CAc",
-    objectPosition: "center center",
+    image: "/images/royal-gold-dinner.jpg",
+    imagePlaceholder: true,
+    pieces: "18 pcs / set",
+    material: "Ceramic",
+    moq: "5 sets",
+    isNew: false,
   },
   {
-    title: "Coffee Ritual Set",
-    category: "Coffee Set",
-    price: "INR 5,650",
+    slug: "coffee-ritual-set",
+    name: "Coffee Ritual Set",
+    category: "coffee-sets",
+    categoryLabel: "Coffee Set",
     description: "Compact, modern, and suited for curated coffee service and gifting.",
-    image:
-      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?q=80&w=1200&auto=format&fit=crop",
-    objectPosition: "center center",
+    image: "/images/coffee-ritual.jpg",
+    imagePlaceholder: true,
+    pieces: "4 pcs / set",
+    material: "Ceramic",
+    moq: "12 sets",
+    isNew: false,
   },
   {
-    title: "Premium Cup & Saucer",
-    category: "Cup & Saucer",
-    price: "INR 2,450",
+    slug: "premium-cup-saucer",
+    name: "Premium Cup & Saucer",
+    category: "cup-saucer",
+    categoryLabel: "Cup & Saucer",
     description: "A clean, timeless silhouette with a polished gold accent for cafes and lounges.",
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/cup-saucer/g/6/x/pack-of-6-bone-china-white-golden-series-pack-of-6-tea-cups-and-original-imahmbtgsstvja5r.jpeg?q=70",
-    objectPosition: "center center",
+    image: "/images/premium-cup-saucer.jpg",
+    imagePlaceholder: true,
+    pieces: "6 pcs / set",
+    material: "Ceramic",
+    moq: "20 sets",
+    isNew: false,
   },
   {
-    title: "Serveware Accent Bowl",
-    category: "Serveware",
-    price: "INR 3,150",
+    slug: "serveware-accent-bowl",
+    name: "Serveware Accent Bowl",
+    category: "serveware",
+    categoryLabel: "Serveware",
     description: "For snacks, condiments, and shared presentation across premium table settings.",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661963026516-5ecf0e65e1b3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGluZHVzdHJpYWwlMjBjZXJhbWljJTIwcHJvZHVjdHMlMjBpbWFnZXN8ZW58MHx8MHx8fDA%3D",
-    objectPosition: "center center",
+    image: "/images/serveware-bowl.jpg",
+    imagePlaceholder: true,
+    pieces: "3 pcs / set",
+    material: "Ceramic",
+    moq: "15 sets",
+    isNew: false,
   },
   {
-    title: "Accessories Set",
-    category: "Accessories",
-    price: "INR 1,650",
+    slug: "accessories-set",
+    name: "Accessories Set",
+    category: "accessories",
+    categoryLabel: "Accessories",
     description: "Add-on pieces and finishing details for display-ready, coordinated collections.",
-    image:
-      "https://images.unsplash.com/photo-1567016432779-094069958ea5?q=80&w=1200",
-    objectPosition: "center center",
+    image: "/images/accessories.jpg",
+    imagePlaceholder: true,
+    pieces: "Varies",
+    material: "Ceramic",
+    moq: "20 sets",
+    isNew: false,
   },
 ];
 

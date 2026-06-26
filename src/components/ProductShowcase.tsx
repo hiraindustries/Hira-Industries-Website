@@ -1,144 +1,227 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { FiArrowRight } from "react-icons/fi";
-import { featuredProducts, productFilters } from "@/lib/site-data";
+import { useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FiArrowRight, FiCamera, FiMessageCircle } from "react-icons/fi";
+import {
+  businessInfo,
+  featuredProducts,
+  productCategoryTabs,
+} from "@/lib/site-data";
+
+const allCategory = "all";
+
+function getValidCategory(category: string | null) {
+  if (!category) {
+    return allCategory;
+  }
+
+  return productCategoryTabs.some((tab) => tab.category === category)
+    ? category
+    : allCategory;
+}
+
+function getWhatsAppHref(productName: string) {
+  const message = encodeURIComponent(
+    `Hello Hira Industries, I am interested in ${productName}`,
+  );
+
+  return `https://wa.me/${businessInfo.whatsappNumber}?text=${message}`;
+}
 
 export default function ProductShowcase() {
-  const [activeCategory, setActiveCategory] = useState("All Products");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeCategory = getValidCategory(searchParams.get("category"));
 
   const filteredProducts = useMemo(() => {
-    if (activeCategory === "All Products") {
+    if (activeCategory === allCategory) {
       return featuredProducts;
     }
 
     return featuredProducts.filter((product) => product.category === activeCategory);
   }, [activeCategory]);
 
-  const heroProduct = filteredProducts[0] ?? featuredProducts[0];
-  const heroHeading =
-    activeCategory === "Dinner Set"
-      ? "Crafted for memorable moments"
-      : activeCategory === "Cup & Saucer"
-        ? "Polished for daily ritual"
-        : activeCategory === "Coffee Set"
-          ? "Made for relaxed coffee service"
-          : activeCategory === "Serveware"
-            ? "Functional with presence"
-            : "Elegance in every sip";
+  const handleTabClick = (href: string) => {
+    router.push(href, { scroll: false });
+  };
 
   return (
-    <section className="page-section">
+    <section className="page-section products-page">
       <div className="site-shell">
-        <div className="breadcrumb">
-          <span>Home</span>
+        <nav className="breadcrumb" aria-label="Breadcrumb">
+          <Link href="/">Home</Link>
           <span>/</span>
           <span>Products</span>
+        </nav>
+
+        <div className="products-hero">
+          <div className="section-kicker">Our Collections</div>
+          <h1 className="section-title">Premium Ceramic Collections</h1>
+          <p className="section-lead">
+            Tea sets, dinner sets, cup &amp; saucer collections, and serveware —
+            crafted for hotels, retailers, gifting buyers, and bulk trade
+            enquiries. Manufactured in Khurja, Uttar Pradesh.
+          </p>
+
+          <div className="hero-actions products-hero__actions">
+            <Link
+              href="/contact?request=product-catalogue"
+              className="site-button site-button--solid"
+            >
+              Request Catalogue
+              <FiArrowRight className="button-arrow" />
+            </Link>
+            <Link
+              href="/contact?intent=bulk-details"
+              className="site-button site-button--ghost"
+            >
+              Ask for Bulk Details
+            </Link>
+          </div>
         </div>
 
-        <div className="products-intro">
-          <div style={{ marginTop: "0.9rem" }} className="section-kicker">
-            Products
+        <div className="products-toolbar">
+          <div
+            className="product-tabs"
+            role="tablist"
+            aria-label="Filter products by category"
+          >
+            {productCategoryTabs.map((tab) => {
+              const isActive = activeCategory === tab.category;
+
+              return (
+                <a
+                  key={tab.category}
+                  id={`product-tab-${tab.category}`}
+                  href={tab.href}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls="products-grid"
+                  className={`product-tab ${isActive ? "is-active" : ""}`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleTabClick(tab.href);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === " ") {
+                      event.preventDefault();
+                      handleTabClick(tab.href);
+                    }
+                  }}
+                >
+                  <span>{tab.label}</span>
+                  {isActive ? (
+                    <span className="product-tab__selected" aria-hidden="true">
+                      Selected
+                    </span>
+                  ) : null}
+                </a>
+              );
+            })}
           </div>
 
-          <h1 className="section-title">Elegance in every sip</h1>
-          <p className="section-lead">
-            Explore signature tea sets, dinnerware, and curated ceramic pieces developed for premium homes, hospitality tables, retail display, gifting, and bulk sourcing conversations.
+          <p className="product-count" aria-live="polite">
+            Showing {filteredProducts.length} products
           </p>
         </div>
 
-        <div style={{ marginTop: "1.6rem" }} className="catalog-layout">
-          <aside className="catalog-sidebar">
-            <div className="catalog-sidebar__title">All Products</div>
-
-            <div className="catalog-sidebar__list">
-              {productFilters.map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  className={`category-chip ${activeCategory === label ? "is-active" : ""}`}
-                  onMouseEnter={() => setActiveCategory(label)}
-                  onFocus={() => setActiveCategory(label)}
-                  onClick={() => setActiveCategory(label)}
-                >
-                  <span>{label}</span>
-                  <FiArrowRight />
-                </button>
-              ))}
-            </div>
-
-            <div className="section-divider" />
-
-            <p className="muted-text" style={{ lineHeight: 1.8, margin: 0 }}>
-              Hover or tap a category to preview the collection. Use the download section to request trade-ready product details.
-            </p>
-          </aside>
-
-          <div className="showcase">
-            <div className="showcase__hero">
-              <img
-                src={heroProduct.image}
-                alt={heroProduct.title}
-                className="showcase__image"
-                loading="eager"
-                style={{ objectPosition: heroProduct.objectPosition ?? "center center" }}
-              />
-
-              <div className="showcase__content">
-                <div className="showcase__eyebrow">{heroProduct.category}</div>
-                <h2 className="showcase__title">{heroHeading}</h2>
-                <p className="showcase__text">
-                  {heroProduct.description}
-                </p>
-
-                <div className="showcase__badges">
-                  <span className="showcase__badge">Glaze finish checks</span>
-                  <span className="showcase__badge">Trade-ready packing</span>
-                  <span className="showcase__badge">Bulk enquiry support</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="product-grid">
-              {filteredProducts.map((product) => (
-                <article key={product.title} className="product-card">
+        <div id="products-grid" className="product-grid" role="tabpanel">
+          {filteredProducts.map((product) => (
+            <article key={product.slug} className="product-card">
+              <div className="product-card__media">
+                {product.imagePlaceholder ? (
+                  <div
+                    className="product-card__placeholder"
+                    role="img"
+                    aria-label={`${product.name} photo coming soon`}
+                  >
+                    <FiCamera aria-hidden="true" />
+                    <span>Photo coming soon</span>
+                    <small>{product.name}</small>
+                  </div>
+                ) : (
                   <img
                     src={product.image}
-                    alt={product.title}
+                    alt={`${product.name} by Hira Industries`}
                     className="product-card__image"
                     loading="lazy"
-                    style={{ objectPosition: product.objectPosition ?? "center center" }}
                   />
+                )}
 
-                  <div className="product-card__body">
-                    <div className="product-card__top">
-                      <span className="product-card__badge">{product.category}</span>
-                      {product.badge ? (
-                        <span className="product-card__badge">{product.badge}</span>
-                      ) : null}
-                    </div>
+                <div className="product-card__badges">
+                  <span className="product-card__badge">{product.categoryLabel}</span>
+                  {product.isNew ? (
+                    <span className="product-card__badge product-card__badge--new" aria-label="New product">
+                      New
+                    </span>
+                  ) : null}
+                </div>
+              </div>
 
-                    <h3 className="product-card__title">{product.title}</h3>
-                    <p className="product-card__text">{product.description}</p>
-                    <div className="product-card__price">{product.price}</div>
-                  </div>
-                </article>
-              ))}
-            </div>
+              <div className="product-card__body">
+                <h2 className="product-card__title">{product.name}</h2>
+                <p className="product-card__text">{product.description}</p>
 
-            <div style={{ marginTop: "1rem" }} className="hero-actions">
-              <Link
-                href="/contact?request=product-catalogue"
-                className="site-button site-button--solid"
-              >
-                Request the Catalogue
-                <FiArrowRight className="button-arrow" />
-              </Link>
-              <Link href="/contact" className="site-button site-button--ghost">
-                Ask for a Quote
-              </Link>
-            </div>
+                <div className="product-card__specs" aria-label={`${product.name} specifications`}>
+                  <span>{product.pieces}</span>
+                  <span>{product.material}</span>
+                  <span>MOQ {product.moq}</span>
+                </div>
+
+                <div className="product-card__actions">
+                  <Link
+                    href={`/contact?product=${product.slug}&source=products-page`}
+                    className="site-button site-button--solid"
+                  >
+                    Enquire
+                    <FiArrowRight className="button-arrow" />
+                  </Link>
+                  <a
+                    href={getWhatsAppHref(product.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="site-button site-button--ghost"
+                    aria-label={`Enquire about ${product.name} on WhatsApp`}
+                  >
+                    <FiMessageCircle aria-hidden="true" />
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="products-cta surface-panel">
+          <div>
+            <div className="section-kicker">B2B Support</div>
+            <h2 className="section-title section-title--tight">
+              Need product details or a custom mix?
+            </h2>
+            <p className="split-copy__text">
+              Send us your requirement — we will respond with catalogue details,
+              MOQ, and availability support.
+            </p>
+          </div>
+
+          <div className="hero-actions products-cta__actions">
+            <Link
+              href="/contact?request=product-catalogue"
+              className="site-button site-button--solid"
+            >
+              Request Full Catalogue
+              <FiArrowRight className="button-arrow" />
+            </Link>
+            <a
+              href="https://wa.me/919783805565?text=Hello%20Hira%20Industries%2C%20I%20would%20like%20product%20details."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="site-button site-button--ghost"
+            >
+              WhatsApp Us Now
+            </a>
           </div>
         </div>
       </div>
