@@ -2,7 +2,7 @@ import Link from "next/link";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Company from "@/components/Company";
-import LeadershipRecognition from "@/components/LeadershipRecognition";
+import ManufacturingTrust from "@/components/ManufacturingTrust";
 import CollectionsShowcase from "@/components/CollectionsShowcase";
 import { contactDetails, qualityStats } from "@/lib/site-data";
 import { FiArrowRight } from "react-icons/fi";
@@ -17,7 +17,7 @@ export default function Home() {
       <Hero />
       <Features />
       <Company />
-      <LeadershipRecognition />
+      <ManufacturingTrust />
       <CollectionsShowcase />
 
       <section className="page-section">
@@ -34,7 +34,7 @@ export default function Home() {
 
               <ul className="check-list">
                 <li>Stable raw material selection for reliable product consistency.</li>
-                <li>Clean glazing and finishing for a polished, luxury appearance.</li>
+                <li>Clean glazing and finishing for a polished, premium appearance.</li>
                 <li>Careful kiln firing to strengthen shape, surface, and balance.</li>
                 <li>Final inspection and packaging for trade-ready presentation.</li>
               </ul>
@@ -70,7 +70,7 @@ export default function Home() {
 
       <section className="page-section page-section--tight">
         <div className="site-shell">
-          <div className="surface-panel" style={{ borderRadius: "32px", padding: "1.5rem" }}>
+          <div className="surface-panel cta-panel">
             <div className="split-section">
               <div className="split-copy">
                 <div className="section-kicker">Downloads</div>

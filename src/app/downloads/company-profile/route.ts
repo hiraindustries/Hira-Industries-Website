@@ -14,7 +14,7 @@ Core product categories
 - Serveware and accessories
 
 What we focus on
-- Design-led collections with a luxury look
+- Design-led collections with a premium table presence
 - Reliable production and finish consistency
 - Trade-friendly support for buyers and distributors
 - Careful presentation for gifting and hospitality

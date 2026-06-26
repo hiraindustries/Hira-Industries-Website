@@ -49,7 +49,7 @@ export default function DownloadsPage() {
 
       <section className="page-section page-section--tight">
         <div className="site-shell">
-          <div className="surface-panel" style={{ borderRadius: "32px", padding: "1.5rem" }}>
+          <div className="surface-panel cta-panel">
             <div className="split-section">
               <div className="split-copy">
                 <div className="section-kicker">Need something custom?</div>

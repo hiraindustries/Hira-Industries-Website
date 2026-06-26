@@ -25,7 +25,7 @@ export default function Company() {
             transition={{ duration: 0.65 }}
           >
             <p className="split-copy__text">
-              Hira Industries is a premium ceramic manufacturer focused on timeless tableware, refined materials, and dependable daily use. Our collections are developed to feel at home in luxury dining rooms, hospitality spaces, and export markets.
+              Hira Industries is a premium ceramic manufacturer focused on timeless tableware, refined materials, and dependable daily use. Our collections are developed for homes, hospitality buyers, gifting requirements, and export-oriented enquiries.
             </p>
             <p className="split-copy__text">
               We combine thoughtful design, stable production standards, and careful finishing to create products that are practical, elegant, and built for long-term value.

@@ -33,7 +33,7 @@ export type DownloadItem = {
 
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/company", label: "About Us" },
+  { href: "/company", label: "Company Profile" },
   { href: "/products", label: "Products" },
   { href: "/quality", label: "Quality" },
   { href: "/collections", label: "Collections" },
@@ -42,50 +42,50 @@ export const navLinks: NavLink[] = [
 ];
 
 export const heroStats: StatItem[] = [
-  { value: "25+", label: "Years of experience" },
-  { value: "500+", label: "Happy customers" },
-  { value: "50+", label: "Export markets" },
+  { value: "Bulk", label: "Order ready" },
+  { value: "Trade", label: "Friendly packaging" },
+  { value: "Checks", label: "Consistent finishing" },
 ];
 
 export const featureItems: FeatureItem[] = [
   {
     icon: "diamond",
-    title: "Premium Quality",
+    title: "Premium Ceramic Tableware",
     description:
-      "Superior raw materials and strict inspection ensure every piece meets luxury-grade standards.",
+      "Refined tea sets, dinner sets, cup and saucer collections, and serveware for buyer-ready presentation.",
   },
   {
     icon: "pen",
-    title: "Exquisite Design",
+    title: "Careful Glazing & Finishing",
     description:
-      "Refined silhouettes and modern finishes that elevate everyday dining into a statement.",
+      "Clean surfaces, balanced silhouettes, and polished detailing give every collection a premium finish.",
   },
   {
     icon: "shield",
-    title: "Durable & Reliable",
+    title: "Consistent Quality Checks",
     description:
-      "Balanced for long-term use, engineered to handle daily service with confidence.",
+      "Products are reviewed for surface consistency, balance, finish quality, and packing readiness.",
   },
   {
-    icon: "leaf",
-    title: "Sustainable",
+    icon: "box",
+    title: "Buyer-Ready Packaging",
     description:
-      "Responsible manufacturing practices designed to reduce waste and support a cleaner tomorrow.",
+      "Packaging and dispatch support are planned for hotels, retailers, gifting clients, and trade orders.",
   },
 ];
 
 export const companyStats: StatItem[] = [
-  { value: "25+", label: "Years in ceramics" },
-  { value: "500+", label: "B2B customers" },
-  { value: "50+", label: "Global markets" },
-  { value: "100%", label: "Quality assurance" },
+  { value: "Bulk", label: "Order capability" },
+  { value: "Glaze", label: "Finish checks" },
+  { value: "Trade", label: "Buyer-ready packaging" },
+  { value: "Dispatch", label: "Reliable support" },
 ];
 
 export const qualityStats: StatItem[] = [
-  { value: "100%", label: "Inspection coverage" },
-  { value: "24/7", label: "Production readiness" },
-  { value: "ISO", label: "Process mindset" },
-  { value: "Lead free", label: "Glaze standards" },
+  { value: "Material", label: "Selection review" },
+  { value: "Glaze", label: "Surface checks" },
+  { value: "Pack", label: "Buyer-ready handling" },
+  { value: "Dispatch", label: "Order support" },
 ];
 
 export const productFilters = [
@@ -113,26 +113,23 @@ export const featuredProducts: ProductItem[] = [
     category: "Tea Set",
     price: "INR 5,200",
     description: "Elegant curves with a warm metallic accent made for premium hospitality settings.",
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/cup-saucer/i/i/q/bone-china-ceramic-gold-line-tea-cofee-cup-plate-set-pack-of-6-original-imagzrfeypq4ncjp.jpeg?q=70",
+    image: "/tea.png",
     objectPosition: "center center",
   },
   {
     title: "Classic Black Tea Set",
     category: "Tea Set",
     price: "INR 3,999",
-    description: "Bold, contemporary, and versatile for everyday tea service or luxury gifting.",
-    image:
-      "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT_7yR2dVNCG_Ew-aT1gON8I25EkyZdLUzUMj3NAJjaPPjHH-w1cHYqmpFlOUxYQBsfMegghRt6R8C0VMJ5CE28imZyZGoF-47mq_WM_zAnjYEvrgsjNOpLkQZggKGY&usqp=CAc",
-    objectPosition: "center top",
+    description: "Bold, contemporary, and versatile for everyday tea service or premium gifting.",
+    image: "/blacktea.png",
+    objectPosition: "center center",
   },
   {
     title: "Ivory Grace Tea Set",
     category: "Tea Set",
     price: "INR 4,800",
     description: "A softer palette for refined interiors, boutique hotels, and special occasions.",
-    image:
-      "https://images.unsplash.com/photo-1654327247297-95bd5a98d946?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGRhcmslMjB0aGVtZSUyMGNlcmFtaWN8ZW58MHwwfDB8fHww",
+    image: "/tea.png",
     objectPosition: "center center",
   },
   {
@@ -149,8 +146,9 @@ export const featuredProducts: ProductItem[] = [
     category: "Coffee Set",
     price: "INR 5,650",
     description: "Compact, modern, and suited for curated coffee service and gifting.",
-    image: "/images/set.jpeg",
-    objectPosition: "right center",
+    image:
+      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?q=80&w=1200&auto=format&fit=crop",
+    objectPosition: "center center",
   },
   {
     title: "Premium Cup & Saucer",
@@ -186,8 +184,8 @@ export const collectionHighlights = [
     title: "Tea Sets",
     subtitle: "Elegance in every sip",
     description:
-      "Signature tea service pieces designed to feel refined in luxury homes, boutiques, and hospitality spaces.",
-    image: "/images/set.jpeg",
+      "Signature tea service pieces designed to feel refined in premium homes, boutiques, and hospitality spaces.",
+    image: "/tea.png",
     objectPosition: "center center",
   },
   {
@@ -204,8 +202,7 @@ export const collectionHighlights = [
     subtitle: "Polished everyday ritual",
     description:
       "Clean and elegant service sets for cafes, offices, gifting, and premium home collections.",
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/cup-saucer/g/6/x/pack-of-6-bone-china-white-golden-series-pack-of-6-tea-cups-and-original-imahmbtgsstvja5r.jpeg?q=70",
+    image: "/blacktea.png",
     objectPosition: "center center",
   },
   {
@@ -293,19 +290,20 @@ export const footerGroups = [
     title: "Quick Links",
     links: [
       { label: "Home", href: "/" },
-      { label: "About Us", href: "/company" },
+      { label: "Company Profile", href: "/company" },
       { label: "Products", href: "/products" },
       { label: "Quality", href: "/quality" },
+      { label: "Downloads", href: "/downloads" },
       { label: "Contact", href: "/contact" },
     ],
   },
   {
     title: "Products",
     links: [
-      { label: "Tea Set", href: "/products#tea-set" },
-      { label: "Dinner Set", href: "/products#dinner-set" },
-      { label: "Cup & Saucer", href: "/products#cup-saucer" },
-      { label: "Serveware", href: "/collections#serveware" },
+      { label: "Tea Set", href: "/products" },
+      { label: "Dinner Set", href: "/products" },
+      { label: "Cup & Saucer", href: "/products" },
+      { label: "Serveware", href: "/products" },
     ],
   },
 ];

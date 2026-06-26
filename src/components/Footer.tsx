@@ -16,17 +16,8 @@ export default function Footer() {
             </div>
 
             <p className="footer-brand__text">
-              Premium manufacturer of tea sets, dinner sets, cup and saucer collections, and ceramic tableware for modern homes, hospitality, and export buyers.
+              Premium ceramic tableware manufacturer for modern homes, hospitality buyers, retailers, gifting requirements, and export-oriented enquiries.
             </p>
-
-            <div className="hero-actions" style={{ marginTop: "1.2rem" }}>
-              <Link href="/downloads" className="site-button site-button--solid">
-                Browse Downloads
-              </Link>
-              <Link href="/contact" className="site-button site-button--ghost">
-                Contact Sales
-              </Link>
-            </div>
           </div>
 
           {footerGroups.map((group) => (
@@ -37,7 +28,7 @@ export default function Footer() {
 
               <div className="footer-links">
                 {group.links.map((link) => (
-                  <Link key={link.href} href={link.href}>
+                  <Link key={`${link.label}-${link.href}`} href={link.href}>
                     {link.label}
                   </Link>
                 ))}
@@ -66,7 +57,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <span>Copyright 2026 Hira Industries. All rights reserved.</span>
-          <span>Luxury ceramic design, crafted for everyday rituals and premium hospitality.</span>
+          <span>Premium ceramic tableware for trade, hospitality, gifting, and retail buyers.</span>
         </div>
       </div>
     </footer>

@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaGem, FaPaintBrush, FaShieldAlt, FaLeaf } from "react-icons/fa";
+import { FaBoxOpen, FaGem, FaPaintBrush, FaShieldAlt } from "react-icons/fa";
 import { featureItems } from "@/lib/site-data";
 
 const iconMap = {
   diamond: FaGem,
   pen: FaPaintBrush,
   shield: FaShieldAlt,
-  leaf: FaLeaf,
+  box: FaBoxOpen,
 } as const;
 
 export default function Features() {

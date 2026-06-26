@@ -3,7 +3,7 @@ import { FiArrowRight } from "react-icons/fi";
 import { companyStats } from "@/lib/site-data";
 
 export const metadata = {
-  title: "About Us",
+  title: "Company Profile",
 };
 
 const companyPillars = [
@@ -33,7 +33,7 @@ export default function CompanyPage() {
           <div className="breadcrumb">
             <Link href="/">Home</Link>
             <span>/</span>
-            <span>About Us</span>
+            <span>Company Profile</span>
           </div>
 
           <div style={{ marginTop: "0.9rem" }} className="section-kicker">
@@ -43,13 +43,13 @@ export default function CompanyPage() {
           <div className="split-section split-section--reverse">
             <div className="split-copy company-intro-copy">
               <h1 className="section-title section-title--tight">
-                About Hira Industries
+                Company Profile
               </h1>
               <p className="split-copy__text">
                 Hira Industries is a premium ceramic manufacturer focused on tableware that feels refined in everyday use and confident in hospitality settings. Our collections balance form, function, and long-term performance.
               </p>
               <p className="split-copy__text">
-                We build with a luxury-first mindset, combining thoughtful design, dependable production discipline, and a commitment to consistent quality across every category.
+                We build with a manufacturing-first mindset, combining thoughtful design, dependable production discipline, and careful quality checks across every category.
               </p>
 
               <div style={{ marginTop: "1.4rem" }} className="stats-grid">
@@ -81,8 +81,8 @@ export default function CompanyPage() {
             <div className="story-card">
               <div className="image-frame story-card__figure">
                 <img
-                  src="/images/owner.jpg"
-                  alt="Leadership and company representation for Hira Industries"
+                  src="/blacktea.png"
+                  alt="Black ceramic tea set prepared for buyer presentation"
                 />
               </div>
 
@@ -96,7 +96,7 @@ export default function CompanyPage() {
               <div className="image-frame" style={{ minHeight: "220px" }}>
                 <img
                   src="/images/set.jpeg"
-                  alt="Luxury ceramic tea set representing the Hira Industries product line"
+                  alt="Premium ceramic tea set representing the Hira Industries product line"
                 />
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function CompanyPage() {
 
       <section className="page-section page-section--tight">
         <div className="site-shell">
-          <div className="surface-panel" style={{ borderRadius: "32px", padding: "1.5rem" }}>
+          <div className="surface-panel cta-panel">
             <div className="split-section">
               <div className="split-copy">
                 <div className="section-kicker">Next Step</div>

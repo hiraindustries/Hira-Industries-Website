@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s | Hira Industries",
   },
   description:
-    "Luxury ceramic tableware, tea sets, dinner sets, and hospitality collections crafted with premium finishes and timeless design.",
+    "Premium ceramic tableware manufacturer for tea sets, dinner sets, hospitality buyers, gifting requirements, and trade-ready enquiries.",
 };
 
 export default function RootLayout({

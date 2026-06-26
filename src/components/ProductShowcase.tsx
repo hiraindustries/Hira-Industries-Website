@@ -44,7 +44,7 @@ export default function ProductShowcase() {
 
           <h1 className="section-title">Elegance in every sip</h1>
           <p className="section-lead">
-            Our premium collections are crafted for perfection, blending sophistication with everyday functionality. Explore signature tea sets, dinnerware, and curated ceramic pieces designed for luxury hospitality and modern homes.
+            Explore signature tea sets, dinnerware, and curated ceramic pieces developed for premium homes, hospitality tables, retail display, gifting, and bulk sourcing conversations.
           </p>
         </div>
 
@@ -93,9 +93,9 @@ export default function ProductShowcase() {
                 </p>
 
                 <div className="showcase__badges">
-                  <span className="showcase__badge">Premium quality</span>
-                  <span className="showcase__badge">Elegant design</span>
-                  <span className="showcase__badge">Dishwasher safe</span>
+                  <span className="showcase__badge">Glaze finish checks</span>
+                  <span className="showcase__badge">Trade-ready packing</span>
+                  <span className="showcase__badge">Bulk enquiry support</span>
                 </div>
               </div>
             </div>

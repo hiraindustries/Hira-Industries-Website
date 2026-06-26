@@ -30,7 +30,7 @@ export default function ContactPage() {
               <div className="image-frame" style={{ minHeight: "320px" }}>
                 <img
                   src="/images/map.png"
-                  alt="Hira Industries leadership and customer relationship visual"
+                  alt="Map graphic for Hira Industries contact location"
                 />
               </div>
 

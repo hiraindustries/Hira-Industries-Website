@@ -9,7 +9,7 @@ import { heroStats } from "@/lib/site-data";
 const heroSlides = [
   {
     src: "/images/set.jpeg",
-    alt: "Luxury black ceramic tea set with gold accents",
+    alt: "Black ceramic tea set with gold accents",
     badge: "Marble Finish",
     description:
       "Black marble-inspired tea service with gold rim detailing and a formal dining presence.",
@@ -60,7 +60,7 @@ export default function Hero() {
                 <span>Industries</span>
               </h1>
               <p>
-                Where innovation meets craftsmanship. We create premium ceramic products that define spaces and stand the test of time.
+                Premium ceramic tableware for buyers who need polished design, consistent finishing, and dependable support for retail, hospitality, gifting, and bulk enquiries.
               </p>
 
               <div className="hero-actions">

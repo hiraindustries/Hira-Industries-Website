@@ -37,7 +37,7 @@ export default function QualityPage() {
                 Every product is built with a premium look and a practical, durable body. Our approach is simple: refine the materials, control the process, and inspect the finish until it is ready for trade and daily use.
               </p>
               <p className="split-copy__text">
-                That discipline matters for luxury hospitality, retail presentation, and export customers who expect predictable quality every time they reorder.
+                That discipline matters for hospitality buyers, retail presentation, gifting requirements, and export-oriented customers who expect predictable quality when they reorder.
               </p>
 
               <ul className="check-list">
@@ -107,7 +107,7 @@ export default function QualityPage() {
 
       <section className="page-section page-section--tight">
         <div className="site-shell">
-          <div className="surface-panel" style={{ borderRadius: "32px", padding: "1.5rem" }}>
+          <div className="surface-panel cta-panel">
             <div className="split-section">
               <div className="split-copy">
                 <div className="section-kicker">Need the details?</div>

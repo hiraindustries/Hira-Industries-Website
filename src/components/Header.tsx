@@ -51,7 +51,7 @@ export default function Header() {
         <nav className="site-nav" aria-label="Primary navigation">
           {navLinks.map((item) => (
             <Link
-              key={item.href}
+              key={`${item.label}-${item.href}`}
               href={item.href}
               className={`site-nav__link ${isActive(item.href) ? "is-active" : ""}`}
             >
@@ -66,12 +66,12 @@ export default function Header() {
             <FiArrowRight className="button-arrow" />
           </Link>
 
-            <button
-              type="button"
-              className="site-menu-button"
-              aria-label="Open menu"
-              aria-expanded={open}
-              onClick={() => setOpen((value) => !value)}
+          <button
+            type="button"
+            className="site-menu-button"
+            aria-label="Open menu"
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
           >
             {open ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
@@ -103,7 +103,7 @@ export default function Header() {
           <div className="mobile-menu__links">
             {navLinks.map((item) => (
               <Link
-                key={item.href}
+                key={`${item.label}-${item.href}`}
                 href={item.href}
                 className={`mobile-menu__link ${isActive(item.href) ? "is-active" : ""}`}
                 onClick={closeMenu}
