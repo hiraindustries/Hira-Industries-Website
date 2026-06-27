@@ -2,15 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   FiArrowRight,
-  FiBriefcase,
-  FiCoffee,
+  FiCheckCircle,
   FiGlobe,
-  FiHome,
   FiLayers,
-  FiShoppingBag,
-  FiTruck,
   FiUsers,
 } from "react-icons/fi";
+import { companyMilestones } from "@/lib/site-data";
 
 export const metadata = {
   title: "About Hira Industries",
@@ -27,52 +24,21 @@ const companyPillars = [
     text: "Clear category guidance, catalogue support, and practical communication for every enquiry.",
     icon: FiUsers,
   },
-];
-
-const missionVisionCards = [
   {
-    title: "Our Mission",
-    text: "To provide premium ceramic crockery that combines refined design, dependable quality, and practical value for homes, hospitality buyers, retailers, wholesalers, and gifting clients.",
-    icon: FiBriefcase,
+    title: "Quality Discipline",
+    text: "Material, glazing, firing, and final presentation checks are built into the process.",
+    icon: FiCheckCircle,
   },
   {
-    title: "Our Vision",
-    text: "To make Hira Industries a trusted ceramic crockery brand known for polished collections, consistent finishing, buyer-ready packaging, and reliable customer support.",
+    title: "Trade Ready",
+    text: "Collections and packaging planned for hospitality, retail, wholesale, and export requirements.",
     icon: FiGlobe,
-  },
-];
-
-const customerCards = [
-  {
-    title: "Homes",
-    description: "Beautiful crockery for everyday family dining and special occasions.",
-    icon: FiHome,
-  },
-  {
-    title: "Hotels",
-    description: "Premium tableware solutions for luxury and business hotels worldwide.",
-    icon: FiBriefcase,
-  },
-  {
-    title: "Restaurants",
-    description: "Durable, elegant crockery for fine dining and casual restaurants.",
-    icon: FiCoffee,
-  },
-  {
-    title: "Retailers",
-    description: "Quality products with attractive margins for retail partners.",
-    icon: FiShoppingBag,
-  },
-  {
-    title: "Wholesalers",
-    description: "Bulk supply with competitive pricing for wholesale distribution.",
-    icon: FiTruck,
   },
 ];
 
 export default function CompanyPage() {
   return (
-    <main className="light-page about-page">
+    <main className="light-page">
       <section className="internal-hero">
         <div className="light-shell">
           <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -92,7 +58,7 @@ export default function CompanyPage() {
         </div>
       </section>
 
-      <section className="internal-section internal-section--dark">
+      <section className="internal-section">
         <div className="light-shell internal-split">
           <div>
             <div className="light-kicker">OUR STORY</div>
@@ -112,12 +78,21 @@ export default function CompanyPage() {
               support. Every collection is created to balance everyday use with
               premium presentation.
             </p>
+
+            <div className="about-stats internal-stats">
+              {companyMilestones.map((item) => (
+                <div key={item.label} className="about-stat">
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="internal-image about-hero-image">
+          <div className="internal-image">
             <Image
               src="/images/build-pic-1.png"
-              alt="Premium ceramic crockery with polished presentation"
+              alt="Hira Industries premium ceramic crockery"
               fill
               loading="eager"
               sizes="(max-width: 900px) 100vw, 48vw"
@@ -145,7 +120,7 @@ export default function CompanyPage() {
             <div className="about-collage__item about-collage__item--tall">
               <Image
                 src="/images/set.jpeg"
-                alt="Ceramic dinnerware set"
+                alt="Premium ceramic dinnerware collection"
                 fill
                 loading="eager"
                 sizes="(max-width: 900px) 100vw, 48vw"
@@ -154,7 +129,7 @@ export default function CompanyPage() {
             <div className="about-collage__item">
               <Image
                 src="/images/owner.jpg"
-                alt="Ceramic production and handling"
+                alt="Hira Industries ceramic production"
                 fill
                 loading="eager"
                 sizes="(max-width: 900px) 100vw, 48vw"
@@ -196,7 +171,7 @@ export default function CompanyPage() {
         </div>
       </section>
 
-      <section className="internal-section internal-section--dark owner-section-wrap">
+      <section className="internal-section internal-section--dark">
         <div className="light-shell internal-split internal-image--portrait owner-section">
           <div className="internal-image owner-image">
             <Image
@@ -237,8 +212,9 @@ export default function CompanyPage() {
           </div>
 
           <div className="promise-grid about-promise-grid">
-            {missionVisionCards.map((item) => {
+            {companyPillars.slice(0, 2).map((item) => {
               const Icon = item.icon;
+
               return (
                 <article key={item.title} className="promise-card about-promise-card">
                   <span className="promise-card__icon" aria-hidden="true">
@@ -261,24 +237,45 @@ export default function CompanyPage() {
           </div>
 
           <div className="about-services-grid">
-            {customerCards.map((item) => {
-              const Icon = item.icon;
-              return (
-                <article key={item.title} className="about-service-card">
-                  <div className="about-service-icon" aria-hidden="true">
-                    <Icon />
-                  </div>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </article>
-              );
-            })}
+            {[
+              {
+                title: "Homes",
+                description:
+                  "Beautiful crockery for everyday family dining and special occasions.",
+              },
+              {
+                title: "Hotels",
+                description:
+                  "Premium tableware solutions for luxury and business hotels worldwide.",
+              },
+              {
+                title: "Restaurants",
+                description:
+                  "Durable, elegant crockery for fine dining and casual restaurants.",
+              },
+              {
+                title: "Retailers",
+                description:
+                  "Quality products with attractive margins for retail partners.",
+              },
+              {
+                title: "Wholesalers",
+                description:
+                  "Bulk supply with competitive pricing for wholesale distribution.",
+              },
+            ].map((item) => (
+              <article key={item.title} className="about-service-card">
+                <div className="about-service-icon">*</div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="internal-section internal-section--dark">
-        <div className="light-shell internal-cta about-cta-dark">
+        <div className="light-shell internal-cta">
           <div>
             <div className="light-kicker">Ready to Partner with Us?</div>
             <h2>Whether you need crockery for your home, hotel, restaurant, retail store, gifting requirement, or bulk supply — we are ready to help you find the right ceramic collection.</h2>

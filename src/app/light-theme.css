@@ -289,7 +289,7 @@ textarea:focus-visible {
 }
 
 .light-kicker {
-  color: var(--light-gold);
+  color: var(--gold);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.26em;
@@ -298,11 +298,15 @@ textarea:focus-visible {
 
 .light-title {
   margin: 0.75rem 0 0;
-  color: var(--light-ink);
+  color: var(--heading);
   font-family: var(--font-serif), Georgia, serif;
   font-size: 3.45rem;
   font-weight: 700;
   line-height: 0.98;
+}
+
+.gold-text {
+  color: var(--gold-strong);
 }
 
 .light-title span,
@@ -376,7 +380,7 @@ textarea:focus-visible {
 
 .about-stat strong {
   display: block;
-  color: var(--light-gold);
+  color: var(--gold);
   font-family: var(--font-serif), Georgia, serif;
   font-size: 2.05rem;
   line-height: 1;
@@ -385,7 +389,7 @@ textarea:focus-visible {
 .about-stat span {
   display: block;
   margin-top: 0.35rem;
-  color: var(--light-copy);
+  color: var(--muted);
   font-size: 0.72rem;
   line-height: 1.35;
 }
@@ -413,8 +417,10 @@ textarea:focus-visible {
 .about-collage__item {
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: var(--light-shadow);
+  border-radius: 18px;
+  background: var(--surface-card);
+  border: 1px solid var(--gold-line);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.28);
 }
 
 .about-collage__item--tall {
@@ -619,8 +625,127 @@ textarea:focus-visible {
 }
 
 .light-button--whatsapp {
-  background: linear-gradient(135deg, var(--light-gold), var(--light-gold-strong));
+  background: linear-gradient(135deg, var(--gold), var(--gold-strong));
   color: #111;
+}
+
+.about-badge {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  display: inline-grid;
+  gap: 0.25rem;
+  padding: 1rem 1.3rem;
+  border-radius: 16px;
+  background: var(--gold);
+  color: #050403;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+  text-align: left;
+  min-width: 170px;
+}
+
+.about-badge strong {
+  display: block;
+  font-size: 1.85rem;
+  line-height: 1;
+}
+
+.about-badge span {
+  font-size: 0.85rem;
+}
+
+.owner-role {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.owner-quote {
+  margin: 1.8rem 0 0;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--gold);
+  color: var(--heading);
+  font-style: italic;
+  line-height: 1.85;
+}
+
+.about-services-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.about-service-card {
+  min-height: 240px;
+  padding: 1.7rem 1.4rem;
+  border-radius: 18px;
+  background: var(--surface-card);
+  border: 1px solid var(--gold-line);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.22);
+}
+
+.about-service-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--gold-line);
+  color: var(--gold);
+  font-size: 1.35rem;
+}
+
+.about-service-card h3 {
+  margin: 1.15rem 0 0;
+  color: var(--heading);
+}
+
+.about-service-card p {
+  margin: 0.85rem 0 0;
+  color: var(--muted-soft);
+  line-height: 1.75;
+}
+
+.about-collage-wrap {
+  align-items: start;
+}
+
+.about-hero-image {
+  position: relative;
+}
+
+.about-cta-dark {
+  border: 1px solid var(--gold-line);
+  background: linear-gradient(180deg, rgba(8, 7, 6, 0.98), rgba(12, 10, 8, 0.98));
+}
+
+.about-cta-dark .light-kicker {
+  color: var(--gold);
+}
+
+.about-cta-dark h2 {
+  color: var(--heading);
+}
+
+.about-cta-dark p {
+  color: var(--muted-soft);
+}
+
+.about-service-card:hover {
+  box-shadow: 0 28px 80px rgba(217, 180, 95, 0.16);
+}
+
+@media (max-width: 980px) {
+  .about-services-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .about-services-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .home-section__action {
@@ -724,10 +849,10 @@ textarea:focus-visible {
 .promise-card {
   min-height: 230px;
   padding: 1.75rem 1.35rem;
-  border: 1px solid rgba(217, 180, 95, 0.14);
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(17, 16, 15, 0.96), rgba(8, 7, 6, 0.96));
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--gold-line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(11, 10, 9, 0.98), rgba(17, 16, 14, 0.96));
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.32);
   text-align: center;
 }
 
@@ -890,14 +1015,19 @@ textarea:focus-visible {
 
 .light-page .breadcrumb,
 .products-page .breadcrumb {
-  color: rgba(245, 239, 227, 0.76);
+  color: var(--muted-soft);
 }
 
 .light-page .breadcrumb a,
 .products-page .breadcrumb a,
 .light-page .section-kicker,
 .products-page .section-kicker {
-  color: var(--light-gold);
+  color: var(--gold);
+}
+
+.light-page .breadcrumb span:last-child,
+.products-page .breadcrumb span:last-child {
+  color: var(--gold-strong);
 }
 
 .light-page .section-title,
@@ -1087,10 +1217,26 @@ textarea:focus-visible {
 
 .internal-hero {
   padding: 58px 0 72px;
-  border-bottom: 1px solid rgba(245, 239, 227, 0.08);
-  background:
-    linear-gradient(90deg, rgba(202, 161, 90, 0.06), transparent 42%),
-    rgba(10, 10, 10, 0.97);
+  border-bottom: 1px solid var(--gold-line);
+  background: linear-gradient(180deg, rgba(5, 4, 3, 0.95), rgba(8, 7, 6, 0.94));
+}
+
+.internal-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top center, rgba(217, 180, 95, 0.12), transparent 28%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.internal-hero {
+  position: relative;
+}
+
+.internal-hero__content {
+  position: relative;
+  z-index: 1;
 }
 
 .internal-hero__content {
@@ -1101,7 +1247,7 @@ textarea:focus-visible {
 
 .internal-hero__content h1 {
   margin: 0.75rem 0 0;
-  color: var(--light-ink);
+  color: var(--heading);
   font-family: var(--font-serif), Georgia, serif;
   font-size: 3.8rem;
   line-height: 0.98;
@@ -1110,18 +1256,22 @@ textarea:focus-visible {
 .internal-hero__content p {
   max-width: 680px;
   margin: 1.25rem auto 0;
-  color: var(--light-copy);
+  color: var(--muted-soft);
   font-size: 1rem;
   line-height: 1.75;
 }
 
 .internal-section {
   padding: 96px 0;
-  background: rgba(14, 14, 14, 0.95);
+  background: var(--bg-soft);
+}
+
+.internal-section--dark {
+  background: var(--surface);
 }
 
 .internal-section--cream {
-  background: rgba(18, 18, 18, 0.94);
+  background: var(--surface);
 }
 
 .internal-split {
@@ -1134,7 +1284,7 @@ textarea:focus-visible {
 .internal-title {
   max-width: 680px;
   margin: 0.75rem 0 0;
-  color: var(--light-ink);
+  color: var(--heading);
   font-family: var(--font-serif), Georgia, serif;
   font-size: 3.1rem;
   line-height: 1;
@@ -1143,7 +1293,7 @@ textarea:focus-visible {
 .internal-copy {
   max-width: 680px;
   margin: 1.2rem 0 0;
-  color: var(--light-copy);
+  color: var(--muted-soft);
   line-height: 1.85;
 }
 
@@ -1155,9 +1305,10 @@ textarea:focus-visible {
   position: relative;
   overflow: hidden;
   min-height: 460px;
-  border-radius: 8px;
-  background: rgba(20, 20, 20, 0.95);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(8, 7, 6, 0.94), rgba(15, 13, 10, 0.96));
+  border: 1px solid var(--gold-line);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.45);
 }
 
 .internal-image--portrait {
