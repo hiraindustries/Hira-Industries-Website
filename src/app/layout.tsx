@@ -1,7 +1,9 @@
 import "./globals.css";
+import "./light-theme.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import { FiMessageCircle } from "react-icons/fi";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { businessInfo } from "@/lib/site-data";
@@ -35,11 +37,20 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className={`${serif.variable} ${sans.variable}`}>
         <Header />
-        <main className="app-main">{children}</main>
+        <div className="app-main">{children}</div>
         <Footer />
+        <a
+          href={businessInfo.whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="floating-whatsapp"
+          aria-label="Chat with Hira Industries on WhatsApp"
+        >
+          <FiMessageCircle aria-hidden="true" />
+        </a>
       </body>
     </html>
   );

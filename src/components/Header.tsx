@@ -3,15 +3,22 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
-import { navLinks } from "@/lib/site-data";
+import {
+  FiChevronDown,
+  FiMenu,
+  FiMessageCircle,
+  FiX,
+} from "react-icons/fi";
+import { businessInfo, navLinks } from "@/lib/site-data";
 
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [productsExpanded, setProductsExpanded] = useState(false);
 
   const closeMenu = () => {
     setOpen(false);
+    setProductsExpanded(false);
   };
 
   useEffect(() => {
@@ -21,7 +28,7 @@ export default function Header() {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        closeMenu();
       }
     };
 
@@ -30,11 +37,13 @@ export default function Header() {
   }, [open]);
 
   const isActive = (href: string) => {
-    if (href === "/") {
+    const cleanHref = href.split("?")[0];
+
+    if (cleanHref === "/") {
       return pathname === "/";
     }
 
-    return pathname === href || pathname.startsWith(`${href}/`);
+    return pathname === cleanHref || pathname.startsWith(`${cleanHref}/`);
   };
 
   return (
@@ -43,37 +52,72 @@ export default function Header() {
         <Link href="/" className="brand-mark" aria-label="Hira Industries home">
           <span className="brand-mark__icon">H</span>
           <span className="brand-mark__text">
-            <span className="brand-mark__title">HIRA</span>
-            <span className="brand-mark__sub">Industries</span>
+            <span className="brand-mark__title">Hira Industries</span>
+            <span className="brand-mark__sub">Premium Ceramics</span>
           </span>
         </Link>
 
         <nav className="site-nav" aria-label="Primary navigation">
-          {navLinks.map((item) => (
-            <Link
-              key={`${item.label}-${item.href}`}
-              href={item.href}
-              className={`site-nav__link ${isActive(item.href) ? "is-active" : ""}`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navLinks.map((item) =>
+            item.children ? (
+              <div
+                key={`${item.label}-${item.href}`}
+                className="site-nav__dropdown"
+              >
+                <Link
+                  href={item.href}
+                  className={`site-nav__link site-nav__link--dropdown ${
+                    isActive(item.href) ? "is-active" : ""
+                  }`}
+                >
+                  {item.label}
+                  <FiChevronDown aria-hidden="true" />
+                </Link>
+                <div className="site-nav__dropdown-menu">
+                  {item.children.map((child) => (
+                    <Link
+                      key={`${child.label}-${child.href}`}
+                      href={child.href}
+                      className="site-nav__dropdown-link"
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={`${item.label}-${item.href}`}
+                href={item.href}
+                className={`site-nav__link ${
+                  isActive(item.href) ? "is-active" : ""
+                }`}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="site-header__actions">
-          <Link href="/contact" className="site-button site-button--solid">
-            Enquire Now
-            <FiArrowRight className="button-arrow" />
-          </Link>
+          <a
+            href={businessInfo.whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="header-whatsapp"
+          >
+            <FiMessageCircle aria-hidden="true" />
+            WhatsApp
+          </a>
 
           <button
             type="button"
             className="site-menu-button"
-            aria-label="Open menu"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
           >
-            {open ? <FiX size={20} /> : <FiMenu size={20} />}
+            {open ? <FiX aria-hidden="true" /> : <FiMenu aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -83,54 +127,94 @@ export default function Header() {
         aria-hidden={!open}
         onClick={closeMenu}
       >
-        <div className="mobile-menu__panel" onClick={(event) => event.stopPropagation()}>
+        <div
+          className="mobile-menu__panel"
+          onClick={(event) => event.stopPropagation()}
+        >
           <div className="mobile-menu__top">
-            <div>
-              <div className="brand-mark__title">HIRA</div>
-              <div className="brand-mark__sub">Industries</div>
-            </div>
-
+            <span className="brand-mark__text">
+              <span className="brand-mark__title">Hira Industries</span>
+              <span className="brand-mark__sub">Premium Ceramics</span>
+            </span>
             <button
               type="button"
               className="site-menu-button"
               aria-label="Close menu"
               onClick={closeMenu}
             >
-              <FiX size={20} />
+              <FiX aria-hidden="true" />
             </button>
           </div>
 
-          <div className="mobile-menu__links">
-            {navLinks.map((item) => (
-              <Link
-                key={`${item.label}-${item.href}`}
-                href={item.href}
-                className={`mobile-menu__link ${isActive(item.href) ? "is-active" : ""}`}
-                onClick={closeMenu}
-              >
-                <span>{item.label}</span>
-                <FiArrowRight />
-              </Link>
-            ))}
-          </div>
+          <nav className="mobile-menu__links" aria-label="Mobile navigation">
+            {navLinks.map((item) =>
+              item.children ? (
+                <div
+                  key={`${item.label}-${item.href}`}
+                  className="mobile-menu__group"
+                >
+                  <div className="mobile-menu__group-row">
+                    <Link
+                      href={item.href}
+                      className={`mobile-menu__link ${
+                        isActive(item.href) ? "is-active" : ""
+                      }`}
+                      onClick={closeMenu}
+                    >
+                      {item.label}
+                    </Link>
+                    <button
+                      type="button"
+                      className="mobile-menu__expand"
+                      aria-label="Toggle product categories"
+                      aria-expanded={productsExpanded}
+                      onClick={() =>
+                        setProductsExpanded((current) => !current)
+                      }
+                    >
+                      <FiChevronDown aria-hidden="true" />
+                    </button>
+                  </div>
+                  <div
+                    className={`mobile-menu__subnav ${
+                      productsExpanded ? "is-open" : ""
+                    }`}
+                  >
+                    {item.children.map((child) => (
+                      <Link
+                        key={`${child.label}-${child.href}`}
+                        href={child.href}
+                        onClick={closeMenu}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={`${item.label}-${item.href}`}
+                  href={item.href}
+                  className={`mobile-menu__link ${
+                    isActive(item.href) ? "is-active" : ""
+                  }`}
+                  onClick={closeMenu}
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
+          </nav>
 
-          <div className="section-divider" />
-
-          <div className="muted-text" style={{ lineHeight: 1.8 }}>
-            Premium tea sets, dinner sets, and curated ceramic collections crafted for modern homes and hospitality.
-          </div>
-
-          <div style={{ marginTop: "1rem" }}>
-            <Link
-              href="/contact"
-              className="site-button site-button--solid"
-              style={{ width: "100%" }}
-              onClick={closeMenu}
-            >
-              Start an Enquiry
-              <FiArrowRight className="button-arrow" />
-            </Link>
-          </div>
+          <a
+            href={businessInfo.whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="header-whatsapp header-whatsapp--mobile"
+          >
+            <FiMessageCircle aria-hidden="true" />
+            WhatsApp Hira Industries
+          </a>
         </div>
       </div>
     </header>

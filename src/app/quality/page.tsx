@@ -1,134 +1,137 @@
+import Image from "next/image";
 import Link from "next/link";
-import { FiArrowRight } from "react-icons/fi";
-import { qualitySteps, qualityStats } from "@/lib/site-data";
+import {
+  FiArrowRight,
+  FiDroplet,
+  FiLayers,
+  FiPackage,
+  FiShield,
+} from "react-icons/fi";
+import { manufacturingSteps, qualityPromises } from "@/lib/site-data";
 
 export const metadata = {
-  title: "Quality",
+  title: "Quality Standards",
 };
 
-const qualityChecks = [
-  "Consistent raw material selection for stable output.",
-  "Glaze and finish checks for surface clarity and polish.",
-  "Kiln firing controls to support strength and durability.",
-  "Final packing checks to keep shipments presentation-ready.",
-];
+const iconMap = {
+  material: FiLayers,
+  finish: FiDroplet,
+  quality: FiShield,
+  packaging: FiPackage,
+};
 
 export default function QualityPage() {
   return (
-    <main>
-      <section className="page-section">
-        <div className="site-shell">
-          <div className="breadcrumb">
+    <main className="light-page">
+      <section className="internal-hero">
+        <div className="light-shell">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span>/</span>
             <span>Quality</span>
-          </div>
-
-          <div style={{ marginTop: "0.9rem" }} className="section-kicker">
-            Manufacturing Excellence
-          </div>
-
-          <div className="split-section">
-            <div className="split-copy">
-              <h1 className="section-title section-title--tight">
-                Quality without compromise
-              </h1>
-              <p className="split-copy__text">
-                Every product is built with a premium look and a practical, durable body. Our approach is simple: refine the materials, control the process, and inspect the finish until it is ready for trade and daily use.
-              </p>
-              <p className="split-copy__text">
-                That discipline matters for hospitality buyers, retail presentation, gifting requirements, and export-oriented customers who expect predictable quality when they reorder.
-              </p>
-
-              <ul className="check-list">
-                {qualityChecks.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-
-              <div style={{ marginTop: "1.4rem" }} className="stats-grid">
-                {qualityStats.map((item) => (
-                  <div key={item.label} className="stats-card">
-                    <div className="stats-card__value">{item.value}</div>
-                    <div className="stats-card__label">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="hero-actions" style={{ marginTop: "1.4rem" }}>
-                <Link href="/contact?request=care-guide" className="site-button site-button--solid">
-                  Request Care Guide
-                  <FiArrowRight className="button-arrow" />
-                </Link>
-                <Link href="/contact" className="site-button site-button--ghost">
-                  Ask About Specs
-                </Link>
-              </div>
-            </div>
-
-            <div className="story-card">
-              <div className="image-frame story-card__figure">
-                <img
-                  src="/images/set.jpeg"
-                  alt="Ceramic tea set used to represent Hira Industries quality standards"
-                />
-              </div>
-
-              <div className="story-card__caption">
-                <strong>Refined for finish, feel, and daily reliability.</strong>
-                <span>
-                  The same eye for detail that shapes our products also guides inspection, packaging, and repeat-order consistency.
-                </span>
-              </div>
-            </div>
+          </nav>
+          <div className="internal-hero__content">
+            <div className="light-kicker">Our Promise</div>
+            <h1>Quality you can trust in every collection</h1>
+            <p>
+              Consistent materials, careful finishing, practical inspection,
+              and buyer-ready packaging guide every Hira Industries order.
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="page-section">
-        <div className="site-shell">
-          <div className="section-kicker">Process</div>
-          <h2 className="section-title">Four steps that keep the standard high</h2>
-          <p className="section-lead">
-            Our process is intentionally repeatable so buyers can depend on the same surface, balance, and presentation quality from one order to the next.
-          </p>
+      <section className="internal-section">
+        <div className="light-shell internal-split">
+          <div>
+            <div className="light-kicker">Quality Standards</div>
+            <h2 className="internal-title">
+              Designed for premium presentation and everyday durability
+            </h2>
+            <p className="internal-copy">
+              Our ceramic collections are finished for visual appeal, reliable
+              use, and buyer-ready presentation. Each stage is reviewed to keep
+              form, glaze, balance, and packing clear and consistent.
+            </p>
+            <ul className="internal-checks">
+              <li>Materials selected for stable production and clean firing.</li>
+              <li>Surface, edge, and glaze checks before final packing.</li>
+              <li>Practical durability for home and hospitality service.</li>
+              <li>Layered packaging prepared for trade handling and dispatch.</li>
+            </ul>
+          </div>
 
-          <div style={{ marginTop: "1.5rem" }} className="quality-grid">
-            {qualitySteps.map((item) => (
-              <article key={item.step} className="quality-step">
-                <div className="quality-step__number">{item.step}</div>
-                <h3 className="quality-step__title">{item.title}</h3>
-                <p className="quality-step__text">{item.description}</p>
-              </article>
-            ))}
+          <div className="internal-image">
+            <Image
+              src="/images/build-pic-2.png"
+              alt="White ceramic serveware with refined gold detailing"
+              fill
+              loading="eager"
+              sizes="(max-width: 900px) 100vw, 48vw"
+            />
           </div>
         </div>
       </section>
 
-      <section className="page-section page-section--tight">
-        <div className="site-shell">
-          <div className="surface-panel cta-panel">
-            <div className="split-section">
-              <div className="split-copy">
-                <div className="section-kicker">Need the details?</div>
-                <h2 className="section-title section-title--tight">
-                  Request quality notes and product specs
-                </h2>
-                <p className="split-copy__text">
-                  We can share the product catalogue, care guidance, and trade-ready notes for sourcing teams and distributors.
-                </p>
-              </div>
+      <section className="internal-section internal-section--cream">
+        <div className="light-shell">
+          <div className="light-heading">
+            <div className="light-kicker">Core Checks</div>
+            <h2 className="light-title">Four commitments behind every order</h2>
+            <div className="light-rule" aria-hidden="true" />
+          </div>
 
-              <div className="hero-actions" style={{ alignSelf: "end", justifyContent: "flex-start" }}>
-                <Link href="/downloads" className="site-button site-button--solid">
-                  Open Downloads
-                  <FiArrowRight className="button-arrow" />
-                </Link>
-                <Link href="/contact" className="site-button site-button--ghost">
-                  Contact Sales
-                </Link>
-              </div>
-            </div>
+          <div className="promise-grid">
+            {qualityPromises.map((item) => {
+              const Icon = iconMap[item.icon];
+
+              return (
+                <article key={item.title} className="promise-card">
+                  <span className="promise-card__icon" aria-hidden="true">
+                    <Icon />
+                  </span>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="internal-section">
+        <div className="light-shell">
+          <div className="light-heading">
+            <div className="light-kicker">Controlled Process</div>
+            <h2 className="light-title">From material to safe dispatch</h2>
+            <div className="light-rule" aria-hidden="true" />
+          </div>
+
+          <div className="internal-process-grid">
+            {manufacturingSteps.map((item) => {
+              const Icon = iconMap[item.icon];
+
+              return (
+                <article key={item.step} className="internal-process-card">
+                  <span aria-hidden="true">
+                    <Icon />
+                  </span>
+                  <small>{item.step}</small>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="home-section__action">
+            <Link
+              href="/contact?intent=quality-details"
+              className="light-button light-button--gold"
+            >
+              Request Quality Details
+              <FiArrowRight aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>

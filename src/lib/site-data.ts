@@ -1,12 +1,7 @@
 export type NavLink = {
   href: string;
   label: string;
-};
-
-export type FeatureItem = {
-  title: string;
-  description: string;
-  icon: string;
+  children?: NavLink[];
 };
 
 export type StatItem = {
@@ -17,6 +12,7 @@ export type StatItem = {
 export type ProductItem = {
   slug: string;
   name: string;
+  code: string;
   category: string;
   categoryLabel: string;
   description: string;
@@ -55,19 +51,44 @@ export const businessInfo = {
     "https://wa.me/919783805565?text=Hello%20Hira%20Industries%2C%20please%20share%20your%20product%20catalogue.",
   location: "Khurja, Uttar Pradesh, India",
   mapsQuery: "Hira Industries Khurja Uttar Pradesh India",
+  mapsEmbedHref:
+    "https://www.google.com/maps?q=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India&output=embed",
   mapsHref:
-    "https://maps.google.com/?q=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India",
+    "https://www.google.com/maps/search/?api=1&query=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India",
   businessHours: "Mon - Sat, 10:00 AM - 7:00 PM",
 } as const;
 
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/company", label: "Company Profile" },
-  { href: "/products", label: "Products" },
+  { href: "/company", label: "About" },
+  {
+    href: "/products",
+    label: "Products",
+    children: [
+      { label: "Dinner Sets", href: "/products?category=dinner-sets" },
+      {
+        label: "Tea & Coffee Sets",
+        href: "/products?category=tea-coffee-sets",
+      },
+      { label: "Mugs & Cups", href: "/products?category=mugs-cups" },
+      {
+        label: "Plates & Bowls",
+        href: "/products?category=plates-bowls",
+      },
+      {
+        label: "Hotel / HoReCa Collection",
+        href: "/products?category=horeca",
+      },
+      {
+        label: "Export Range",
+        href: "/products?category=export-range",
+      },
+    ],
+  },
+  { href: "/manufacturing", label: "Manufacturing" },
   { href: "/quality", label: "Quality" },
-  { href: "/collections", label: "Collections" },
-  { href: "/downloads", label: "Downloads" },
-  { href: "/contact", label: "Contact Us" },
+  { href: "/collections", label: "Gallery" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export const heroStats: StatItem[] = [
@@ -76,237 +97,249 @@ export const heroStats: StatItem[] = [
   { value: "Checks", label: "Consistent finishing" },
 ];
 
-export const featureItems: FeatureItem[] = [
-  {
-    icon: "diamond",
-    title: "Premium Ceramic Tableware",
-    description:
-      "Refined tea sets, dinner sets, cup and saucer collections, and serveware for buyer-ready presentation.",
-  },
-  {
-    icon: "pen",
-    title: "Careful Glazing & Finishing",
-    description:
-      "Clean surfaces, balanced silhouettes, and polished detailing give every collection a premium finish.",
-  },
-  {
-    icon: "shield",
-    title: "Consistent Quality Checks",
-    description:
-      "Products are reviewed for surface consistency, balance, finish quality, and packing readiness.",
-  },
-  {
-    icon: "box",
-    title: "Buyer-Ready Packaging",
-    description:
-      "Packaging and dispatch support are planned for hotels, retailers, gifting clients, and trade orders.",
-  },
-];
-
-export const companyStats: StatItem[] = [
-  { value: "Bulk", label: "Order capability" },
-  { value: "Glaze", label: "Finish checks" },
-  { value: "Trade", label: "Buyer-ready packaging" },
-  { value: "Dispatch", label: "Reliable support" },
-];
-
-export const qualityStats: StatItem[] = [
-  { value: "Material", label: "Selection review" },
-  { value: "Glaze", label: "Surface checks" },
-  { value: "Pack", label: "Buyer-ready handling" },
-  { value: "Dispatch", label: "Order support" },
-];
-
 export const productCategoryTabs: ProductCategoryTab[] = [
   { label: "All Products", category: "all", href: "/products" },
-  { label: "Tea Sets", category: "tea-sets", href: "/products?category=tea-sets" },
-  { label: "Dinner Sets", category: "dinner-sets", href: "/products?category=dinner-sets" },
-  { label: "Cup & Saucer", category: "cup-saucer", href: "/products?category=cup-saucer" },
-  { label: "Coffee Sets", category: "coffee-sets", href: "/products?category=coffee-sets" },
-  { label: "Serveware", category: "serveware", href: "/products?category=serveware" },
-  { label: "Accessories", category: "accessories", href: "/products?category=accessories" },
+  {
+    label: "Dinner Sets",
+    category: "dinner-sets",
+    href: "/products?category=dinner-sets",
+  },
+  {
+    label: "Tea & Coffee Sets",
+    category: "tea-coffee-sets",
+    href: "/products?category=tea-coffee-sets",
+  },
+  {
+    label: "Mugs & Cups",
+    category: "mugs-cups",
+    href: "/products?category=mugs-cups",
+  },
+  {
+    label: "Plates & Bowls",
+    category: "plates-bowls",
+    href: "/products?category=plates-bowls",
+  },
+  {
+    label: "Hotel / HoReCa",
+    category: "horeca",
+    href: "/products?category=horeca",
+  },
+  {
+    label: "Export Range",
+    category: "export-range",
+    href: "/products?category=export-range",
+  },
 ];
 
 export const featuredProducts: ProductItem[] = [
   {
-    slug: "royal-marble-tea-set",
-    name: "Royal Marble Tea Set",
-    category: "tea-sets",
-    categoryLabel: "Tea Set",
-    description: "Statement tea service with gold rim detailing and a deep black marble finish.",
-    image: "/images/set.jpeg",
-    pieces: "6 pcs / set",
+    slug: "royal-elegance-dinner-set",
+    name: "Royal Elegance Dinner Set",
+    code: "HI-DS-001",
+    category: "dinner-sets",
+    categoryLabel: "Dinner Sets",
+    description:
+      "A refined white and gold dinner collection designed for premium homes, hospitality, and gifting.",
+    image: "/images/build-pic-1.png",
+    pieces: "24 pcs / set",
     material: "Ceramic",
-    moq: "10 sets",
+    moq: "5 sets",
     isNew: true,
   },
   {
-    slug: "golden-essence-tea-set",
-    name: "Golden Essence Tea Set",
-    category: "tea-sets",
-    categoryLabel: "Tea Set",
-    description: "Elegant curves with a warm metallic accent made for premium hospitality settings.",
-    image: "/tea.png",
-    pieces: "6 pcs / set",
-    material: "Ceramic",
-    moq: "10 sets",
-    isNew: false,
-  },
-  {
-    slug: "classic-black-tea-set",
-    name: "Classic Black Tea Set",
-    category: "tea-sets",
-    categoryLabel: "Tea Set",
-    description: "Bold, contemporary, and versatile for everyday tea service or premium gifting.",
-    image: "/blacktea.png",
-    pieces: "6 pcs / set",
-    material: "Ceramic",
-    moq: "10 sets",
-    isNew: false,
-  },
-  {
-    slug: "ivory-grace-tea-set",
-    name: "Ivory Grace Tea Set",
-    category: "tea-sets",
-    categoryLabel: "Tea Set",
-    description: "A softer palette for refined interiors, boutique hotels, and special occasions.",
-    image: "/images/ivory-grace.jpg",
-    imagePlaceholder: true,
-    pieces: "6 pcs / set",
-    material: "Ceramic",
-    moq: "10 sets",
-    isNew: false,
-  },
-  {
-    slug: "royal-gold-dinner-set",
-    name: "Royal Gold Dinner Set",
+    slug: "floral-charm-dinner-set",
+    name: "Floral Charm Dinner Set",
+    code: "HI-DS-002",
     category: "dinner-sets",
-    categoryLabel: "Dinner Set",
-    description: "Formal dinnerware crafted for memorable gatherings and premium dining rooms.",
-    image: "/images/royal-gold-dinner.jpg",
-    imagePlaceholder: true,
+    categoryLabel: "Dinner Sets",
+    description:
+      "Sculpted floral detailing and polished gold accents create a memorable table presentation.",
+    image: "/images/build-pic-2.png",
     pieces: "18 pcs / set",
     material: "Ceramic",
     moq: "5 sets",
     isNew: false,
   },
   {
-    slug: "coffee-ritual-set",
-    name: "Coffee Ritual Set",
-    category: "coffee-sets",
-    categoryLabel: "Coffee Set",
-    description: "Compact, modern, and suited for curated coffee service and gifting.",
-    image: "/images/coffee-ritual.jpg",
-    imagePlaceholder: true,
+    slug: "heritage-tea-set",
+    name: "Heritage Tea Set",
+    code: "HI-TC-001",
+    category: "tea-coffee-sets",
+    categoryLabel: "Tea & Coffee Sets",
+    description:
+      "A timeless tea service with warm gold lines, balanced forms, and an elegant everyday finish.",
+    image: "/tea.png",
+    pieces: "6 pcs / set",
+    material: "Ceramic",
+    moq: "10 sets",
+    isNew: false,
+  },
+  {
+    slug: "artisan-ceramic-mug",
+    name: "Artisan Ceramic Mug",
+    code: "HI-MC-001",
+    category: "mugs-cups",
+    categoryLabel: "Mugs & Cups",
+    description:
+      "A comfortable ceramic cup with a smooth finish, ideal for everyday service and premium gifting.",
+    image: "/blacktea.png",
     pieces: "4 pcs / set",
+    material: "Ceramic",
+    moq: "20 sets",
+    isNew: false,
+  },
+  {
+    slug: "classic-dinner-plate-set",
+    name: "Classic Dinner Plate Set",
+    code: "HI-PB-001",
+    category: "plates-bowls",
+    categoryLabel: "Plates & Bowls",
+    description:
+      "Coordinated plates and bowls with durable glazing and a clean, buyer-ready presentation.",
+    image: "/images/build-pic-1.png",
+    pieces: "6 pcs / set",
     material: "Ceramic",
     moq: "12 sets",
     isNew: false,
   },
   {
-    slug: "premium-cup-saucer",
-    name: "Premium Cup & Saucer",
-    category: "cup-saucer",
-    categoryLabel: "Cup & Saucer",
-    description: "A clean, timeless silhouette with a polished gold accent for cafes and lounges.",
-    image: "/images/premium-cup-saucer.jpg",
-    imagePlaceholder: true,
-    pieces: "6 pcs / set",
+    slug: "horeca-professional-range",
+    name: "HoReCa Professional Range",
+    code: "HI-HR-001",
+    category: "horeca",
+    categoryLabel: "Hotel / HoReCa Collection",
+    description:
+      "A practical tableware range planned for hotels, restaurants, banquets, and repeat service.",
+    image: "/images/set.jpeg",
+    pieces: "Custom mix",
     material: "Ceramic",
-    moq: "20 sets",
-    isNew: false,
-  },
-  {
-    slug: "serveware-accent-bowl",
-    name: "Serveware Accent Bowl",
-    category: "serveware",
-    categoryLabel: "Serveware",
-    description: "For snacks, condiments, and shared presentation across premium table settings.",
-    image: "/images/serveware-bowl.jpg",
-    imagePlaceholder: true,
-    pieces: "3 pcs / set",
-    material: "Ceramic",
-    moq: "15 sets",
-    isNew: false,
-  },
-  {
-    slug: "accessories-set",
-    name: "Accessories Set",
-    category: "accessories",
-    categoryLabel: "Accessories",
-    description: "Add-on pieces and finishing details for display-ready, coordinated collections.",
-    image: "/images/accessories.jpg",
-    imagePlaceholder: true,
-    pieces: "Varies",
-    material: "Ceramic",
-    moq: "20 sets",
+    moq: "25 sets",
     isNew: false,
   },
 ];
 
-export const collectionHighlights = [
-  {
-    title: "Tea Sets",
-    subtitle: "Elegance in every sip",
-    description:
-      "Signature tea service pieces designed to feel refined in premium homes, boutiques, and hospitality spaces.",
-    image: "/tea.png",
-    objectPosition: "center center",
-  },
+export const companyMilestones: StatItem[] = [
+  { value: "25+", label: "Years Experience" },
+  { value: "500+", label: "Product Designs" },
+  { value: "1000+", label: "Happy Clients" },
+  { value: "15+", label: "Countries Served" },
+];
+
+export const homeCategories = [
   {
     title: "Dinner Sets",
-    subtitle: "Crafted for memorable moments",
-    description:
-      "Statement table settings that combine balance, practicality, and visual richness for larger gatherings.",
-    image:
-      "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTFxXNFs8wE4jdCpMYXAONhuSAstdWfqBuqh-L1Ex2hHf79qHJ1Prtd7Nl9FVHi8PIB4DndXvixD72UKztEfZ6E2ZW1IFhQ0ouL5r15S8JCRPaLM4VROGt6yao3QFUoyU1fTnrgoA&usqp=CAc",
-    objectPosition: "center center",
+    description: "Complete dining collections for memorable service.",
+    image: "/images/build-pic-1.png",
+    href: "/products?category=dinner-sets",
   },
   {
-    title: "Cup & Saucer",
-    subtitle: "Polished everyday ritual",
-    description:
-      "Clean and elegant service sets for cafes, offices, gifting, and premium home collections.",
+    title: "Tea & Coffee Sets",
+    description: "Elegant service sets for homes, cafes, and gifting.",
+    image: "/tea.png",
+    href: "/products?category=tea-coffee-sets",
+  },
+  {
+    title: "Mugs & Cups",
+    description: "Premium forms for daily use and custom collections.",
     image: "/blacktea.png",
-    objectPosition: "center center",
+    href: "/products?category=mugs-cups",
   },
   {
-    title: "Serveware",
-    subtitle: "Functional with presence",
-    description:
-      "Matching accent pieces that complete a curated table with a cohesive, premium finish.",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661963026516-5ecf0e65e1b3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGluZHVzdHJpYWwlMjBjZXJhbWljJTIwcHJvZHVjdHMlMjBpbWFnZXN8ZW58MHx8MHx8fDA%3D",
-    objectPosition: "center center",
+    title: "Plates & Bowls",
+    description: "Coordinated shapes with polished, durable glazing.",
+    image: "/images/build-pic-2.png",
+    href: "/products?category=plates-bowls",
+  },
+  {
+    title: "Hotel / HoReCa Collection",
+    description: "Dependable tableware planned for professional service.",
+    image: "/images/set.jpeg",
+    href: "/products?category=horeca",
+  },
+  {
+    title: "Export Range",
+    description: "Buyer-ready collections for international sourcing.",
+    image: "/images/build-pic-1.png",
+    href: "/products?category=export-range",
   },
 ];
 
-export const qualitySteps = [
+export const manufacturingSteps = [
   {
-    step: "01",
-    title: "Raw material selection",
+    step: "Step 1",
+    title: "Material Selection",
     description:
-      "We source materials for consistency, strength, and a refined finish before anything enters production.",
+      "Premium raw materials are selected for consistent strength, form, and finish.",
+    icon: "material",
   },
   {
-    step: "02",
-    title: "Forming and glazing",
+    step: "Step 2",
+    title: "Design & Finishing",
     description:
-      "Each piece is shaped, refined, and glazed to preserve crisp edges and premium surface quality.",
+      "Each piece is shaped, glazed, and detailed for a clean premium presentation.",
+    icon: "finish",
   },
   {
-    step: "03",
-    title: "Kiln firing",
+    step: "Step 3",
+    title: "Quality Checking",
     description:
-      "Controlled firing cycles are used to improve durability, stability, and long-term performance.",
+      "Multi-point inspection checks balance, surface quality, and visual consistency.",
+    icon: "quality",
   },
   {
-    step: "04",
-    title: "Final inspection",
+    step: "Step 4",
+    title: "Safe Packaging",
     description:
-      "Finished products are checked for surface consistency, balance, finish quality, and packaging readiness.",
+      "Buyer-ready packing protects products through storage, handling, and dispatch.",
+    icon: "packaging",
   },
-];
+] as const;
+
+export const qualityPromises = [
+  {
+    title: "Premium Ceramic Material",
+    description: "Selected materials for lasting strength and refined presentation.",
+    icon: "material",
+  },
+  {
+    title: "Smooth Finishing",
+    description: "Clean glaze, polished edges, and consistent surface quality.",
+    icon: "finish",
+  },
+  {
+    title: "Strong Build Quality",
+    description: "Reliable forms developed for regular service and handling.",
+    icon: "quality",
+  },
+  {
+    title: "Safe Packaging",
+    description: "Layered protection planned for trade and bulk dispatch.",
+    icon: "packaging",
+  },
+] as const;
+
+export const galleryImages = [
+  {
+    src: "/images/build-pic-1.png",
+    alt: "White and gold ceramic dinnerware collection",
+  },
+  {
+    src: "/images/build-pic-2.png",
+    alt: "White ceramic serveware with gold detailing",
+  },
+  {
+    src: "/tea.png",
+    alt: "White tea service with gold rim accents",
+  },
+  {
+    src: "/blacktea.png",
+    alt: "Black tea service with gold rim accents",
+  },
+  {
+    src: "/images/set.jpeg",
+    alt: "Premium black ceramic tea set",
+  },
+] as const;
 
 export const downloadResources: DownloadItem[] = [
   {
@@ -364,23 +397,24 @@ export const contactDetails = [
 
 export const footerGroups = [
   {
-    title: "Quick Links",
+    title: "Products",
     links: [
-      { label: "Home", href: "/" },
-      { label: "Company Profile", href: "/company" },
-      { label: "Products", href: "/products" },
-      { label: "Quality", href: "/quality" },
-      { label: "Downloads", href: "/downloads" },
-      { label: "Contact", href: "/contact" },
+      { label: "Dinner Sets", href: "/products?category=dinner-sets" },
+      { label: "Tea & Coffee Sets", href: "/products?category=tea-coffee-sets" },
+      { label: "Mugs & Cups", href: "/products?category=mugs-cups" },
+      { label: "Plates & Bowls", href: "/products?category=plates-bowls" },
+      { label: "Hotel / HoReCa Collection", href: "/products?category=horeca" },
+      { label: "Export Range", href: "/products?category=export-range" },
     ],
   },
   {
-    title: "Products",
+    title: "Quick Links",
     links: [
-      { label: "Tea Set", href: "/products" },
-      { label: "Dinner Set", href: "/products" },
-      { label: "Cup & Saucer", href: "/products" },
-      { label: "Serveware", href: "/products" },
+      { label: "About Us", href: "/company" },
+      { label: "Manufacturing", href: "/manufacturing" },
+      { label: "Quality", href: "/quality" },
+      { label: "Gallery", href: "/collections" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
 ];

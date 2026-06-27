@@ -38,6 +38,7 @@ const schema = {
       "@type": "Product",
       "@id": `${siteUrl}/products#${product.slug}`,
       name: product.name,
+      sku: product.code,
       description: product.description,
       category: product.categoryLabel,
       ...(product.imagePlaceholder

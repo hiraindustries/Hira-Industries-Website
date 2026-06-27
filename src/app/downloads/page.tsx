@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function DownloadsPage() {
   return (
-    <main>
+    <main className="light-page">
       <section className="page-section">
         <div className="site-shell">
           <div className="breadcrumb">

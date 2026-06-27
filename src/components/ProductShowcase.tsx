@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FiArrowRight, FiCamera, FiMessageCircle } from "react-icons/fi";
@@ -36,7 +37,7 @@ export default function ProductShowcase() {
   const activeCategory = getValidCategory(searchParams.get("category"));
 
   const filteredProducts = useMemo(() => {
-    if (activeCategory === allCategory) {
+    if (activeCategory === allCategory || activeCategory === "export-range") {
       return featuredProducts;
     }
 
@@ -48,7 +49,7 @@ export default function ProductShowcase() {
   };
 
   return (
-    <section className="page-section products-page">
+    <section className="page-section products-page light-page">
       <div className="site-shell">
         <nav className="breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
@@ -128,8 +129,12 @@ export default function ProductShowcase() {
         </div>
 
         <div id="products-grid" className="product-grid" role="tabpanel">
-          {filteredProducts.map((product) => (
-            <article key={product.slug} className="product-card">
+          {filteredProducts.map((product, index) => (
+            <article
+              key={product.slug}
+              id={product.slug}
+              className="product-card"
+            >
               <div className="product-card__media">
                 {product.imagePlaceholder ? (
                   <div
@@ -142,11 +147,13 @@ export default function ProductShowcase() {
                     <small>{product.name}</small>
                   </div>
                 ) : (
-                  <img
+                  <Image
                     src={product.image}
                     alt={`${product.name} by Hira Industries`}
+                    fill
+                    loading={index === 0 ? "eager" : "lazy"}
+                    sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 33vw"
                     className="product-card__image"
-                    loading="lazy"
                   />
                 )}
 
@@ -162,6 +169,7 @@ export default function ProductShowcase() {
 
               <div className="product-card__body">
                 <h2 className="product-card__title">{product.name}</h2>
+                <div className="product-card__code">Code: {product.code}</div>
                 <p className="product-card__text">{product.description}</p>
 
                 <div className="product-card__specs" aria-label={`${product.name} specifications`}>
@@ -175,7 +183,7 @@ export default function ProductShowcase() {
                     href={`/contact?product=${product.slug}&source=products-page`}
                     className="site-button site-button--solid"
                   >
-                    Enquire
+                    Request Quote
                     <FiArrowRight className="button-arrow" />
                   </Link>
                   <a

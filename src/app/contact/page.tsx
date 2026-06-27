@@ -22,7 +22,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   );
 
   return (
-    <main>
+    <main className="light-page">
       <section className="page-section">
         <div className="site-shell">
           <div className="breadcrumb">
@@ -41,11 +41,27 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
           <div style={{ marginTop: "1.5rem" }} className="contact-grid">
             <div className="contact-panel">
-              <div className="image-frame" style={{ minHeight: "320px" }}>
-                <img
-                  src="/images/map.png"
-                  alt="Map graphic for Hira Industries contact location"
+              <div className="contact-map-frame">
+                <iframe
+                  title="Hira Industries location map"
+                  src={businessInfo.mapsEmbedHref}
+                  width="100%"
+                  height="420"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
                 />
+              </div>
+
+              <div className="contact-map-actions">
+                <a
+                  href={businessInfo.mapsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="site-button site-button--ghost"
+                >
+                  Open in Google Maps
+                </a>
               </div>
 
               <div className="contact-list" style={{ marginTop: "1rem" }}>
@@ -72,14 +88,6 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                 >
                   WhatsApp Catalogue
                   <FiArrowRight className="button-arrow" />
-                </a>
-                <a
-                  href={businessInfo.mapsHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="site-button site-button--ghost"
-                >
-                  Open Map
                 </a>
               </div>
             </div>
