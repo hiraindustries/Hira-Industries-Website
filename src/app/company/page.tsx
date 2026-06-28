@@ -73,22 +73,20 @@ const customerCards = [
 export default function CompanyPage() {
   return (
     <main className="light-page about-page">
-      <section className="internal-hero">
-        <div className="light-shell">
+      <section className="about-hero-bg">
+        <div className="about-hero-content">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span>/</span>
             <span>About Us</span>
           </nav>
-          <div className="internal-hero__content">
-            <div className="light-kicker">About Hira Industries</div>
-            <h1>Crafting premium ceramic crockery with passion, precision, and purpose since 1995.</h1>
-            <p>
-              Founded in Khurja, Uttar Pradesh, Hira Industries serves homes,
-              hotels, restaurants, retailers, wholesalers, gifting buyers, and
-              trade clients with premium ceramic collections.
-            </p>
-          </div>
+          <div className="light-kicker">About Hira Industries</div>
+          <h1>Crafting premium ceramic crockery with passion, precision, and purpose since 1995.</h1>
+          <p>
+            Founded in Khurja, Uttar Pradesh, Hira Industries serves homes,
+            hotels, restaurants, retailers, wholesalers, gifting buyers, and
+            trade clients with premium ceramic collections.
+          </p>
         </div>
       </section>
 

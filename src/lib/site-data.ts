@@ -55,7 +55,8 @@ export const businessInfo = {
     "https://www.google.com/maps?q=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India&output=embed",
   mapsHref:
     "https://www.google.com/maps/search/?api=1&query=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India",
-  businessHours: "Mon - Sat, 10:00 AM - 7:00 PM",
+  businessHours: "Mon - Sat: 9:00 AM - 7:00 PM",
+  sundayHours: "Sunday: Closed",
 } as const;
 
 export const navLinks: NavLink[] = [

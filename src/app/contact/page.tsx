@@ -1,7 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
-import { FiArrowRight } from "react-icons/fi";
+import {
+  FiClock,
+  FiMail,
+  FiMapPin,
+  FiMessageCircle,
+  FiPhone,
+} from "react-icons/fi";
 import ContactForm from "@/components/ContactForm";
-import { businessInfo, contactDetails, downloadResources } from "@/lib/site-data";
+import { businessInfo, downloadResources } from "@/lib/site-data";
 
 export const metadata = {
   title: "Contact",
@@ -15,6 +22,33 @@ function getRequestValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
+const contactItems = [
+  {
+    label: "Phone Number",
+    value: businessInfo.phoneDisplay,
+    href: businessInfo.phoneHref,
+    icon: FiPhone,
+  },
+  {
+    label: "WhatsApp",
+    value: businessInfo.phoneDisplay,
+    href: businessInfo.whatsappHref,
+    icon: FiMessageCircle,
+  },
+  {
+    label: "Email",
+    value: businessInfo.email,
+    href: `mailto:${businessInfo.email}`,
+    icon: FiMail,
+  },
+  {
+    label: "Business Address",
+    value: businessInfo.location,
+    href: businessInfo.mapsHref,
+    icon: FiMapPin,
+  },
+] as const;
+
 export default async function ContactPage({ searchParams }: ContactPageProps) {
   const requestedKey = getRequestValue((await searchParams).request);
   const requestedResource = downloadResources.find(
@@ -22,92 +56,149 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   );
 
   return (
-    <main className="light-page">
-      <section className="page-section">
-        <div className="site-shell">
-          <div className="breadcrumb">
+    <main className="contact-page">
+      <section className="contact-hero">
+        <Image
+          src="/images/set.jpeg"
+          alt=""
+          fill
+          loading="eager"
+          sizes="100vw"
+          className="contact-hero__image"
+        />
+        <div className="contact-hero__overlay" aria-hidden="true" />
+        <div className="site-shell contact-hero__content">
+          <nav className="contact-breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span>/</span>
             <span>Contact</span>
-          </div>
-
-          <div style={{ marginTop: "0.9rem" }} className="section-kicker">
-            Enquiries
-          </div>
-          <h1 className="section-title">Contact Hira Industries</h1>
-          <p className="section-lead">
-            Reach out for product pricing, trade support, custom requirements, or catalogue requests. We will reply with the right next step for your enquiry.
+          </nav>
+          <h1>Contact Us</h1>
+          <div className="contact-heading-rule" aria-hidden="true" />
+          <p>
+            Get in touch for product enquiries, bulk orders, catalogue requests,
+            or business discussions.
           </p>
+        </div>
+      </section>
 
-          <div style={{ marginTop: "1.5rem" }} className="contact-grid">
-            <div className="contact-panel">
-              <div className="contact-map-frame">
-                <iframe
-                  title="Hira Industries location map"
-                  src={businessInfo.mapsEmbedHref}
-                  width="100%"
-                  height="420"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+      <section className="contact-main">
+        <div className="contact-shell contact-main__grid">
+          <div className="contact-info">
+            <div className="contact-kicker">Get in Touch</div>
+            <h2>Contact Information</h2>
+            <div className="contact-heading-rule" aria-hidden="true" />
+            <p className="contact-info__intro">
+              We&apos;d love to hear from you. Whether you have a question about
+              our products, bulk pricing, catalogue, or anything else &mdash; our
+              team is ready to help.
+            </p>
 
-              <div className="contact-map-actions">
-                <a
-                  href={businessInfo.mapsHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="site-button site-button--ghost"
-                >
-                  Open in Google Maps
-                </a>
-              </div>
+            <div className="contact-info__list">
+              {contactItems.map((item) => {
+                const Icon = item.icon;
+                const content = (
+                  <>
+                    <span className="contact-info-card__icon" aria-hidden="true">
+                      <Icon />
+                    </span>
+                    <span className="contact-info-card__copy">
+                      <strong>{item.label}</strong>
+                      <span>{item.value}</span>
+                    </span>
+                  </>
+                );
 
-              <div className="contact-list" style={{ marginTop: "1rem" }}>
-                {contactDetails.map((item) => (
-                  <a key={item.label} href={item.href} className="contact-item">
-                    <span>{item.label}</span>
-                    <strong>{item.value}</strong>
+                return item.label === "Business Address" ||
+                  item.label === "WhatsApp" ? (
+                  <a
+                    key={`${item.label}-${item.href}`}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-info-card"
+                  >
+                    {content}
                   </a>
-                ))}
-              </div>
+                ) : (
+                  <a
+                    key={`${item.label}-${item.href}`}
+                    href={item.href}
+                    className="contact-info-card"
+                  >
+                    {content}
+                  </a>
+                );
+              })}
 
-              <div className="section-divider" />
-
-              <div className="status-chip">
-                Business hours: {businessInfo.businessHours}
-              </div>
-
-              <div className="hero-actions" style={{ marginTop: "1rem" }}>
-                <a
-                  href={businessInfo.whatsappCatalogueHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="site-button site-button--solid"
-                >
-                  WhatsApp Catalogue
-                  <FiArrowRight className="button-arrow" />
-                </a>
+              <div className="contact-info-card">
+                <span className="contact-info-card__icon" aria-hidden="true">
+                  <FiClock />
+                </span>
+                <span className="contact-info-card__copy">
+                  <strong>Business Hours</strong>
+                  <span>{businessInfo.businessHours}</span>
+                  <span>{businessInfo.sundayHours}</span>
+                </span>
               </div>
             </div>
+          </div>
 
-            <div>
-              {requestedResource ? (
-                <div className="request-note">
-                  <div className="download-card__meta">Selected request</div>
-                  <strong>{requestedResource.title}</strong>
-                  <span>
-                    We will respond with the right file or next step for this request.
-                  </span>
-                </div>
-              ) : null}
+          <ContactForm
+            key={requestedResource?.requestKey ?? "general-enquiry"}
+            requestedResource={requestedResource?.title}
+          />
+        </div>
+      </section>
 
-              <ContactForm
-                key={requestedResource?.requestKey ?? "general-enquiry"}
-                requestedResource={requestedResource?.title}
-              />
-            </div>
+      <section className="contact-map-section">
+        <div className="contact-shell">
+          <div className="contact-map-heading">
+            <div className="contact-kicker">Find Us</div>
+            <h2>Our Location</h2>
+            <div className="contact-heading-rule" aria-hidden="true" />
+            <p>
+              Visit us at our showroom and manufacturing location in Khurja,
+              Uttar Pradesh.
+            </p>
+          </div>
+
+          <div className="contact-map-frame">
+            <iframe
+              title="Hira Industries location map"
+              src={businessInfo.mapsEmbedHref}
+              width="100%"
+              height="460"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="contact-cta">
+        <div className="contact-shell contact-cta__content">
+          <div>
+            <div className="contact-kicker">Trade Enquiries</div>
+            <h2>Need Crockery in Bulk?</h2>
+            <p>
+              Share your requirements for product range, quantity, packaging, or
+              catalogue support. Our team will help with the right next step.
+            </p>
+          </div>
+          <div className="contact-cta__actions">
+            <a href="#contact-form" className="contact-button contact-button--gold">
+              Send Bulk Enquiry
+            </a>
+            <a
+              href={businessInfo.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-button contact-button--whatsapp"
+            >
+              <FiMessageCircle aria-hidden="true" />
+              WhatsApp Now
+            </a>
           </div>
         </div>
       </section>
