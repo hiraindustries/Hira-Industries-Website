@@ -2,96 +2,160 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   FiArrowRight,
+  FiAward,
+  FiCheckCircle,
   FiDroplet,
+  FiFeather,
   FiLayers,
   FiPackage,
+  FiSearch,
   FiShield,
+  FiTruck,
 } from "react-icons/fi";
-import { manufacturingSteps, qualityPromises } from "@/lib/site-data";
 
 export const metadata = {
-  title: "Quality Standards",
+  title: "Quality Assurance",
 };
 
-const iconMap = {
-  material: FiLayers,
-  finish: FiDroplet,
-  quality: FiShield,
-  packaging: FiPackage,
-};
+const qualityStandards = [
+  {
+    title: "Premium Ceramic Material",
+    description:
+      "We use high-grade ceramic raw materials selected for consistency, durability, and refined presentation.",
+    icon: FiLayers,
+  },
+  {
+    title: "Smooth Finishing",
+    description:
+      "Every piece goes through finishing stages including smoothing, glazing, and polishing for a clean premium surface.",
+    icon: FiDroplet,
+  },
+  {
+    title: "Strong Build Quality",
+    description:
+      "Our products are fired and finished to support regular handling, daily use, and long-term durability.",
+    icon: FiShield,
+  },
+  {
+    title: "Design Quality",
+    description:
+      "From classic white to detailed patterns, every design is created with precision, balance, and visual consistency.",
+    icon: FiFeather,
+  },
+  {
+    title: "Damage & Crack Checking",
+    description:
+      "Each piece is inspected for cracks, chips, scratches, glaze issues, and surface imperfections before packing.",
+    icon: FiSearch,
+  },
+  {
+    title: "Safe Packaging",
+    description:
+      "Multi-layer packaging protects products during storage, dispatch, local delivery, and bulk order movement.",
+    icon: FiPackage,
+  },
+] as const;
+
+const qualityStats = [
+  { value: "100%", label: "Batch Checking" },
+  { value: "<0.5%", label: "Defect Target" },
+  { value: "6+", label: "Inspection Points" },
+  { value: "Yes", label: "Sample Approval" },
+] as const;
 
 export default function QualityPage() {
   return (
-    <main className="light-page">
-      <section className="internal-hero">
-        <div className="light-shell">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
+    <main className="quality-page">
+      <section className="quality-hero">
+        <Image
+          src="/images/Product Making & Sourcing.png"
+          alt=""
+          fill
+          preload
+          sizes="100vw"
+          className="quality-hero__image"
+        />
+        <div className="quality-hero__overlay" aria-hidden="true" />
+        <div className="quality-shell quality-hero__content">
+          <nav className="quality-breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span>/</span>
             <span>Quality</span>
           </nav>
-          <div className="internal-hero__content">
-            <div className="light-kicker">Our Promise</div>
-            <h1>Quality you can trust in every collection</h1>
-            <p>
-              Consistent materials, careful finishing, practical inspection,
-              and buyer-ready packaging guide every Hira Industries order.
-            </p>
-          </div>
+          <h1>Quality Assurance</h1>
+          <div className="quality-heading-rule" aria-hidden="true" />
+          <p>
+            Quality is not just a process &mdash; it&apos;s our promise. Every
+            product carries our commitment to excellence.
+          </p>
         </div>
       </section>
 
-      <section className="internal-section">
-        <div className="light-shell internal-split">
-          <div>
-            <div className="light-kicker">Quality Standards</div>
-            <h2 className="internal-title">
-              Designed for premium presentation and everyday durability
+      <section className="quality-promise">
+        <div className="quality-shell quality-promise__layout">
+          <div className="quality-promise__copy">
+            <div className="quality-kicker">Quality Promise</div>
+            <h2>
+              Uncompromising <span>Quality Standards</span>
             </h2>
-            <p className="internal-copy">
-              Our ceramic collections are finished for visual appeal, reliable
-              use, and buyer-ready presentation. Each stage is reviewed to keep
-              form, glaze, balance, and packing clear and consistent.
+            <div className="quality-heading-rule" aria-hidden="true" />
+            <p>
+              At Hira Industries, quality is the foundation of everything we do.
+              From raw material selection to final packaging, every stage of our
+              production process is governed by strict quality control measures.
             </p>
-            <ul className="internal-checks">
-              <li>Materials selected for stable production and clean firing.</li>
-              <li>Surface, edge, and glaze checks before final packing.</li>
-              <li>Practical durability for home and hospitality service.</li>
-              <li>Layered packaging prepared for trade handling and dispatch.</li>
-            </ul>
+            <p>
+              Our multi-point quality inspection system ensures that only perfect
+              products reach our customers. We believe that every piece of
+              crockery carrying our name should be worthy of premium tables.
+            </p>
+            <p>
+              Whether you&apos;re buying for your home, hotel, restaurant, or retail
+              store &mdash; you can trust that Hira Industries products meet strong
+              standards of quality, safety, and durability.
+            </p>
           </div>
 
-          <div className="internal-image">
-            <Image
-              src="/images/build-pic-2.png"
-              alt="White ceramic serveware with refined gold detailing"
-              fill
-              loading="eager"
-              sizes="(max-width: 900px) 100vw, 48vw"
-            />
+          <div className="quality-promise__media">
+            <div className="quality-promise__image">
+              <Image
+                src="/images/Quality Checking.png"
+                alt="Quality checking process at Hira Industries"
+                fill
+                sizes="(max-width: 900px) 100vw, 52vw"
+              />
+            </div>
+            <div className="quality-certified">
+              <span className="quality-certified__icon" aria-hidden="true">
+                <FiAward />
+              </span>
+              <strong>Quality Certified</strong>
+              <span>Multi-Point Inspection</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="internal-section internal-section--cream">
-        <div className="light-shell">
-          <div className="light-heading">
-            <div className="light-kicker">Core Checks</div>
-            <h2 className="light-title">Four commitments behind every order</h2>
-            <div className="light-rule" aria-hidden="true" />
+      <section className="quality-standards">
+        <div className="quality-shell">
+          <div className="quality-section-heading">
+            <div className="quality-kicker">Quality Pillars</div>
+            <h2>Our Quality Standards</h2>
+            <div className="quality-heading-rule" aria-hidden="true" />
+            <p>Six pillars of quality that define every Hira Industries product.</p>
           </div>
 
-          <div className="promise-grid">
-            {qualityPromises.map((item) => {
-              const Icon = iconMap[item.icon];
+          <div className="quality-standards__grid">
+            {qualityStandards.map((standard) => {
+              const Icon = standard.icon;
 
               return (
-                <article key={item.title} className="promise-card">
-                  <span className="promise-card__icon" aria-hidden="true">
+                <article key={standard.title} className="quality-standard-card">
+                  <span className="quality-standard-card__icon" aria-hidden="true">
                     <Icon />
                   </span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
+                  <h3>{standard.title}</h3>
+                  <p>{standard.description}</p>
                 </article>
               );
             })}
@@ -99,38 +163,56 @@ export default function QualityPage() {
         </div>
       </section>
 
-      <section className="internal-section">
-        <div className="light-shell">
-          <div className="light-heading">
-            <div className="light-kicker">Controlled Process</div>
-            <h2 className="light-title">From material to safe dispatch</h2>
-            <div className="light-rule" aria-hidden="true" />
+      <section className="quality-bulk">
+        <div className="quality-shell quality-bulk__content">
+          <span className="quality-bulk__icon" aria-hidden="true">
+            <FiTruck />
+          </span>
+          <h2>
+            Bulk Order <span>Quality Support</span>
+          </h2>
+          <p>
+            We understand that bulk orders require consistent quality across every
+            piece. Our quality process is designed to maintain uniform finishing,
+            reliable packing, and buyer-ready presentation across large orders.
+          </p>
+          <p>
+            For bulk orders, we provide careful inspection, practical packaging
+            checks, and clear dispatch preparation so buyers receive products ready
+            for retail, hospitality, gifting, or trade use.
+          </p>
+
+          <div className="quality-bulk__stats">
+            {qualityStats.map((stat) => (
+              <article key={stat.label} className="quality-stat-card">
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </article>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="internal-process-grid">
-            {manufacturingSteps.map((item) => {
-              const Icon = iconMap[item.icon];
-
-              return (
-                <article key={item.step} className="internal-process-card">
-                  <span aria-hidden="true">
-                    <Icon />
-                  </span>
-                  <small>{item.step}</small>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </article>
-              );
-            })}
-          </div>
-
-          <div className="home-section__action">
+      <section className="quality-cta">
+        <div className="quality-shell quality-cta__content">
+          <span className="quality-cta__icon" aria-hidden="true">
+            <FiCheckCircle />
+          </span>
+          <h2>Experience Our Quality First-Hand</h2>
+          <p>
+            Request a product catalogue or order samples to experience the Hira
+            Industries quality difference.
+          </p>
+          <div className="quality-cta__actions">
             <Link
-              href="/contact?intent=quality-details"
-              className="light-button light-button--gold"
+              href="/contact?request=product-catalogue"
+              className="quality-button quality-button--gold"
             >
-              Request Quality Details
+              Request Catalogue
               <FiArrowRight aria-hidden="true" />
+            </Link>
+            <Link href="/contact" className="quality-button quality-button--outline">
+              Contact Us
             </Link>
           </div>
         </div>

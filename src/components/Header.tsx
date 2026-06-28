@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -49,11 +50,19 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link href="/" className="brand-mark" aria-label="Hira Industries home">
-          <span className="brand-mark__icon">H</span>
-          <span className="brand-mark__text">
-            <span className="brand-mark__title">Hira Industries</span>
-            <span className="brand-mark__sub">Premium Ceramics</span>
+        <Link href="/" className="site-brand">
+          <Image
+            src="/images/Hira-Logo.png"
+            alt="Hira Industries Logo"
+            width={70}
+            height={70}
+            sizes="(max-width: 768px) 52px, 70px"
+            loading="eager"
+            className="site-brand__logo"
+          />
+          <span className="site-brand__text">
+            <span className="site-brand__name">Hira Industries</span>
+            <span className="site-brand__tagline">PREMIUM CERAMICS</span>
           </span>
         </Link>
 
@@ -132,10 +141,24 @@ export default function Header() {
           onClick={(event) => event.stopPropagation()}
         >
           <div className="mobile-menu__top">
-            <span className="brand-mark__text">
-              <span className="brand-mark__title">Hira Industries</span>
-              <span className="brand-mark__sub">Premium Ceramics</span>
-            </span>
+            <Link
+              href="/"
+              className="site-brand"
+              onClick={closeMenu}
+            >
+              <Image
+                src="/images/Hira-Logo.png"
+                alt="Hira Industries Logo"
+                width={70}
+                height={70}
+                sizes="52px"
+                className="site-brand__logo"
+              />
+              <span className="site-brand__text">
+                <span className="site-brand__name">Hira Industries</span>
+                <span className="site-brand__tagline">PREMIUM CERAMICS</span>
+              </span>
+            </Link>
             <button
               type="button"
               className="site-menu-button"
