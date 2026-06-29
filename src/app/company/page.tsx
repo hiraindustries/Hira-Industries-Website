@@ -8,6 +8,7 @@ import {
   FiHome,
   FiLayers,
   FiShoppingBag,
+  FiStar,
   FiTruck,
   FiUsers,
 } from "react-icons/fi";
@@ -67,6 +68,27 @@ const customerCards = [
     title: "Wholesalers",
     description: "Bulk supply with competitive pricing for wholesale distribution.",
     icon: FiTruck,
+  },
+];
+
+const owners = [
+  {
+    name: "Shanu Beg Sahab",
+    role: "Owner, Hira Industries",
+    description:
+      "Contributes strategic direction and business leadership, helping strengthen the brand’s market presence and long-term growth.",
+  },
+  {
+    name: "Salman Beg Sahab",
+    role: "Owner, Hira Industries",
+    description:
+      "Focused on product quality, finishing standards, and maintaining strong relationships with buyers and trade partners.",
+  },
+  {
+    name: "Arbaz Beg Sahab",
+    role: "Owner, Hira Industries",
+    description:
+      "Supports operations, execution, and customer commitment, ensuring dependable service and smooth coordination across the business.",
   },
 ];
 
@@ -194,35 +216,33 @@ export default function CompanyPage() {
         </div>
       </section>
 
-      <section className="internal-section internal-section--dark owner-section-wrap">
-        <div className="light-shell internal-split internal-image--portrait owner-section">
-          <div className="internal-image owner-image">
-            <Image
-              src="/images/salman-beg-image.jpg"
-              alt="Owner Salman Beg of Hira Industries"
-              fill
-              loading="eager"
-              sizes="(max-width: 900px) 100vw, 48vw"
-            />
-          </div>
-          <div>
-            <div className="light-kicker">OWNER’S MESSAGE</div>
-            <h2 className="internal-title">Salman Beg</h2>
-            <p className="owner-role">Owner, Hira Industries</p>
-            <blockquote className="owner-quote">
-              “Quality is not only about appearance — it is about consistency,
-              trust, and the experience a buyer receives with every order.”
-            </blockquote>
-            <p className="internal-copy">
-              Salman Beg, owner of Hira Industries, leads the brand with a focus
-              on product quality, reliable finishing, customer trust, and
-              long-term buyer relationships.
+      <section className="owners-section" aria-labelledby="owners-heading">
+        <div className="light-shell owners-section__inner">
+          <header className="owners-section__header">
+            <p className="owners-section__label">OWNER&apos;S MESSAGE</p>
+            <h2 id="owners-heading" className="owners-section__title">
+              Meet the Owners Behind Hira Industries
+            </h2>
+            <p className="owners-section__intro">
+              Hira Industries is led by a dedicated ownership team committed to
+              quality, trust, and long-term customer relationships — ensuring
+              every collection reflects the brand’s standards of craftsmanship,
+              reliability, and premium finish.
             </p>
-            <p className="internal-copy">
-              His approach is to keep every collection polished, dependable, and
-              ready for homes, hospitality spaces, gifting needs, and trade
-              buyers.
-            </p>
+          </header>
+
+          <div className="owners-grid">
+            {owners.map((owner) => (
+              <article key={owner.name} className="owner-card">
+                <span className="owner-card__icon" aria-hidden="true">
+                  <FiStar />
+                </span>
+                <h3 className="owner-card__name">{owner.name}</h3>
+                <p className="owner-card__role">{owner.role}</p>
+                <span className="owner-card__divider" aria-hidden="true" />
+                <p className="owner-card__description">{owner.description}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
