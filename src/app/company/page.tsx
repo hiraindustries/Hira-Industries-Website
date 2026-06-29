@@ -5,8 +5,10 @@ import {
   FiBriefcase,
   FiCoffee,
   FiGlobe,
+  FiHeart,
   FiHome,
   FiLayers,
+  FiShield,
   FiShoppingBag,
   FiStar,
   FiTruck,
@@ -40,6 +42,16 @@ const missionVisionCards = [
     title: "Our Vision",
     text: "To make Hira Industries a trusted ceramic crockery brand known for polished collections, consistent finishing, buyer-ready packaging, and reliable customer support.",
     icon: FiGlobe,
+  },
+  {
+    title: "Our Values",
+    text: "Honesty, craftsmanship, and long-term partnership define everything we do. Every decision reflects our commitment to consistent quality and building lasting trust with every buyer we serve.",
+    icon: FiHeart,
+  },
+  {
+    title: "Our Promise",
+    text: "Every order that leaves our facility meets our finishing standards — packed securely, dispatched on time, and backed by responsive after-sales support to keep your business running smoothly.",
+    icon: FiShield,
   },
 ];
 
@@ -164,8 +176,8 @@ export default function CompanyPage() {
             </div>
             <div className="about-collage__item about-collage__item--tall">
               <Image
-                src="/images/set.jpeg"
-                alt="Ceramic dinnerware set"
+                src="/images/PM.png"
+                alt="Industry representative greeting the Prime Minister of India"
                 fill
                 loading="eager"
                 sizes="(max-width: 900px) 100vw, 48vw"

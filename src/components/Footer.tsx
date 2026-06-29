@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   FiMail,
@@ -13,11 +14,19 @@ export default function Footer() {
       <div className="light-shell">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link href="/" className="brand-mark" aria-label="Hira Industries home">
-              <span className="brand-mark__icon">H</span>
-              <span className="brand-mark__text">
-                <span className="brand-mark__title">Hira Industries</span>
-                <span className="brand-mark__sub">Premium Ceramics</span>
+            <Link href="/" className="site-brand" aria-label="Hira Industries home">
+              <Image
+                src="/images/Hira-Logo.png"
+                alt="Hira Industries Logo"
+                width={70}
+                height={70}
+                sizes="(max-width: 768px) 52px, 70px"
+                loading="eager"
+                className="site-brand__logo"
+              />
+              <span className="site-brand__text">
+                <span className="site-brand__name">Hira Industries</span>
+                <span className="site-brand__tagline">PREMIUM CERAMICS</span>
               </span>
             </Link>
             <p>
@@ -74,7 +83,18 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>Copyright 2026 Hira Industries. All rights reserved.</span>
+          <span>
+            Copyright 2026 Hira Industries. All rights reserved. Designed &amp;
+            Developed by{" "}
+            <a
+              href="https://www.vidhyatech.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-credit-link"
+            >
+              Vidhya Tech
+            </a>
+          </span>
           <span>Premium ceramic crockery manufacturer and supplier.</span>
         </div>
       </div>

@@ -2320,6 +2320,15 @@ textarea:focus-visible {
   border-color: rgba(245, 239, 227, 0.06);
 }
 
+.footer-credit-link {
+  color: inherit;
+  transition: color 180ms ease;
+}
+
+.footer-credit-link:hover {
+  color: var(--light-gold-strong);
+}
+
 .floating-whatsapp {
   position: fixed;
   right: 1.5rem;
