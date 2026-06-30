@@ -162,7 +162,11 @@ export default function HomeSections() {
                   <p>{product.description}</p>
                   <div className="home-product-card__actions">
                     <Link
-                      href={`/products?category=${product.category}#${product.slug}`}
+                      href={`/products?category=${product.category}${
+                        product.subcategory
+                          ? `&subcategory=${product.subcategory}`
+                          : ""
+                      }#${product.slug}`}
                       className="light-button light-button--outline"
                     >
                       View Details

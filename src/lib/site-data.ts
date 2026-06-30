@@ -14,6 +14,7 @@ export type ProductItem = {
   name: string;
   code: string;
   category: string;
+  subcategory?: string;
   categoryLabel: string;
   description: string;
   image: string;
@@ -22,12 +23,6 @@ export type ProductItem = {
   material: string;
   moq: string;
   isNew: boolean;
-};
-
-export type ProductCategoryTab = {
-  label: string;
-  category: string;
-  href: string;
 };
 
 export type DownloadItem = {
@@ -66,23 +61,29 @@ export const navLinks: NavLink[] = [
     href: "/products",
     label: "Products",
     children: [
-      { label: "Dinner Sets", href: "/products?category=dinner-sets" },
+      {
+        label: "Dinner Sets",
+        href: "/products?category=dinnerware&subcategory=dinner-sets",
+      },
       {
         label: "Tea & Coffee Sets",
-        href: "/products?category=tea-coffee-sets",
+        href: "/products?category=drinkware",
       },
-      { label: "Mugs & Cups", href: "/products?category=mugs-cups" },
+      {
+        label: "Mugs & Cups",
+        href: "/products?category=drinkware&subcategory=coffee-mugs",
+      },
       {
         label: "Plates & Bowls",
-        href: "/products?category=plates-bowls",
+        href: "/products?category=dinnerware",
       },
       {
         label: "Hotel / HoReCa Collection",
-        href: "/products?category=horeca",
+        href: "/products?category=dinnerware",
       },
       {
         label: "Export Range",
-        href: "/products?category=export-range",
+        href: "/products?category=shop-by-material",
       },
     ],
   },
@@ -98,46 +99,13 @@ export const heroStats: StatItem[] = [
   { value: "Checks", label: "Consistent finishing" },
 ];
 
-export const productCategoryTabs: ProductCategoryTab[] = [
-  { label: "All Products", category: "all", href: "/products" },
-  {
-    label: "Dinner Sets",
-    category: "dinner-sets",
-    href: "/products?category=dinner-sets",
-  },
-  {
-    label: "Tea & Coffee Sets",
-    category: "tea-coffee-sets",
-    href: "/products?category=tea-coffee-sets",
-  },
-  {
-    label: "Mugs & Cups",
-    category: "mugs-cups",
-    href: "/products?category=mugs-cups",
-  },
-  {
-    label: "Plates & Bowls",
-    category: "plates-bowls",
-    href: "/products?category=plates-bowls",
-  },
-  {
-    label: "Hotel / HoReCa",
-    category: "horeca",
-    href: "/products?category=horeca",
-  },
-  {
-    label: "Export Range",
-    category: "export-range",
-    href: "/products?category=export-range",
-  },
-];
-
 export const featuredProducts: ProductItem[] = [
   {
     slug: "royal-elegance-dinner-set",
     name: "Royal Elegance Dinner Set",
     code: "HI-DS-001",
-    category: "dinner-sets",
+    category: "dinnerware",
+    subcategory: "dinner-sets",
     categoryLabel: "Dinner Sets",
     description:
       "A refined white and gold dinner collection designed for premium homes, hospitality, and gifting.",
@@ -151,7 +119,8 @@ export const featuredProducts: ProductItem[] = [
     slug: "floral-charm-dinner-set",
     name: "Floral Charm Dinner Set",
     code: "HI-DS-002",
-    category: "dinner-sets",
+    category: "dinnerware",
+    subcategory: "dinner-sets",
     categoryLabel: "Dinner Sets",
     description:
       "Sculpted floral detailing and polished gold accents create a memorable table presentation.",
@@ -165,7 +134,7 @@ export const featuredProducts: ProductItem[] = [
     slug: "heritage-tea-set",
     name: "Heritage Tea Set",
     code: "HI-TC-001",
-    category: "tea-coffee-sets",
+    category: "drinkware",
     categoryLabel: "Tea & Coffee Sets",
     description:
       "A timeless tea service with warm gold lines, balanced forms, and an elegant everyday finish.",
@@ -179,7 +148,8 @@ export const featuredProducts: ProductItem[] = [
     slug: "artisan-ceramic-mug",
     name: "Artisan Ceramic Mug",
     code: "HI-MC-001",
-    category: "mugs-cups",
+    category: "drinkware",
+    subcategory: "coffee-mugs",
     categoryLabel: "Mugs & Cups",
     description:
       "A comfortable ceramic cup with a smooth finish, ideal for everyday service and premium gifting.",
@@ -193,7 +163,8 @@ export const featuredProducts: ProductItem[] = [
     slug: "classic-dinner-plate-set",
     name: "Classic Dinner Plate Set",
     code: "HI-PB-001",
-    category: "plates-bowls",
+    category: "dinnerware",
+    subcategory: "dinner-plates",
     categoryLabel: "Plates & Bowls",
     description:
       "Coordinated plates and bowls with durable glazing and a clean, buyer-ready presentation.",
@@ -207,7 +178,7 @@ export const featuredProducts: ProductItem[] = [
     slug: "horeca-professional-range",
     name: "HoReCa Professional Range",
     code: "HI-HR-001",
-    category: "horeca",
+    category: "dinnerware",
     categoryLabel: "Hotel / HoReCa Collection",
     description:
       "A practical tableware range planned for hotels, restaurants, banquets, and repeat service.",
@@ -231,37 +202,37 @@ export const homeCategories = [
     title: "Dinner Sets",
     description: "Complete dining collections for memorable service.",
     image: "/images/build-pic-1.png",
-    href: "/products?category=dinner-sets",
+    href: "/products?category=dinnerware&subcategory=dinner-sets",
   },
   {
     title: "Tea & Coffee Sets",
     description: "Elegant service sets for homes, cafes, and gifting.",
     image: "/tea.png",
-    href: "/products?category=tea-coffee-sets",
+    href: "/products?category=drinkware",
   },
   {
     title: "Mugs & Cups",
     description: "Premium forms for daily use and custom collections.",
     image: "/blacktea.png",
-    href: "/products?category=mugs-cups",
+    href: "/products?category=drinkware&subcategory=coffee-mugs",
   },
   {
     title: "Plates & Bowls",
     description: "Coordinated shapes with polished, durable glazing.",
     image: "/images/build-pic-2.png",
-    href: "/products?category=plates-bowls",
+    href: "/products?category=dinnerware",
   },
   {
     title: "Hotel / HoReCa Collection",
     description: "Dependable tableware planned for professional service.",
     image: "/images/set.jpeg",
-    href: "/products?category=horeca",
+    href: "/products?category=dinnerware",
   },
   {
     title: "Export Range",
     description: "Buyer-ready collections for international sourcing.",
     image: "/images/build-pic-1.png",
-    href: "/products?category=export-range",
+    href: "/products?category=shop-by-material",
   },
 ];
 
@@ -400,12 +371,30 @@ export const footerGroups = [
   {
     title: "Products",
     links: [
-      { label: "Dinner Sets", href: "/products?category=dinner-sets" },
-      { label: "Tea & Coffee Sets", href: "/products?category=tea-coffee-sets" },
-      { label: "Mugs & Cups", href: "/products?category=mugs-cups" },
-      { label: "Plates & Bowls", href: "/products?category=plates-bowls" },
-      { label: "Hotel / HoReCa Collection", href: "/products?category=horeca" },
-      { label: "Export Range", href: "/products?category=export-range" },
+      {
+        label: "Dinner Sets",
+        href: "/products?category=dinnerware&subcategory=dinner-sets",
+      },
+      {
+        label: "Tea & Coffee Sets",
+        href: "/products?category=drinkware",
+      },
+      {
+        label: "Mugs & Cups",
+        href: "/products?category=drinkware&subcategory=coffee-mugs",
+      },
+      {
+        label: "Plates & Bowls",
+        href: "/products?category=dinnerware",
+      },
+      {
+        label: "Hotel / HoReCa Collection",
+        href: "/products?category=dinnerware",
+      },
+      {
+        label: "Export Range",
+        href: "/products?category=shop-by-material",
+      },
     ],
   },
   {

@@ -20,6 +20,28 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Supabase product catalogue
+
+The Products page reads active categories and products from Supabase. Copy the
+example environment file and add the URL and publishable key from the Supabase
+project settings:
+
+```bash
+cp .env.example .env.local
+```
+
+Apply the versioned schema and category seed to a linked Supabase project:
+
+```bash
+supabase login
+supabase link --project-ref YOUR_PROJECT_REF
+supabase db push --include-seed
+```
+
+The migration enables Row Level Security and grants public users read access to
+active categories and products only. Product writes should be performed by a
+trusted admin backend using the service role, never from the public browser.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
