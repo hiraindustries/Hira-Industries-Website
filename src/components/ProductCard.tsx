@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowUpRight, FiImage } from "react-icons/fi";
-import { getProductGallery, getStringList } from "@/lib/product-media";
+import { getProductGallery } from "@/lib/product-media";
 import type { CatalogueProduct } from "@/lib/supabase/database.types";
 
 export default function ProductCard({
@@ -17,7 +17,7 @@ export default function ProductCard({
 }) {
   const gallery = getProductGallery(product);
   const coverImage = gallery[0];
-  const features = getStringList(product.key_features);
+  const features = product.features;
   const visibleFeatures = features.slice(0, 2);
   const remainingFeatures = Math.max(features.length - visibleFeatures.length, 0);
   const isRemoteImage = /^https?:\/\//.test(coverImage.url);

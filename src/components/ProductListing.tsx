@@ -225,13 +225,14 @@ export default function ProductListing({
           >
             {filteredProducts.map((product, index) => {
               const subcategory =
-                categories.find((item) => item.id === product.category_id) ??
+                categories.find(
+                  (item) => item.id === product.subcategory_id,
+                ) ??
                 null;
               const mainCategory =
                 mainCategories.find(
-                  (item) => item.id === subcategory?.parent_id,
+                  (item) => item.id === product.category_id,
                 ) ??
-                mainCategories.find((item) => item.id === subcategory?.id) ??
                 null;
 
               return (

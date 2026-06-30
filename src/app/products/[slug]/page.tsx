@@ -97,7 +97,7 @@ export default async function ProductDetailPage({
   const { product, category, mainCategory, relatedProducts, categories } =
     detail;
   const colors = getStringList(product.available_colors);
-  const features = getStringList(product.key_features);
+  const features = product.features;
   const productImages = getProductGallery(product);
   const schema = {
     "@context": "https://schema.org",
@@ -291,7 +291,7 @@ export default async function ProductDetailPage({
               {relatedProducts.map((relatedProduct) => {
                 const relatedCategory =
                   categories.find(
-                    (item) => item.id === relatedProduct.category_id,
+                    (item) => item.id === relatedProduct.subcategory_id,
                   ) ?? null;
                 const relatedImage =
                   relatedProduct.image_url ?? "/images/build-pic-1.png";

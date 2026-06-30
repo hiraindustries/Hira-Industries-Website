@@ -4,6 +4,7 @@ import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type {
   CatalogueProduct,
+  ProductImage,
   ProductCategory,
 } from "@/lib/supabase/database.types";
 
@@ -41,10 +42,49 @@ const unavailableMessage =
   "We could not load the product catalogue right now. Please contact us for the latest catalogue.";
 
 const productSelect =
-  "id, name, slug, category_id, short_description, description, product_code, material, set_contents, available_colors, key_features, image_url, gallery_images, is_featured, is_active, sort_order, created_at";
+  "id, name, slug, category_id, subcategory_id, short_description, description, product_code, material, set_contents, pieces, available_colors, features, tags, image_url, gallery_images, is_featured, is_active, sort_order, created_at, updated_at";
 
 const categorySelect =
-  "id, name, slug, parent_id, description, image_url, sort_order, is_active, created_at";
+  "id, name, slug, parent_id, description, image_url, icon, sort_order, is_active, created_at, updated_at";
+
+const productImageSelect =
+  "id, product_id, image_url, alt_text, is_primary, sort_order, created_at";
+
+function attachProductImages(
+  products: CatalogueProduct[],
+  images: ProductImage[],
+) {
+  const imagesByProductId = new Map<string, ProductImage[]>();
+
+  images.forEach((image) => {
+    const current = imagesByProductId.get(image.product_id) ?? [];
+    current.push(image);
+    imagesByProductId.set(image.product_id, current);
+  });
+
+  return products.map((product) => {
+    const productImages = (imagesByProductId.get(product.id) ?? []).sort(
+      (left, right) =>
+        Number(right.is_primary) - Number(left.is_primary) ||
+        left.sort_order - right.sort_order,
+    );
+    const primaryImage =
+      productImages.find((image) => image.is_primary) ?? productImages[0];
+    const galleryImages = productImages
+      .filter((image) => image.id !== primaryImage?.id)
+      .map((image) => ({
+        url: image.image_url,
+        alt: image.alt_text ?? `${product.name} alternate view`,
+      }));
+
+    return {
+      ...product,
+      image_url: primaryImage?.image_url ?? product.image_url,
+      gallery_images:
+        productImages.length > 0 ? galleryImages : product.gallery_images,
+    };
+  });
+}
 
 function logDevelopmentError(context: string, error: unknown) {
   if (process.env.NODE_ENV === "development") {
@@ -251,23 +291,32 @@ export async function getCatalogueData(
       .eq("is_active", true);
 
     if (selectedSubcategory) {
-      productQuery = productQuery.eq("category_id", selectedSubcategory.id);
+      productQuery = productQuery.eq(
+        "subcategory_id",
+        selectedSubcategory.id,
+      );
     } else if (selectedCategory) {
-      const categoryIds = [
-        selectedCategory.id,
-        ...subcategories.map((subcategory) => subcategory.id),
-      ];
-      productQuery = productQuery.in("category_id", categoryIds);
+      productQuery = productQuery.eq("category_id", selectedCategory.id);
     }
 
-    const { data: products, error: productError } = await productQuery
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true });
+    const [
+      { data: products, error: productError },
+      { data: productImages, error: productImageError },
+    ] = await Promise.all([
+      productQuery
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true }),
+      supabase
+        .from("product_images")
+        .select(productImageSelect)
+        .order("is_primary", { ascending: false })
+        .order("sort_order", { ascending: true }),
+    ]);
 
-    if (productError) {
+    if (productError || productImageError) {
       logDevelopmentError(
         "Failed to load active catalogue products:",
-        productError,
+        { productError, productImageError },
       );
       return {
         status: "product-error",
@@ -281,7 +330,10 @@ export async function getCatalogueData(
       };
     }
 
-    activeProducts = products ?? [];
+    activeProducts = attachProductImages(
+      products ?? [],
+      productImages ?? [],
+    );
   } catch (error) {
     logDevelopmentError(
       "Unexpected error while loading active catalogue products:",
@@ -332,6 +384,7 @@ export const getProductDetailData = cache(
         { data: product, error: productError },
         { data: categories, error: categoryError },
         { data: products, error: relatedError },
+        { data: productImages, error: productImageError },
       ] = await Promise.all([
         supabase
           .from("products")
@@ -351,13 +404,24 @@ export const getProductDetailData = cache(
           .eq("is_active", true)
           .order("sort_order", { ascending: true })
           .order("name", { ascending: true }),
+        supabase
+          .from("product_images")
+          .select(productImageSelect)
+          .order("is_primary", { ascending: false })
+          .order("sort_order", { ascending: true }),
       ]);
 
-      if (productError || categoryError || relatedError) {
+      if (
+        productError ||
+        categoryError ||
+        relatedError ||
+        productImageError
+      ) {
         logDevelopmentError("Failed to load product detail:", {
           productError,
           categoryError,
           relatedError,
+          productImageError,
         });
 
         return {
@@ -385,32 +449,34 @@ export const getProductDetailData = cache(
 
       const activeCategories = categories ?? [];
       const { mainCategories } = deriveCategoryHierarchy(activeCategories);
+      const hydratedProducts = attachProductImages(
+        products ?? [],
+        productImages ?? [],
+      );
+      const hydratedProduct =
+        attachProductImages([product], productImages ?? [])[0] ?? product;
       const category =
-        activeCategories.find((item) => item.id === product.category_id) ??
-        null;
+        activeCategories.find(
+          (item) => item.id === hydratedProduct.subcategory_id,
+        ) ?? null;
       const mainCategory =
-        mainCategories.find((item) => item.id === category?.parent_id) ??
-        mainCategories.find((item) => item.id === category?.id) ??
+        mainCategories.find(
+          (item) => item.id === hydratedProduct.category_id,
+        ) ??
         null;
-      const relatedCategoryIds = new Set([
-        ...(mainCategory ? [mainCategory.id] : []),
-        ...activeCategories
-          .filter((item) => item.parent_id === mainCategory?.id)
-          .map((item) => item.id),
-      ]);
-      const otherProducts = (products ?? []).filter(
-        (item) => item.id !== product.id,
+      const otherProducts = hydratedProducts.filter(
+        (item) => item.id !== hydratedProduct.id,
       );
       const sameCollectionProducts = otherProducts.filter((item) =>
-        relatedCategoryIds.has(item.category_id),
+        item.category_id === mainCategory?.id,
       );
       const fallbackProducts = otherProducts.filter(
-        (item) => !relatedCategoryIds.has(item.category_id),
+        (item) => item.category_id !== mainCategory?.id,
       );
 
       return {
         status: "ok",
-        product,
+        product: hydratedProduct,
         category,
         mainCategory,
         relatedProducts: [

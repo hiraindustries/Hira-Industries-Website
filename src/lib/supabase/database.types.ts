@@ -17,9 +17,11 @@ export type Database = {
           parent_id: string | null;
           description: string | null;
           image_url: string | null;
+          icon: string | null;
           sort_order: number;
           is_active: boolean;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -28,9 +30,11 @@ export type Database = {
           parent_id?: string | null;
           description?: string | null;
           image_url?: string | null;
+          icon?: string | null;
           sort_order?: number;
           is_active?: boolean;
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
@@ -39,9 +43,11 @@ export type Database = {
           parent_id?: string | null;
           description?: string | null;
           image_url?: string | null;
+          icon?: string | null;
           sort_order?: number;
           is_active?: boolean;
           created_at?: string;
+          updated_at?: string;
         };
         Relationships: [
           {
@@ -59,57 +65,69 @@ export type Database = {
           name: string;
           slug: string;
           category_id: string;
+          subcategory_id: string | null;
           short_description: string;
           description: string;
           product_code: string | null;
           material: string | null;
           set_contents: string | null;
-          available_colors: Json | null;
-          key_features: Json | null;
+          pieces: number | null;
+          available_colors: string[];
+          features: string[];
+          tags: string[];
           image_url: string | null;
           gallery_images: Json | null;
           is_featured: boolean;
           is_active: boolean;
           sort_order: number;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
           name: string;
           slug: string;
           category_id: string;
+          subcategory_id?: string | null;
           short_description: string;
           description: string;
           product_code?: string | null;
           material?: string | null;
           set_contents?: string | null;
-          available_colors?: Json | null;
-          key_features?: Json | null;
+          pieces?: number | null;
+          available_colors?: string[];
+          features?: string[];
+          tags?: string[];
           image_url?: string | null;
           gallery_images?: Json | null;
           is_featured?: boolean;
           is_active?: boolean;
           sort_order?: number;
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
           slug?: string;
           category_id?: string;
+          subcategory_id?: string | null;
           short_description?: string;
           description?: string;
           product_code?: string | null;
           material?: string | null;
           set_contents?: string | null;
-          available_colors?: Json | null;
-          key_features?: Json | null;
+          pieces?: number | null;
+          available_colors?: string[];
+          features?: string[];
+          tags?: string[];
           image_url?: string | null;
           gallery_images?: Json | null;
           is_featured?: boolean;
           is_active?: boolean;
           sort_order?: number;
           created_at?: string;
+          updated_at?: string;
         };
         Relationships: [
           {
@@ -117,6 +135,89 @@ export type Database = {
             columns: ["category_id"];
             isOneToOne: false;
             referencedRelation: "product_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_subcategory_id_fkey";
+            columns: ["subcategory_id"];
+            isOneToOne: false;
+            referencedRelation: "product_categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      product_images: {
+        Row: {
+          id: string;
+          product_id: string;
+          image_url: string;
+          alt_text: string | null;
+          is_primary: boolean;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          product_id: string;
+          image_url: string;
+          alt_text?: string | null;
+          is_primary?: boolean;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          product_id?: string;
+          image_url?: string;
+          alt_text?: string | null;
+          is_primary?: boolean;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      product_enquiries: {
+        Row: {
+          id: string;
+          product_id: string | null;
+          name: string | null;
+          phone: string | null;
+          message: string | null;
+          source: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          product_id?: string | null;
+          name?: string | null;
+          phone?: string | null;
+          message?: string | null;
+          source?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          product_id?: string | null;
+          name?: string | null;
+          phone?: string | null;
+          message?: string | null;
+          source?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "product_enquiries_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
             referencedColumns: ["id"];
           },
         ];
@@ -134,3 +235,6 @@ export type ProductCategory =
 
 export type CatalogueProduct =
   Database["public"]["Tables"]["products"]["Row"];
+
+export type ProductImage =
+  Database["public"]["Tables"]["product_images"]["Row"];

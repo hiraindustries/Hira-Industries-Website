@@ -475,7 +475,7 @@ where slug in (
   'white-gold-bathroom-set-lifestyle-image',
   'pink-rose-mug-set-display',
   'green-gold-dry-fruit-bowl-lifestyle-image',
-  'white-gold-rim-soup-bowl-lifestyle-image',
+  'white-gold-rim-soup-bowl-plate',
   'white-gold-pattern-soup-plate-lifestyle-image',
   'blue-storage-bowl-lifestyle-image',
   'brown-mosaic-bowl-lifestyle-image',
@@ -487,7 +487,8 @@ where slug in (
 with product_seed (
   name,
   slug,
-  category_slug,
+  main_category_slug,
+  subcategory_slug,
   short_description,
   description,
   product_code,
@@ -504,6 +505,7 @@ with product_seed (
     (
       'White & Gold Soap Dispenser Set with Sponge Holder',
       'white-gold-soap-dispenser-set-with-sponge-holder',
+      'gift-sets',
       'crockery-gift-sets',
       'A coordinated white ceramic dispenser set finished with elegant gold detailing and a practical sponge holder.',
       'This premium ceramic utility set brings refined organisation to modern homes, hotels, and gifting collections. Its polished finish and gold accents create a clean luxury presentation.',
@@ -531,6 +533,7 @@ with product_seed (
     (
       'White & Gold Bathroom Tray Set',
       'white-gold-bathroom-tray-set',
+      'gift-sets',
       'crockery-gift-sets',
       'A premium ceramic organiser collection arranged on a coordinated white and gold tray.',
       'Designed to keep essentials neatly presented, this set balances practical utility with an elegant ceramic finish. It is suitable for modern homes, hotels, guest spaces, and sophisticated gifting.',
@@ -558,6 +561,7 @@ with product_seed (
     (
       'Pink Rose Mug Gift Set with Box',
       'pink-rose-mug-gift-set-with-box',
+      'gift-sets',
       'mug-gift-sets',
       'A boxed ceramic mug gift set decorated with delicate pink rose artwork.',
       'Prepared for wedding gifting and festive presentation, this set combines a premium ceramic finish with an elegant floral design. The coordinated box makes it suitable for celebrations, return gifting, and curated hampers.',
@@ -585,6 +589,7 @@ with product_seed (
     (
       'Green & Gold Dry Fruit Serving Bowl',
       'green-gold-dry-fruit-serving-bowl',
+      'serving-sets',
       'serving-bowls-serving-sets',
       'A rich green ceramic serving bowl finished with premium gold detailing.',
       'Created for dry fruits, snacks, and festive table service, this bowl delivers an elegant centrepiece presentation. Its polished finish suits premium homes, hospitality, festive gifting, and retail collections.',
@@ -612,6 +617,7 @@ with product_seed (
     (
       'White Gold Rim Soup Bowl Plate',
       'white-gold-rim-soup-bowl-plate',
+      'bowls',
       'soup-bowls',
       'A white ceramic soup bowl plate with a clean polished gold rim.',
       'The refined profile supports soup, curry, salad, and plated service across homes and hospitality settings. Its premium glaze and gold edge create an elegant addition to coordinated dinnerware collections.',
@@ -639,6 +645,7 @@ with product_seed (
     (
       'White Gold Pattern Dinner Plate Set',
       'white-gold-pattern-dinner-plate-set',
+      'plates',
       'dinner-plates',
       'A coordinated white ceramic dinner plate set featuring an elegant gold pattern.',
       'This premium plate collection is designed for formal dining, hospitality service, and memorable gifting. The polished glaze and patterned gold detailing give each table setting a refined, cohesive finish.',
@@ -666,6 +673,7 @@ with product_seed (
     (
       'Blue Ceramic Storage Bowls with Lids',
       'blue-ceramic-storage-bowls-with-lids',
+      'bowls',
       'ceramic-bowl-sets',
       'A vibrant blue ceramic bowl set supplied with secure matching lids.',
       'Designed for practical kitchen storage and organised serving, these bowls combine utility with a premium glazed finish. The coordinated set is suitable for modern homes, gifting, and retail presentation.',
@@ -693,6 +701,7 @@ with product_seed (
     (
       'Brown Mosaic Storage Bowls with Lids',
       'brown-mosaic-storage-bowls-with-lids',
+      'bowls',
       'ceramic-bowl-sets',
       'A coordinated ceramic bowl set with rich brown mosaic detailing and clear lids.',
       'The covered bowls provide dependable kitchen utility with a distinctive premium finish. Their warm patterned design suits modern storage, serving, gifting, and decorative countertop presentation.',
@@ -724,6 +733,7 @@ with product_seed (
     (
       'White Plate with Gold Stripe Border',
       'white-plate-with-gold-stripe-border',
+      'plates',
       'dinner-plates',
       'A clean white ceramic plate finished with a precise gold stripe border.',
       'The understated design supports everyday elegance, formal dining, and professional hospitality service. Its polished ceramic surface also makes it a refined choice for gifting and coordinated dinner sets.',
@@ -753,13 +763,16 @@ insert into public.products (
   name,
   slug,
   category_id,
+  subcategory_id,
   short_description,
   description,
   product_code,
   material,
   set_contents,
+  pieces,
   available_colors,
-  key_features,
+  features,
+  tags,
   image_url,
   gallery_images,
   is_featured,
@@ -769,37 +782,140 @@ insert into public.products (
 select
   seed.name,
   seed.slug,
-  category.id,
+  main_category.id,
+  subcategory.id,
   seed.short_description,
   seed.description,
   seed.product_code,
   seed.material,
   seed.set_contents,
-  seed.available_colors,
-  seed.key_features,
+  case seed.slug
+    when 'white-gold-soap-dispenser-set-with-sponge-holder' then 2
+    when 'white-gold-bathroom-tray-set' then 5
+    when 'pink-rose-mug-gift-set-with-box' then 7
+    when 'green-gold-dry-fruit-serving-bowl' then 1
+    when 'white-gold-rim-soup-bowl-plate' then 1
+    when 'white-gold-pattern-dinner-plate-set' then 2
+    when 'blue-ceramic-storage-bowls-with-lids' then 3
+    when 'brown-mosaic-storage-bowls-with-lids' then 3
+    when 'white-plate-with-gold-stripe-border' then 1
+    else null
+  end,
+  array(
+    select jsonb_array_elements_text(seed.available_colors)
+  ),
+  array(
+    select jsonb_array_elements_text(seed.key_features)
+  ),
+  array[
+    replace(seed.main_category_slug, '-', ' '),
+    replace(seed.subcategory_slug, '-', ' ')
+  ],
   seed.image_url,
   seed.gallery_images,
   seed.is_featured,
   true,
   seed.sort_order
 from product_seed as seed
-join public.product_categories as category
-  on category.slug = seed.category_slug
+join public.product_categories as main_category
+  on main_category.slug = seed.main_category_slug
+join public.product_categories as subcategory
+  on subcategory.slug = seed.subcategory_slug
 on conflict (slug) do update
 set
   name = excluded.name,
   category_id = excluded.category_id,
+  subcategory_id = excluded.subcategory_id,
   short_description = excluded.short_description,
   description = excluded.description,
   product_code = excluded.product_code,
   material = excluded.material,
   set_contents = excluded.set_contents,
+  pieces = excluded.pieces,
   available_colors = excluded.available_colors,
-  key_features = excluded.key_features,
+  features = excluded.features,
+  tags = excluded.tags,
   image_url = excluded.image_url,
   gallery_images = excluded.gallery_images,
   is_featured = excluded.is_featured,
   is_active = excluded.is_active,
   sort_order = excluded.sort_order;
+
+delete from public.product_images
+where product_id in (
+  select id
+  from public.products
+  where slug in (
+    'white-gold-soap-dispenser-set-with-sponge-holder',
+    'white-gold-bathroom-tray-set',
+    'pink-rose-mug-gift-set-with-box',
+    'green-gold-dry-fruit-serving-bowl',
+    'white-gold-rim-soup-bowl-plate',
+    'white-gold-pattern-dinner-plate-set',
+    'blue-ceramic-storage-bowls-with-lids',
+    'brown-mosaic-storage-bowls-with-lids',
+    'white-plate-with-gold-stripe-border'
+  )
+);
+
+insert into public.product_images (
+  product_id,
+  image_url,
+  alt_text,
+  is_primary,
+  sort_order
+)
+select
+  product.id,
+  product.image_url,
+  product.name || ' by Hira Industries',
+  true,
+  0
+from public.products as product
+where product.slug in (
+  'white-gold-soap-dispenser-set-with-sponge-holder',
+  'white-gold-bathroom-tray-set',
+  'pink-rose-mug-gift-set-with-box',
+  'green-gold-dry-fruit-serving-bowl',
+  'white-gold-rim-soup-bowl-plate',
+  'white-gold-pattern-dinner-plate-set',
+  'blue-ceramic-storage-bowls-with-lids',
+  'brown-mosaic-storage-bowls-with-lids',
+  'white-plate-with-gold-stripe-border'
+)
+  and product.image_url is not null;
+
+insert into public.product_images (
+  product_id,
+  image_url,
+  alt_text,
+  is_primary,
+  sort_order
+)
+select
+  product.id,
+  gallery.image ->> 'url',
+  coalesce(
+    gallery.image ->> 'alt',
+    product.name || ' alternate view ' || gallery.position
+  ),
+  false,
+  gallery.position::integer
+from public.products as product
+cross join lateral jsonb_array_elements(
+  coalesce(product.gallery_images, '[]'::jsonb)
+) with ordinality as gallery(image, position)
+where product.slug in (
+  'white-gold-soap-dispenser-set-with-sponge-holder',
+  'white-gold-bathroom-tray-set',
+  'pink-rose-mug-gift-set-with-box',
+  'green-gold-dry-fruit-serving-bowl',
+  'white-gold-rim-soup-bowl-plate',
+  'white-gold-pattern-dinner-plate-set',
+  'blue-ceramic-storage-bowls-with-lids',
+  'brown-mosaic-storage-bowls-with-lids',
+  'white-plate-with-gold-stripe-border'
+)
+  and coalesce(gallery.image ->> 'url', '') <> '';
 
 commit;

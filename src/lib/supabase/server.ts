@@ -2,12 +2,9 @@ import "server-only";
 
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
+import { getPublicSupabaseCredentials } from "@/lib/supabase/env";
 
 let hasLoggedEnvironmentStatus = false;
-
-function getFirstNonEmptyValue(...values: Array<string | undefined>) {
-  return values.map((value) => value?.trim()).find(Boolean);
-}
 
 function hasNonEmptyValue(value: string | undefined) {
   return Boolean(value?.trim());
@@ -55,21 +52,7 @@ function logDevelopmentEnvironmentStatus() {
 
 function getSupabaseCredentials() {
   logDevelopmentEnvironmentStatus();
-
-  const url = getFirstNonEmptyValue(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_URL,
-  );
-  const publishableKey = getFirstNonEmptyValue(
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  );
-
-  if (!url || !publishableKey) {
-    return null;
-  }
-
-  return { url, publishableKey };
+  return getPublicSupabaseCredentials();
 }
 
 export function createSupabaseServerClient() {
@@ -81,7 +64,7 @@ export function createSupabaseServerClient() {
 
   return createClient<Database>(
     credentials.url,
-    credentials.publishableKey,
+    credentials.key,
     {
       auth: {
         autoRefreshToken: false,
