@@ -1,3 +1,10 @@
+begin;
+
+-- Keep legacy rows for referential integrity, but remove them from the public
+-- catalogue. The required hierarchy below is reactivated by slug.
+update public.product_categories
+set is_active = false;
+
 insert into public.product_categories (
   name,
   slug,
@@ -8,10 +15,10 @@ insert into public.product_categories (
   is_active
 )
 values (
-  'Crockery Website Product Categories',
+  'Hira Industries Product Catalogue',
   'crockery-website-product-categories',
   null,
-  'Complete Hira Industries catalogue hierarchy.',
+  'Premium ceramic crockery catalogue for homes, hospitality, retail, wholesale, and gifting buyers.',
   null,
   0,
   true
@@ -34,88 +41,60 @@ with main_category_seed (
 ) as (
   values
     (
-      'Dinnerware',
-      'dinnerware',
-      'Complete dining collections for homes, hospitality, retail, and gifting.',
-      '/images/build-pic-1.png',
+      'Dinner Sets',
+      'dinner-sets',
+      'Complete ceramic dinner collections for refined homes, hospitality service, and memorable gifting.',
+      '/images/products/white-gold-pattern-dinner-plate-set.png',
       10
     ),
     (
-      'Drinkware',
-      'drinkware',
-      'Refined cups, mugs, pots, bottles, and drink service essentials.',
+      'Tea & Coffee Sets',
+      'tea-coffee-sets',
+      'Coordinated tea and coffee service collections with premium ceramic finishes.',
       '/tea.png',
       20
     ),
     (
-      'Serveware',
-      'serveware',
-      'Presentation-ready trays, bowls, platters, casseroles, and pitchers.',
-      '/images/build-pic-2.png',
+      'Cups & Mugs',
+      'cups-mugs',
+      'Everyday and premium ceramic cups and mugs for homes, cafes, retail, and gifting.',
+      '/images/products/pink-rose-mug-set-display.png',
       30
     ),
     (
-      'Cutlery & Flatware',
-      'cutlery-flatware',
-      'Coordinated cutlery essentials for everyday and professional service.',
-      '/images/set.jpeg',
+      'Plates',
+      'plates',
+      'Dinner, quarter, snack, and serving plates with dependable glazing and polished presentation.',
+      '/images/products/white-plate-gold-stripe-border.png',
       40
     ),
     (
-      'Cookware',
-      'cookware',
-      'Dependable cookware collections planned for practical daily use.',
-      '/images/Product Making & Sourcing.png',
+      'Bowls',
+      'bowls',
+      'Versatile ceramic bowls for soups, snacks, serving, storage, and coordinated table settings.',
+      '/images/products/white-gold-rim-soup-bowl-plate.png',
       50
     ),
     (
-      'Bakeware',
-      'bakeware',
-      'Functional baking and presentation pieces for kitchens and gifting.',
-      '/images/Design & Finishing.png',
+      'Serving Sets',
+      'serving-sets',
+      'Presentation-ready serving bowls, trays, platters, and table service collections.',
+      '/images/products/green-gold-dry-fruit-serving-bowl.png',
       60
     ),
     (
-      'Kitchen Storage',
-      'kitchen-storage',
-      'Organised storage solutions for modern kitchens and food service.',
-      '/images/Packaging Process.png',
+      'Gift Sets',
+      'gift-sets',
+      'Buyer-ready ceramic gifting collections for weddings, festivals, corporate needs, and celebrations.',
+      '/images/products/pink-rose-mug-gift-set-box.png',
       70
     ),
     (
-      'Bar & Glassware',
-      'bar-glassware',
-      'Elegant glassware and bar essentials for entertaining and hospitality.',
-      '/images/set.jpeg',
+      'Hotel / Bulk Orders',
+      'hotel-bulk-orders',
+      'Trade-ready crockery solutions for hotels, restaurants, retailers, wholesalers, and repeat buyers.',
+      '/images/Bulk Order Handling.png',
       80
-    ),
-    (
-      'Pooja & Festive',
-      'pooja-festive',
-      'Traditional pieces for celebrations, pooja settings, and festive gifting.',
-      '/images/build-pic-1.png',
-      90
-    ),
-    (
-      'Kids Crockery',
-      'kids-crockery',
-      'Practical and engaging tableware collections designed for children.',
-      '/tea.png',
-      100
-    ),
-    (
-      'Gift Sets & Hampers',
-      'gift-sets-hampers',
-      'Presentation-ready gifting collections for weddings, festivals, and business.',
-      '/images/build-pic-2.png',
-      110
-    ),
-    (
-      'Shop by Material',
-      'shop-by-material',
-      'Explore tableware collections by ceramic, glass, metal, and other materials.',
-      '/images/build-pic-1.png',
-      120
     )
 )
 insert into public.product_categories (
@@ -155,70 +134,274 @@ with subcategory_seed (
   name,
   slug,
   parent_slug,
+  description,
+  image_url,
   sort_order
 ) as (
   values
-    ('Dinner Plates', 'dinner-plates', 'dinnerware', 10),
-    ('Quarter / Side Plates', 'quarter-side-plates', 'dinnerware', 20),
-    ('Bowls - Veg, Curry, Salad', 'bowls-veg-curry-salad', 'dinnerware', 30),
-    ('Dinner Sets', 'dinner-sets', 'dinnerware', 40),
-    ('Thali Sets', 'thali-sets', 'dinnerware', 50),
+    (
+      'Ceramic Dinner Sets',
+      'ceramic-dinner-sets',
+      'dinner-sets',
+      'Coordinated ceramic dinner sets for everyday and formal table service.',
+      '/images/build-pic-1.png',
+      10
+    ),
+    (
+      'Premium Dinner Sets',
+      'premium-dinner-sets',
+      'dinner-sets',
+      'Statement dinner collections with refined shapes and premium detailing.',
+      '/images/build-pic-2.png',
+      20
+    ),
+    (
+      'White & Gold Dinner Sets',
+      'white-gold-dinner-sets',
+      'dinner-sets',
+      'Elegant white ceramic dinner sets finished with polished gold accents.',
+      '/images/products/white-gold-pattern-dinner-plate-set.png',
+      30
+    ),
+    (
+      'Family Dinner Sets',
+      'family-dinner-sets',
+      'dinner-sets',
+      'Practical multi-piece dinner sets planned for family dining and gatherings.',
+      '/images/build-pic-1.png',
+      40
+    ),
 
-    ('Cups & Saucers', 'cups-saucers', 'drinkware', 10),
-    ('Coffee Mugs', 'coffee-mugs', 'drinkware', 20),
-    ('Glasses & Tumblers', 'glasses-tumblers', 'drinkware', 30),
-    ('Tea / Coffee Pots & Kettles', 'tea-coffee-pots-kettles', 'drinkware', 40),
-    ('Bottles & Flasks', 'bottles-flasks', 'drinkware', 50),
+    (
+      'Tea Cup Sets',
+      'tea-cup-sets',
+      'tea-coffee-sets',
+      'Coordinated ceramic tea cups for daily service, hospitality, and gifting.',
+      '/tea.png',
+      10
+    ),
+    (
+      'Coffee Cup Sets',
+      'coffee-cup-sets',
+      'tea-coffee-sets',
+      'Balanced ceramic coffee cup collections for homes, cafes, and hotels.',
+      '/blacktea.png',
+      20
+    ),
+    (
+      'Cup & Saucer Sets',
+      'cup-saucer-sets',
+      'tea-coffee-sets',
+      'Matching cup and saucer sets with clean buyer-ready presentation.',
+      '/tea.png',
+      30
+    ),
+    (
+      'Premium Tea Sets',
+      'premium-tea-sets',
+      'tea-coffee-sets',
+      'Complete premium tea service collections for refined entertaining.',
+      '/images/set.jpeg',
+      40
+    ),
 
-    ('Serving Trays', 'serving-trays', 'serveware', 10),
-    ('Casseroles', 'casseroles', 'serveware', 20),
-    ('Serving Bowls & Platters', 'serving-bowls-platters', 'serveware', 30),
-    ('Jugs & Pitchers', 'jugs-pitchers', 'serveware', 40),
+    (
+      'Coffee Mugs',
+      'coffee-mugs',
+      'cups-mugs',
+      'Comfortable ceramic mugs for coffee service, gifting, and retail ranges.',
+      '/blacktea.png',
+      10
+    ),
+    (
+      'Tea Cups',
+      'tea-cups',
+      'cups-mugs',
+      'Elegant ceramic tea cups designed for dependable everyday use.',
+      '/tea.png',
+      20
+    ),
+    (
+      'Printed Mugs',
+      'printed-mugs',
+      'cups-mugs',
+      'Decorative printed ceramic mugs for retail, gifting, and custom collections.',
+      '/images/products/pink-rose-mug-set-display.png',
+      30
+    ),
+    (
+      'Premium Ceramic Mugs',
+      'premium-ceramic-mugs',
+      'cups-mugs',
+      'Premium glazed mugs with polished forms and refined finishing.',
+      '/images/products/pink-rose-mug-set-display.png',
+      40
+    ),
 
-    ('Spoons', 'spoons', 'cutlery-flatware', 10),
-    ('Forks & Knives', 'forks-knives', 'cutlery-flatware', 20),
-    ('Chopsticks', 'chopsticks', 'cutlery-flatware', 30),
-    ('Cutlery Sets', 'cutlery-sets', 'cutlery-flatware', 40),
+    (
+      'Dinner Plates',
+      'dinner-plates',
+      'plates',
+      'Full-size ceramic dinner plates for coordinated table settings.',
+      '/images/products/white-plate-gold-stripe-border.png',
+      10
+    ),
+    (
+      'Quarter Plates',
+      'quarter-plates',
+      'plates',
+      'Compact quarter plates for sides, starters, desserts, and snacks.',
+      '/images/products/white-gold-pattern-dinner-plate-set.png',
+      20
+    ),
+    (
+      'Snack Plates',
+      'snack-plates',
+      'plates',
+      'Versatile snack plates for everyday service and entertaining.',
+      '/images/build-pic-2.png',
+      30
+    ),
+    (
+      'Serving Plates',
+      'serving-plates',
+      'plates',
+      'Larger ceramic plates for shared dishes and polished presentation.',
+      '/images/products/gold-stripe-pasta-plate-lifestyle.png',
+      40
+    ),
 
-    ('Cookware Sets', 'cookware-sets', 'cookware', 10),
-    ('Kadhai & Pans', 'kadhai-pans', 'cookware', 20),
-    ('Pressure Cookers', 'pressure-cookers', 'cookware', 30),
-    ('Tawa', 'tawa', 'cookware', 40),
+    (
+      'Soup Bowls',
+      'soup-bowls',
+      'bowls',
+      'Ceramic soup bowls designed for home and hospitality service.',
+      '/images/products/white-gold-rim-soup-bowl-plate.png',
+      10
+    ),
+    (
+      'Serving Bowls',
+      'serving-bowls',
+      'bowls',
+      'Presentation-ready bowls for curries, salads, snacks, and shared service.',
+      '/images/products/green-gold-dry-fruit-serving-bowl.png',
+      20
+    ),
+    (
+      'Snack Bowls',
+      'snack-bowls',
+      'bowls',
+      'Compact ceramic bowls for dry fruits, snacks, dips, and accompaniments.',
+      '/images/products/green-gold-dry-fruit-bowl-lifestyle.png',
+      30
+    ),
+    (
+      'Ceramic Bowl Sets',
+      'ceramic-bowl-sets',
+      'bowls',
+      'Coordinated multi-size ceramic bowl sets for storage and serving.',
+      '/images/products/blue-ceramic-storage-bowls-with-lids.png',
+      40
+    ),
 
-    ('Baking Dishes', 'baking-dishes', 'bakeware', 10),
-    ('Cake Stands', 'cake-stands', 'bakeware', 20),
-    ('Baking Trays', 'baking-trays', 'bakeware', 30),
+    (
+      'Serving Bowls',
+      'serving-bowls-serving-sets',
+      'serving-sets',
+      'Premium serving bowl collections for snacks, dry fruits, and shared dishes.',
+      '/images/products/green-gold-dry-fruit-serving-bowl.png',
+      10
+    ),
+    (
+      'Serving Trays',
+      'serving-trays',
+      'serving-sets',
+      'Practical serving trays with polished, buyer-ready presentation.',
+      '/images/build-pic-2.png',
+      20
+    ),
+    (
+      'Platter Sets',
+      'platter-sets',
+      'serving-sets',
+      'Coordinated platters for entertaining, hospitality, and gifting.',
+      '/images/products/white-gold-pattern-dinner-plate-set.png',
+      30
+    ),
+    (
+      'Table Serving Sets',
+      'table-serving-sets',
+      'serving-sets',
+      'Complete table serving collections for professional and home use.',
+      '/images/products/green-gold-dry-fruit-bowl-lifestyle.png',
+      40
+    ),
 
-    ('Storage Containers', 'storage-containers', 'kitchen-storage', 10),
-    ('Jars & Canisters', 'jars-canisters', 'kitchen-storage', 20),
-    ('Spice Boxes', 'spice-boxes', 'kitchen-storage', 30),
-    ('Lunch Boxes', 'lunch-boxes', 'kitchen-storage', 40),
+    (
+      'Crockery Gift Sets',
+      'crockery-gift-sets',
+      'gift-sets',
+      'Curated ceramic crockery gifts for celebrations and business requirements.',
+      '/images/products/white-gold-bathroom-tray-set.png',
+      10
+    ),
+    (
+      'Tea & Coffee Gift Sets',
+      'tea-coffee-gift-sets',
+      'gift-sets',
+      'Presentation-ready tea and coffee collections prepared for gifting.',
+      '/tea.png',
+      20
+    ),
+    (
+      'Mug Gift Sets',
+      'mug-gift-sets',
+      'gift-sets',
+      'Boxed ceramic mug sets for weddings, festivals, and return gifts.',
+      '/images/products/pink-rose-mug-gift-set-box.png',
+      30
+    ),
+    (
+      'Wedding / Festive Gift Sets',
+      'wedding-festive-gift-sets',
+      'gift-sets',
+      'Premium ceramic gift collections for weddings and festive occasions.',
+      '/images/products/pink-rose-mug-gift-set-box.png',
+      40
+    ),
 
-    ('Wine Glasses', 'wine-glasses', 'bar-glassware', 10),
-    ('Beer Mugs', 'beer-mugs', 'bar-glassware', 20),
-    ('Cocktail / Whiskey Glasses', 'cocktail-whiskey-glasses', 'bar-glassware', 30),
-    ('Bar Accessories', 'bar-accessories', 'bar-glassware', 40),
-
-    ('Pooja Thalis', 'pooja-thalis', 'pooja-festive', 10),
-    ('Diyas & Lamps', 'diyas-lamps', 'pooja-festive', 20),
-    ('Festive Decor', 'festive-decor', 'pooja-festive', 30),
-
-    ('Kids Plates & Bowls', 'kids-plates-bowls', 'kids-crockery', 10),
-    ('Sipper Cups & Bottles', 'sipper-cups-bottles', 'kids-crockery', 20),
-    ('Kids Lunch Box Sets', 'kids-lunch-box-sets', 'kids-crockery', 30),
-    ('Character / Cartoon Sets', 'character-cartoon-sets', 'kids-crockery', 40),
-
-    ('Wedding Gift Sets', 'wedding-gift-sets', 'gift-sets-hampers', 10),
-    ('Corporate Gifting', 'corporate-gifting', 'gift-sets-hampers', 20),
-    ('Return Gifts', 'return-gifts', 'gift-sets-hampers', 30),
-    ('Festive Hampers', 'festive-hampers', 'gift-sets-hampers', 40),
-
-    ('Ceramic & Stoneware', 'ceramic-stoneware', 'shop-by-material', 10),
-    ('Bone China & Porcelain', 'bone-china-porcelain', 'shop-by-material', 20),
-    ('Glass', 'glass', 'shop-by-material', 30),
-    ('Melamine & Acrylic', 'melamine-acrylic', 'shop-by-material', 40),
-    ('Stainless Steel', 'stainless-steel', 'shop-by-material', 50),
-    ('Brass & Copper', 'brass-copper', 'shop-by-material', 60)
+    (
+      'Hotel Crockery',
+      'hotel-crockery',
+      'hotel-bulk-orders',
+      'Durable ceramic crockery collections prepared for hotel service.',
+      '/images/Bulk Order Handling.png',
+      10
+    ),
+    (
+      'Restaurant Crockery',
+      'restaurant-crockery',
+      'hotel-bulk-orders',
+      'Professional tableware ranges for restaurants, cafes, and banquet service.',
+      '/images/Quality Checking.png',
+      20
+    ),
+    (
+      'Retail Store Products',
+      'retail-store-products',
+      'hotel-bulk-orders',
+      'Buyer-ready ceramic collections planned for retail display and repeat supply.',
+      '/images/Packaging Process.png',
+      30
+    ),
+    (
+      'Wholesale Crockery Collection',
+      'wholesale-crockery-collection',
+      'hotel-bulk-orders',
+      'Flexible wholesale crockery collections for trade and distribution buyers.',
+      '/images/Product Making & Sourcing.png',
+      40
+    )
 )
 insert into public.product_categories (
   name,
@@ -233,8 +416,8 @@ select
   seed.name,
   seed.slug,
   parent.id,
-  null,
-  null,
+  seed.description,
+  seed.image_url,
   seed.sort_order,
   true
 from subcategory_seed as seed
@@ -244,8 +427,62 @@ on conflict (slug) do update
 set
   name = excluded.name,
   parent_id = excluded.parent_id,
+  description = excluded.description,
+  image_url = excluded.image_url,
   sort_order = excluded.sort_order,
   is_active = excluded.is_active;
+
+-- Remove demonstration rows and image-only duplicate rows from earlier seeds.
+delete from public.products
+where slug in (
+  'royal-gold-dinner-plate',
+  'classic-side-plate-set',
+  'heritage-dinner-set',
+  'regal-cup-saucer-set',
+  'midnight-coffee-mug-set',
+  'classic-tea-pot-service',
+  'gold-rim-serving-tray',
+  'heritage-serving-bowl',
+  'classic-ceramic-pitcher',
+  'classic-dining-spoon-set',
+  'hotel-fork-knife-set',
+  'premium-flatware-collection',
+  'everyday-cookware-set',
+  'premium-kadhai-pan-set',
+  'classic-everyday-tawa',
+  'ceramic-baking-dish',
+  'celebration-cake-stand',
+  'oven-ready-baking-tray',
+  'stackable-storage-container-set',
+  'ceramic-kitchen-canister-set',
+  'organised-spice-box',
+  'classic-wine-glass-set',
+  'tavern-beer-mug-set',
+  'whiskey-tumbler-set',
+  'traditional-pooja-thali-set',
+  'festive-diya-set',
+  'celebration-decor-collection',
+  'kids-meal-plate-bowl-set',
+  'junior-sipper-bottle',
+  'kids-lunch-box-set',
+  'royal-wedding-dinner-gift-set',
+  'executive-corporate-crockery-set',
+  'festive-tea-hamper',
+  'artisan-ceramic-collection',
+  'fine-porcelain-dining-set',
+  'classic-glass-tableware-set',
+  'white-gold-soap-dispenser-lifestyle-image',
+  'white-gold-bathroom-set-lifestyle-image',
+  'pink-rose-mug-set-display',
+  'green-gold-dry-fruit-bowl-lifestyle-image',
+  'white-gold-rim-soup-bowl-lifestyle-image',
+  'white-gold-pattern-soup-plate-lifestyle-image',
+  'blue-storage-bowl-lifestyle-image',
+  'brown-mosaic-bowl-lifestyle-image',
+  'gold-stripe-pasta-plate-lifestyle-image',
+  'brown-mosaic-storage-bowl-stack',
+  'brown-mosaic-ceramic-container-set'
+);
 
 with product_seed (
   name,
@@ -255,453 +492,261 @@ with product_seed (
   description,
   product_code,
   material,
+  set_contents,
+  available_colors,
+  key_features,
   image_url,
+  gallery_images,
   is_featured,
   sort_order
 ) as (
   values
     (
-      'Royal Gold Dinner Plate',
-      'royal-gold-dinner-plate',
+      'White & Gold Soap Dispenser Set with Sponge Holder',
+      'white-gold-soap-dispenser-set-with-sponge-holder',
+      'crockery-gift-sets',
+      'A coordinated white ceramic dispenser set finished with elegant gold detailing and a practical sponge holder.',
+      'This premium ceramic utility set brings refined organisation to modern homes, hotels, and gifting collections. Its polished finish and gold accents create a clean luxury presentation.',
+      'HI-BA-001',
+      'Ceramic',
+      '2 Dispensers with Holders',
+      jsonb_build_array('White', 'Gold'),
+      jsonb_build_array(
+        'Premium Ceramic Finish',
+        'Polished Gold Detailing',
+        'Gift Ready',
+        'Easy to Clean',
+        'Coordinated Design'
+      ),
+      '/images/products/white-gold-soap-dispenser-set.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/white-gold-soap-dispenser-lifestyle.png',
+          'alt', 'White and gold soap dispenser set in a bathroom setting'
+        )
+      ),
+      true,
+      10
+    ),
+    (
+      'White & Gold Bathroom Tray Set',
+      'white-gold-bathroom-tray-set',
+      'crockery-gift-sets',
+      'A premium ceramic organiser collection arranged on a coordinated white and gold tray.',
+      'Designed to keep essentials neatly presented, this set balances practical utility with an elegant ceramic finish. It is suitable for modern homes, hotels, guest spaces, and sophisticated gifting.',
+      'HI-BA-003',
+      'Ceramic',
+      '5 Pieces with Tray',
+      jsonb_build_array('White', 'Gold'),
+      jsonb_build_array(
+        'Complete Organiser Set',
+        'Gold Accent Finish',
+        'Premium Presentation',
+        'Hotel Ready',
+        'Gift Ready'
+      ),
+      '/images/products/white-gold-bathroom-tray-set.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/white-gold-bathroom-set-lifestyle.png',
+          'alt', 'White and gold organiser set beside a wash basin'
+        )
+      ),
+      false,
+      20
+    ),
+    (
+      'Pink Rose Mug Gift Set with Box',
+      'pink-rose-mug-gift-set-with-box',
+      'mug-gift-sets',
+      'A boxed ceramic mug gift set decorated with delicate pink rose artwork.',
+      'Prepared for wedding gifting and festive presentation, this set combines a premium ceramic finish with an elegant floral design. The coordinated box makes it suitable for celebrations, return gifting, and curated hampers.',
+      'HI-GH-005',
+      'Ceramic',
+      '7-Piece Gift Set',
+      jsonb_build_array('White', 'Pink', 'Gold'),
+      jsonb_build_array(
+        'Boxed Presentation',
+        'Raised Floral Detail',
+        'Gold Accents',
+        'Wedding Gift Ready',
+        'Premium Ceramic'
+      ),
+      '/images/products/pink-rose-mug-gift-set-box.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/pink-rose-mug-set-display.png',
+          'alt', 'Pink rose ceramic mug gift set displayed outside its box'
+        )
+      ),
+      true,
+      30
+    ),
+    (
+      'Green & Gold Dry Fruit Serving Bowl',
+      'green-gold-dry-fruit-serving-bowl',
+      'serving-bowls-serving-sets',
+      'A rich green ceramic serving bowl finished with premium gold detailing.',
+      'Created for dry fruits, snacks, and festive table service, this bowl delivers an elegant centrepiece presentation. Its polished finish suits premium homes, hospitality, festive gifting, and retail collections.',
+      'HI-SV-007',
+      'Ceramic',
+      '1 Serving Bowl',
+      jsonb_build_array('Green', 'Gold'),
+      jsonb_build_array(
+        'Premium Glazed Finish',
+        'Gold Detailing',
+        'Festive Presentation',
+        'Food Serving Ready',
+        'Gift Suitable'
+      ),
+      '/images/products/green-gold-dry-fruit-serving-bowl.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/green-gold-dry-fruit-bowl-lifestyle.png',
+          'alt', 'Green and gold serving bowl styled with dry fruits'
+        )
+      ),
+      true,
+      40
+    ),
+    (
+      'White Gold Rim Soup Bowl Plate',
+      'white-gold-rim-soup-bowl-plate',
+      'soup-bowls',
+      'A white ceramic soup bowl plate with a clean polished gold rim.',
+      'The refined profile supports soup, curry, salad, and plated service across homes and hospitality settings. Its premium glaze and gold edge create an elegant addition to coordinated dinnerware collections.',
+      'HI-DW-009',
+      'Ceramic',
+      '1 Bowl Plate',
+      jsonb_build_array('White', 'Gold'),
+      jsonb_build_array(
+        'Polished Gold Rim',
+        'Premium Glaze',
+        'Deep Serving Profile',
+        'Hospitality Suitable',
+        'Elegant Finish'
+      ),
+      '/images/products/white-gold-rim-soup-bowl-plate.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/white-gold-rim-soup-bowl-lifestyle.png',
+          'alt', 'White gold rim soup bowl plate in a dining setting'
+        )
+      ),
+      true,
+      50
+    ),
+    (
+      'White Gold Pattern Dinner Plate Set',
+      'white-gold-pattern-dinner-plate-set',
       'dinner-plates',
-      'A refined ceramic dinner plate with a polished gold-accented presentation.',
-      'Designed for premium dining, hospitality service, retail collections, and coordinated table settings.',
-      'HI-DW-001',
+      'A coordinated white ceramic dinner plate set featuring an elegant gold pattern.',
+      'This premium plate collection is designed for formal dining, hospitality service, and memorable gifting. The polished glaze and patterned gold detailing give each table setting a refined, cohesive finish.',
+      'HI-DW-011',
       'Ceramic',
-      '/images/build-pic-1.png',
+      '2-Piece Plate Set',
+      jsonb_build_array('White', 'Gold'),
+      jsonb_build_array(
+        'Coordinated Plate Set',
+        'Patterned Gold Detail',
+        'Premium Glaze',
+        'Formal Dining Ready',
+        'Gift Suitable'
+      ),
+      '/images/products/white-gold-pattern-dinner-plate-set.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/white-gold-pattern-soup-plate-lifestyle.png',
+          'alt', 'White gold pattern soup plate presented for table service'
+        )
+      ),
       true,
-      10
+      60
     ),
     (
-      'Classic Side Plate Set',
-      'classic-side-plate-set',
-      'quarter-side-plates',
-      'Coordinated quarter plates with smooth glazing and balanced proportions.',
-      'A practical side plate collection for starters, desserts, hospitality service, and everyday dining.',
-      'HI-DW-002',
+      'Blue Ceramic Storage Bowls with Lids',
+      'blue-ceramic-storage-bowls-with-lids',
+      'ceramic-bowl-sets',
+      'A vibrant blue ceramic bowl set supplied with secure matching lids.',
+      'Designed for practical kitchen storage and organised serving, these bowls combine utility with a premium glazed finish. The coordinated set is suitable for modern homes, gifting, and retail presentation.',
+      'HI-KS-013',
       'Ceramic',
-      '/images/build-pic-2.png',
+      '3 Bowls with Lids',
+      jsonb_build_array('Blue'),
+      jsonb_build_array(
+        'Three Coordinated Sizes',
+        'Secure Lids',
+        'Premium Glaze',
+        'Storage and Serving',
+        'Stackable Design'
+      ),
+      '/images/products/blue-ceramic-storage-bowls-with-lids.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/blue-storage-bowl-lifestyle.png',
+          'alt', 'Blue ceramic storage bowl set in a kitchen setting'
+        )
+      ),
       false,
-      20
+      70
     ),
     (
-      'Heritage Dinner Set',
-      'heritage-dinner-set',
-      'dinner-sets',
-      'A complete dinner collection with an elegant dark and gold visual finish.',
-      'A presentation-ready dinner set suited to premium homes, gifting, retailers, and hospitality buyers.',
-      'HI-DW-003',
+      'Brown Mosaic Storage Bowls with Lids',
+      'brown-mosaic-storage-bowls-with-lids',
+      'ceramic-bowl-sets',
+      'A coordinated ceramic bowl set with rich brown mosaic detailing and clear lids.',
+      'The covered bowls provide dependable kitchen utility with a distinctive premium finish. Their warm patterned design suits modern storage, serving, gifting, and decorative countertop presentation.',
+      'HI-KS-015',
       'Ceramic',
-      '/images/set.jpeg',
-      true,
-      30
+      '3 Bowls with Lids',
+      jsonb_build_array('Brown', 'Blue Accents'),
+      jsonb_build_array(
+        'Mosaic Glaze Pattern',
+        'Three Coordinated Sizes',
+        'Secure Clear Lids',
+        'Storage and Serving',
+        'Stackable Design'
+      ),
+      '/images/products/brown-mosaic-storage-bowls-with-lids.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/brown-mosaic-bowl-lifestyle.png',
+          'alt', 'Brown mosaic storage bowls used for fresh food serving'
+        ),
+        jsonb_build_object(
+          'url', '/images/products/brown-mosaic-ceramic-container-set.png',
+          'alt', 'Brown mosaic ceramic container set stacked with lids'
+        )
+      ),
+      false,
+      80
     ),
-
     (
-      'Regal Cup & Saucer Set',
-      'regal-cup-saucer-set',
-      'cups-saucers',
-      'An elegant cup and saucer pairing for tea service and premium gifting.',
-      'Created for comfortable serving with a coordinated finish suitable for homes, hotels, and cafes.',
-      'HI-DR-001',
+      'White Plate with Gold Stripe Border',
+      'white-plate-with-gold-stripe-border',
+      'dinner-plates',
+      'A clean white ceramic plate finished with a precise gold stripe border.',
+      'The understated design supports everyday elegance, formal dining, and professional hospitality service. Its polished ceramic surface also makes it a refined choice for gifting and coordinated dinner sets.',
+      'HI-DW-017',
       'Ceramic',
-      '/tea.png',
-      true,
-      10
-    ),
-    (
-      'Midnight Coffee Mug Set',
-      'midnight-coffee-mug-set',
-      'coffee-mugs',
-      'A rich dark mug collection with refined gold detailing.',
-      'A distinctive coffee mug set for modern kitchens, executive gifting, cafes, and retail presentation.',
-      'HI-DR-002',
-      'Ceramic',
-      '/blacktea.png',
+      '1 Dinner Plate',
+      jsonb_build_array('White', 'Gold'),
+      jsonb_build_array(
+        'Minimal Gold Stripe',
+        'Polished Ceramic Surface',
+        'Formal Dining Ready',
+        'Hospitality Suitable',
+        'Easy Coordination'
+      ),
+      '/images/products/white-plate-gold-stripe-border.png',
+      jsonb_build_array(
+        jsonb_build_object(
+          'url', '/images/products/gold-stripe-pasta-plate-lifestyle.png',
+          'alt', 'White plate with gold stripe border used for pasta service'
+        )
+      ),
       false,
-      20
-    ),
-    (
-      'Classic Tea Pot Service',
-      'classic-tea-pot-service',
-      'tea-coffee-pots-kettles',
-      'A coordinated tea service designed around polished everyday presentation.',
-      'The collection combines a refined tea pot profile with matching service pieces for hosting and gifting.',
-      'HI-DR-003',
-      'Ceramic',
-      '/tea.png',
-      false,
-      30
-    ),
-
-    (
-      'Gold Rim Serving Tray',
-      'gold-rim-serving-tray',
-      'serving-trays',
-      'A polished serving tray developed for elegant table presentation.',
-      'Suitable for homes, hotels, restaurants, gifting collections, and coordinated hospitality service.',
-      'HI-SV-001',
-      'Ceramic',
-      '/images/build-pic-2.png',
-      true,
-      10
-    ),
-    (
-      'Heritage Serving Bowl',
-      'heritage-serving-bowl',
-      'serving-bowls-platters',
-      'A versatile glazed serving bowl for shared dishes and table centrepieces.',
-      'Balanced for practical serving while maintaining the premium finish expected in formal settings.',
-      'HI-SV-002',
-      'Ceramic',
-      '/images/build-pic-1.png',
-      false,
-      20
-    ),
-    (
-      'Classic Ceramic Pitcher',
-      'classic-ceramic-pitcher',
-      'jugs-pitchers',
-      'A clean ceramic pitcher with a refined hospitality-ready profile.',
-      'Designed for water, beverages, and coordinated table service across homes and professional venues.',
-      'HI-SV-003',
-      'Ceramic',
-      '/tea.png',
-      false,
-      30
-    ),
-
-    (
-      'Classic Dining Spoon Set',
-      'classic-dining-spoon-set',
-      'spoons',
-      'A balanced spoon collection for everyday and professional dining.',
-      'A dependable flatware option created for coordinated table settings, hospitality, and retail buyers.',
-      'HI-CF-001',
-      'Stainless Steel',
-      '/images/set.jpeg',
-      false,
-      10
-    ),
-    (
-      'Hotel Fork & Knife Set',
-      'hotel-fork-knife-set',
-      'forks-knives',
-      'Coordinated forks and knives with a clean service-ready appearance.',
-      'Developed for hotels, restaurants, banquet service, and buyers requiring a consistent flatware range.',
-      'HI-CF-002',
-      'Stainless Steel',
-      '/images/set.jpeg',
-      true,
-      20
-    ),
-    (
-      'Premium Flatware Collection',
-      'premium-flatware-collection',
-      'cutlery-sets',
-      'A complete cutlery assortment for polished dining presentation.',
-      'The collection supports home, hospitality, gifting, and retail requirements with a coordinated finish.',
-      'HI-CF-003',
-      'Stainless Steel',
-      '/images/build-pic-1.png',
-      false,
-      30
-    ),
-
-    (
-      'Everyday Cookware Set',
-      'everyday-cookware-set',
-      'cookware-sets',
-      'A practical cookware assortment planned for dependable daily preparation.',
-      'Designed as a coordinated starter collection for home kitchens, retailers, and gifting requirements.',
-      'HI-CW-001',
-      'Metal',
-      '/images/Product Making & Sourcing.png',
-      true,
-      10
-    ),
-    (
-      'Premium Kadhai & Pan Set',
-      'premium-kadhai-pan-set',
-      'kadhai-pans',
-      'A versatile kadhai and pan pairing for regular kitchen use.',
-      'The collection focuses on practical forms, reliable handling, and buyer-ready presentation.',
-      'HI-CW-002',
-      'Metal',
-      '/images/Material Selection.png',
-      false,
-      20
-    ),
-    (
-      'Classic Everyday Tawa',
-      'classic-everyday-tawa',
-      'tawa',
-      'A streamlined tawa designed for simple everyday cooking.',
-      'A practical kitchen essential selected for consistent build quality and convenient daily use.',
-      'HI-CW-003',
-      'Metal',
-      '/images/Design & Finishing.png',
-      false,
-      30
-    ),
-
-    (
-      'Ceramic Baking Dish',
-      'ceramic-baking-dish',
-      'baking-dishes',
-      'An oven-ready ceramic dish with a polished table-to-serve finish.',
-      'Designed for baking, serving, gifting, and coordinated kitchen collections.',
-      'HI-BW-001',
-      'Ceramic',
-      '/images/build-pic-2.png',
-      true,
-      10
-    ),
-    (
-      'Celebration Cake Stand',
-      'celebration-cake-stand',
-      'cake-stands',
-      'An elevated cake stand for celebrations and premium dessert presentation.',
-      'Suitable for homes, bakeries, hospitality service, event styling, and festive gifting.',
-      'HI-BW-002',
-      'Ceramic',
-      '/images/build-pic-1.png',
-      false,
-      20
-    ),
-    (
-      'Oven Ready Baking Tray',
-      'oven-ready-baking-tray',
-      'baking-trays',
-      'A functional baking tray developed for dependable kitchen use.',
-      'The clean form supports practical preparation, presentation, and retail-ready bakeware collections.',
-      'HI-BW-003',
-      'Ceramic',
-      '/images/Design & Finishing.png',
-      false,
-      30
-    ),
-
-    (
-      'Stackable Storage Container Set',
-      'stackable-storage-container-set',
-      'storage-containers',
-      'A coordinated container set for organised everyday kitchen storage.',
-      'Designed for practical stacking, dependable handling, and clean presentation in modern kitchens.',
-      'HI-KS-001',
-      'Mixed Material',
-      '/images/Packaging Process.png',
-      true,
-      10
-    ),
-    (
-      'Ceramic Kitchen Canister Set',
-      'ceramic-kitchen-canister-set',
-      'jars-canisters',
-      'A refined canister collection for dry storage and countertop display.',
-      'Combines useful storage with a premium ceramic finish for homes, gifting, and retail collections.',
-      'HI-KS-002',
-      'Ceramic',
-      '/images/build-pic-2.png',
-      false,
-      20
-    ),
-    (
-      'Organised Spice Box',
-      'organised-spice-box',
-      'spice-boxes',
-      'A practical compartmentalised spice storage solution.',
-      'Created for convenient kitchen organisation, protected storage, and buyer-ready presentation.',
-      'HI-KS-003',
-      'Mixed Material',
-      '/images/Packaging Process.png',
-      false,
-      30
-    ),
-
-    (
-      'Classic Wine Glass Set',
-      'classic-wine-glass-set',
-      'wine-glasses',
-      'A refined glass collection for formal dinners and hospitality service.',
-      'Designed for balanced presentation across homes, hotels, restaurants, and gifting collections.',
-      'HI-BG-001',
-      'Glass',
-      '/images/set.jpeg',
-      true,
-      10
-    ),
-    (
-      'Tavern Beer Mug Set',
-      'tavern-beer-mug-set',
-      'beer-mugs',
-      'A substantial mug collection for casual service and entertaining.',
-      'A practical barware choice for homes, hospitality venues, gifting, and retail buyers.',
-      'HI-BG-002',
-      'Glass',
-      '/blacktea.png',
-      false,
-      20
-    ),
-    (
-      'Whiskey Tumbler Set',
-      'whiskey-tumbler-set',
-      'cocktail-whiskey-glasses',
-      'A clean tumbler profile for whiskey, cocktails, and premium bar settings.',
-      'The coordinated set supports refined serving, entertaining, and hospitality presentation.',
-      'HI-BG-003',
-      'Glass',
-      '/images/set.jpeg',
-      false,
-      30
-    ),
-
-    (
-      'Traditional Pooja Thali Set',
-      'traditional-pooja-thali-set',
-      'pooja-thalis',
-      'A coordinated thali collection for traditional pooja settings.',
-      'Created for household rituals, festive occasions, gifting, and ceremonial presentation.',
-      'HI-PF-001',
-      'Mixed Material',
-      '/images/build-pic-1.png',
-      true,
-      10
-    ),
-    (
-      'Festive Diya Set',
-      'festive-diya-set',
-      'diyas-lamps',
-      'A decorative diya collection for celebrations and traditional settings.',
-      'A presentation-ready festive set suited to home decor, gifting, and seasonal retail ranges.',
-      'HI-PF-002',
-      'Ceramic',
-      '/images/build-pic-2.png',
-      false,
-      20
-    ),
-    (
-      'Celebration Decor Collection',
-      'celebration-decor-collection',
-      'festive-decor',
-      'A coordinated festive decor assortment for special occasions.',
-      'Designed to support celebratory table settings, gifting collections, and seasonal presentation.',
-      'HI-PF-003',
-      'Mixed Material',
-      '/images/set.jpeg',
-      false,
-      30
-    ),
-
-    (
-      'Kids Meal Plate & Bowl Set',
-      'kids-meal-plate-bowl-set',
-      'kids-plates-bowls',
-      'A practical coordinated dining set sized for children.',
-      'Designed for comfortable everyday meals, gifting, school use, and family-focused retail collections.',
-      'HI-KC-001',
-      'Ceramic',
-      '/images/build-pic-2.png',
-      true,
-      10
-    ),
-    (
-      'Junior Sipper Bottle',
-      'junior-sipper-bottle',
-      'sipper-cups-bottles',
-      'A convenient child-friendly bottle for everyday hydration.',
-      'A practical option for school, travel, gifting, and coordinated kids crockery ranges.',
-      'HI-KC-002',
-      'Mixed Material',
-      '/tea.png',
-      false,
-      20
-    ),
-    (
-      'Kids Lunch Box Set',
-      'kids-lunch-box-set',
-      'kids-lunch-box-sets',
-      'A coordinated lunch box collection for school and travel.',
-      'Designed around practical packing, dependable closure, and clean child-friendly presentation.',
-      'HI-KC-003',
-      'Mixed Material',
-      '/images/Packaging Process.png',
-      false,
-      30
-    ),
-
-    (
-      'Royal Wedding Dinner Gift Set',
-      'royal-wedding-dinner-gift-set',
-      'wedding-gift-sets',
-      'A presentation-ready dinner collection created for wedding gifting.',
-      'Combines coordinated ceramic pieces, premium visual finishing, and memorable gift presentation.',
-      'HI-GH-001',
-      'Ceramic',
-      '/images/build-pic-1.png',
-      true,
-      10
-    ),
-    (
-      'Executive Corporate Crockery Set',
-      'executive-corporate-crockery-set',
-      'corporate-gifting',
-      'A refined crockery collection for business and employee gifting.',
-      'Suitable for branded gifting programs, festive distribution, client appreciation, and executive hampers.',
-      'HI-GH-002',
-      'Ceramic',
-      '/images/build-pic-2.png',
-      true,
-      20
-    ),
-    (
-      'Festive Tea Hamper',
-      'festive-tea-hamper',
-      'festive-hampers',
-      'A coordinated tea service prepared for festive gifting.',
-      'The hamper combines premium ceramic presentation with a versatile format for personal and corporate buyers.',
-      'HI-GH-003',
-      'Ceramic',
-      '/tea.png',
-      false,
-      30
-    ),
-
-    (
-      'Artisan Ceramic Collection',
-      'artisan-ceramic-collection',
-      'ceramic-stoneware',
-      'A versatile ceramic and stoneware range with a refined glazed finish.',
-      'Developed for homes, hospitality, retailers, and buyers seeking dependable ceramic tableware.',
-      'HI-MT-001',
-      'Ceramic & Stoneware',
-      '/images/Material Selection.png',
-      true,
-      10
-    ),
-    (
-      'Fine Porcelain Dining Set',
-      'fine-porcelain-dining-set',
-      'bone-china-porcelain',
-      'A lightweight premium dining collection with an elegant porcelain finish.',
-      'A polished choice for formal homes, hospitality settings, gifting, and premium retail collections.',
-      'HI-MT-002',
-      'Porcelain',
-      '/images/build-pic-2.png',
-      false,
-      20
-    ),
-    (
-      'Classic Glass Tableware Set',
-      'classic-glass-tableware-set',
-      'glass',
-      'A coordinated glass tableware collection for serving and entertaining.',
-      'Designed for versatile use across homes, restaurants, hotels, gifting, and retail presentation.',
-      'HI-MT-003',
-      'Glass',
-      '/images/set.jpeg',
-      false,
-      30
+      90
     )
 )
 insert into public.products (
@@ -712,7 +757,11 @@ insert into public.products (
   description,
   product_code,
   material,
+  set_contents,
+  available_colors,
+  key_features,
   image_url,
+  gallery_images,
   is_featured,
   is_active,
   sort_order
@@ -725,7 +774,11 @@ select
   seed.description,
   seed.product_code,
   seed.material,
+  seed.set_contents,
+  seed.available_colors,
+  seed.key_features,
   seed.image_url,
+  seed.gallery_images,
   seed.is_featured,
   true,
   seed.sort_order
@@ -740,7 +793,13 @@ set
   description = excluded.description,
   product_code = excluded.product_code,
   material = excluded.material,
+  set_contents = excluded.set_contents,
+  available_colors = excluded.available_colors,
+  key_features = excluded.key_features,
   image_url = excluded.image_url,
+  gallery_images = excluded.gallery_images,
   is_featured = excluded.is_featured,
   is_active = excluded.is_active,
   sort_order = excluded.sort_order;
+
+commit;

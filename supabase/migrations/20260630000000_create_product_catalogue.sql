@@ -29,6 +29,9 @@ create table if not exists public.products (
   description text not null,
   product_code text null,
   material text null,
+  set_contents text null,
+  available_colors jsonb null,
+  key_features jsonb null,
   image_url text null,
   gallery_images jsonb null,
   is_featured boolean not null default false,
@@ -41,6 +44,10 @@ create table if not exists public.products (
     on delete restrict,
   constraint products_gallery_images_array
     check (gallery_images is null or jsonb_typeof(gallery_images) = 'array'),
+  constraint products_available_colors_array
+    check (available_colors is null or jsonb_typeof(available_colors) = 'array'),
+  constraint products_key_features_array
+    check (key_features is null or jsonb_typeof(key_features) = 'array'),
   constraint products_sort_order_nonnegative
     check (sort_order >= 0)
 );

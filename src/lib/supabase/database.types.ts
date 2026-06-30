@@ -63,6 +63,9 @@ export type Database = {
           description: string;
           product_code: string | null;
           material: string | null;
+          set_contents: string | null;
+          available_colors: Json | null;
+          key_features: Json | null;
           image_url: string | null;
           gallery_images: Json | null;
           is_featured: boolean;
@@ -79,6 +82,9 @@ export type Database = {
           description: string;
           product_code?: string | null;
           material?: string | null;
+          set_contents?: string | null;
+          available_colors?: Json | null;
+          key_features?: Json | null;
           image_url?: string | null;
           gallery_images?: Json | null;
           is_featured?: boolean;
@@ -95,6 +101,9 @@ export type Database = {
           description?: string;
           product_code?: string | null;
           material?: string | null;
+          set_contents?: string | null;
+          available_colors?: Json | null;
+          key_features?: Json | null;
           image_url?: string | null;
           gallery_images?: Json | null;
           is_featured?: boolean;

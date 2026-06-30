@@ -63,27 +63,27 @@ export const navLinks: NavLink[] = [
     children: [
       {
         label: "Dinner Sets",
-        href: "/products?category=dinnerware&subcategory=dinner-sets",
+        href: "/products?category=dinner-sets",
       },
       {
         label: "Tea & Coffee Sets",
-        href: "/products?category=drinkware",
+        href: "/products?category=tea-coffee-sets",
       },
       {
-        label: "Mugs & Cups",
-        href: "/products?category=drinkware&subcategory=coffee-mugs",
+        label: "Cups & Mugs",
+        href: "/products?category=cups-mugs",
       },
       {
-        label: "Plates & Bowls",
-        href: "/products?category=dinnerware",
+        label: "Plates",
+        href: "/products?category=plates",
       },
       {
-        label: "Hotel / HoReCa Collection",
-        href: "/products?category=dinnerware",
+        label: "Serving Sets",
+        href: "/products?category=serving-sets",
       },
       {
-        label: "Export Range",
-        href: "/products?category=shop-by-material",
+        label: "Hotel / Bulk Orders",
+        href: "/products?category=hotel-bulk-orders",
       },
     ],
   },
@@ -104,8 +104,8 @@ export const featuredProducts: ProductItem[] = [
     slug: "royal-elegance-dinner-set",
     name: "Royal Elegance Dinner Set",
     code: "HI-DS-001",
-    category: "dinnerware",
-    subcategory: "dinner-sets",
+    category: "dinner-sets",
+    subcategory: "white-gold-dinner-sets",
     categoryLabel: "Dinner Sets",
     description:
       "A refined white and gold dinner collection designed for premium homes, hospitality, and gifting.",
@@ -119,8 +119,8 @@ export const featuredProducts: ProductItem[] = [
     slug: "floral-charm-dinner-set",
     name: "Floral Charm Dinner Set",
     code: "HI-DS-002",
-    category: "dinnerware",
-    subcategory: "dinner-sets",
+    category: "dinner-sets",
+    subcategory: "ceramic-dinner-sets",
     categoryLabel: "Dinner Sets",
     description:
       "Sculpted floral detailing and polished gold accents create a memorable table presentation.",
@@ -134,7 +134,8 @@ export const featuredProducts: ProductItem[] = [
     slug: "heritage-tea-set",
     name: "Heritage Tea Set",
     code: "HI-TC-001",
-    category: "drinkware",
+    category: "tea-coffee-sets",
+    subcategory: "premium-tea-sets",
     categoryLabel: "Tea & Coffee Sets",
     description:
       "A timeless tea service with warm gold lines, balanced forms, and an elegant everyday finish.",
@@ -148,7 +149,7 @@ export const featuredProducts: ProductItem[] = [
     slug: "artisan-ceramic-mug",
     name: "Artisan Ceramic Mug",
     code: "HI-MC-001",
-    category: "drinkware",
+    category: "cups-mugs",
     subcategory: "coffee-mugs",
     categoryLabel: "Mugs & Cups",
     description:
@@ -163,7 +164,7 @@ export const featuredProducts: ProductItem[] = [
     slug: "classic-dinner-plate-set",
     name: "Classic Dinner Plate Set",
     code: "HI-PB-001",
-    category: "dinnerware",
+    category: "plates",
     subcategory: "dinner-plates",
     categoryLabel: "Plates & Bowls",
     description:
@@ -176,10 +177,11 @@ export const featuredProducts: ProductItem[] = [
   },
   {
     slug: "horeca-professional-range",
-    name: "HoReCa Professional Range",
+    name: "Hotel & Bulk Professional Range",
     code: "HI-HR-001",
-    category: "dinnerware",
-    categoryLabel: "Hotel / HoReCa Collection",
+    category: "hotel-bulk-orders",
+    subcategory: "hotel-crockery",
+    categoryLabel: "Hotel / Bulk Orders",
     description:
       "A practical tableware range planned for hotels, restaurants, banquets, and repeat service.",
     image: "/images/set.jpeg",
@@ -202,37 +204,37 @@ export const homeCategories = [
     title: "Dinner Sets",
     description: "Complete dining collections for memorable service.",
     image: "/images/build-pic-1.png",
-    href: "/products?category=dinnerware&subcategory=dinner-sets",
+    href: "/products?category=dinner-sets",
   },
   {
     title: "Tea & Coffee Sets",
     description: "Elegant service sets for homes, cafes, and gifting.",
     image: "/tea.png",
-    href: "/products?category=drinkware",
+    href: "/products?category=tea-coffee-sets",
   },
   {
     title: "Mugs & Cups",
     description: "Premium forms for daily use and custom collections.",
     image: "/blacktea.png",
-    href: "/products?category=drinkware&subcategory=coffee-mugs",
+    href: "/products?category=cups-mugs",
   },
   {
     title: "Plates & Bowls",
     description: "Coordinated shapes with polished, durable glazing.",
     image: "/images/build-pic-2.png",
-    href: "/products?category=dinnerware",
+    href: "/products?category=plates",
   },
   {
-    title: "Hotel / HoReCa Collection",
+    title: "Hotel / Bulk Orders",
     description: "Dependable tableware planned for professional service.",
     image: "/images/set.jpeg",
-    href: "/products?category=dinnerware",
+    href: "/products?category=hotel-bulk-orders",
   },
   {
-    title: "Export Range",
-    description: "Buyer-ready collections for international sourcing.",
-    image: "/images/build-pic-1.png",
-    href: "/products?category=shop-by-material",
+    title: "Serving Sets",
+    description: "Presentation-ready serving bowls, trays, and platters.",
+    image: "/images/products/green-gold-dry-fruit-serving-bowl.png",
+    href: "/products?category=serving-sets",
   },
 ];
 
@@ -373,27 +375,27 @@ export const footerGroups = [
     links: [
       {
         label: "Dinner Sets",
-        href: "/products?category=dinnerware&subcategory=dinner-sets",
+        href: "/products?category=dinner-sets",
       },
       {
         label: "Tea & Coffee Sets",
-        href: "/products?category=drinkware",
+        href: "/products?category=tea-coffee-sets",
       },
       {
-        label: "Mugs & Cups",
-        href: "/products?category=drinkware&subcategory=coffee-mugs",
+        label: "Cups & Mugs",
+        href: "/products?category=cups-mugs",
       },
       {
-        label: "Plates & Bowls",
-        href: "/products?category=dinnerware",
+        label: "Plates",
+        href: "/products?category=plates",
       },
       {
-        label: "Hotel / HoReCa Collection",
-        href: "/products?category=dinnerware",
+        label: "Serving Sets",
+        href: "/products?category=serving-sets",
       },
       {
-        label: "Export Range",
-        href: "/products?category=shop-by-material",
+        label: "Hotel / Bulk Orders",
+        href: "/products?category=hotel-bulk-orders",
       },
     ],
   },

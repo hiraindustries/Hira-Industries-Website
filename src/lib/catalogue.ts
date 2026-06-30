@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type {
   CatalogueProduct,
@@ -26,8 +27,24 @@ export type CatalogueData = {
   message: string | null;
 };
 
+export type ProductDetailData = {
+  status: "ok" | "not-configured" | "error" | "not-found";
+  product: CatalogueProduct | null;
+  category: ProductCategory | null;
+  mainCategory: ProductCategory | null;
+  relatedProducts: CatalogueProduct[];
+  categories: ProductCategory[];
+  message: string | null;
+};
+
 const unavailableMessage =
   "We could not load the product catalogue right now. Please contact us for the latest catalogue.";
+
+const productSelect =
+  "id, name, slug, category_id, short_description, description, product_code, material, set_contents, available_colors, key_features, image_url, gallery_images, is_featured, is_active, sort_order, created_at";
+
+const categorySelect =
+  "id, name, slug, parent_id, description, image_url, sort_order, is_active, created_at";
 
 function logDevelopmentError(context: string, error: unknown) {
   if (process.env.NODE_ENV === "development") {
@@ -185,9 +202,7 @@ export async function getCatalogueData(
   try {
     const { data: categories, error: categoryError } = await supabase
       .from("product_categories")
-      .select(
-        "id, name, slug, parent_id, description, image_url, sort_order, is_active, created_at",
-      )
+      .select(categorySelect)
       .eq("is_active", true)
       .order("sort_order", { ascending: true })
       .order("name", { ascending: true });
@@ -232,9 +247,7 @@ export async function getCatalogueData(
   try {
     let productQuery = supabase
       .from("products")
-      .select(
-        "id, name, slug, category_id, short_description, description, product_code, material, image_url, gallery_images, is_featured, is_active, sort_order, created_at",
-      )
+      .select(productSelect)
       .eq("is_active", true);
 
     if (selectedSubcategory) {
@@ -297,3 +310,131 @@ export async function getCatalogueData(
     message: null,
   };
 }
+
+export const getProductDetailData = cache(
+  async (slug: string): Promise<ProductDetailData> => {
+    const supabase = createSupabaseServerClient();
+
+    if (!supabase) {
+      return {
+        status: "not-configured",
+        product: null,
+        category: null,
+        mainCategory: null,
+        relatedProducts: [],
+        categories: [],
+        message: unavailableMessage,
+      };
+    }
+
+    try {
+      const [
+        { data: product, error: productError },
+        { data: categories, error: categoryError },
+        { data: products, error: relatedError },
+      ] = await Promise.all([
+        supabase
+          .from("products")
+          .select(productSelect)
+          .eq("slug", slug)
+          .eq("is_active", true)
+          .maybeSingle(),
+        supabase
+          .from("product_categories")
+          .select(categorySelect)
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true })
+          .order("name", { ascending: true }),
+        supabase
+          .from("products")
+          .select(productSelect)
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true })
+          .order("name", { ascending: true }),
+      ]);
+
+      if (productError || categoryError || relatedError) {
+        logDevelopmentError("Failed to load product detail:", {
+          productError,
+          categoryError,
+          relatedError,
+        });
+
+        return {
+          status: "error",
+          product: null,
+          category: null,
+          mainCategory: null,
+          relatedProducts: [],
+          categories: categories ?? [],
+          message: unavailableMessage,
+        };
+      }
+
+      if (!product) {
+        return {
+          status: "not-found",
+          product: null,
+          category: null,
+          mainCategory: null,
+          relatedProducts: [],
+          categories: categories ?? [],
+          message: null,
+        };
+      }
+
+      const activeCategories = categories ?? [];
+      const { mainCategories } = deriveCategoryHierarchy(activeCategories);
+      const category =
+        activeCategories.find((item) => item.id === product.category_id) ??
+        null;
+      const mainCategory =
+        mainCategories.find((item) => item.id === category?.parent_id) ??
+        mainCategories.find((item) => item.id === category?.id) ??
+        null;
+      const relatedCategoryIds = new Set([
+        ...(mainCategory ? [mainCategory.id] : []),
+        ...activeCategories
+          .filter((item) => item.parent_id === mainCategory?.id)
+          .map((item) => item.id),
+      ]);
+      const otherProducts = (products ?? []).filter(
+        (item) => item.id !== product.id,
+      );
+      const sameCollectionProducts = otherProducts.filter((item) =>
+        relatedCategoryIds.has(item.category_id),
+      );
+      const fallbackProducts = otherProducts.filter(
+        (item) => !relatedCategoryIds.has(item.category_id),
+      );
+
+      return {
+        status: "ok",
+        product,
+        category,
+        mainCategory,
+        relatedProducts: [
+          ...sameCollectionProducts,
+          ...fallbackProducts,
+        ].slice(0, 4),
+        categories: activeCategories,
+        message: null,
+      };
+    } catch (error) {
+      logDevelopmentError(
+        "Unexpected error while loading product detail:",
+        error,
+      );
+
+      return {
+        status: "error",
+        product: null,
+        category: null,
+        mainCategory: null,
+        relatedProducts: [],
+        categories: [],
+        message: unavailableMessage,
+      };
+    }
+  },
+);

@@ -1,7 +1,7 @@
 export default function ProductsLoading() {
   return (
     <main className="products-page products-catalogue" aria-busy="true">
-      <section className="products-catalogue__hero">
+      <section className="catalogue-page-head">
         <div className="site-shell">
           <div className="catalogue-loading__hero">
             <span className="catalogue-skeleton catalogue-skeleton--kicker" />
@@ -10,7 +10,7 @@ export default function ProductsLoading() {
           </div>
         </div>
       </section>
-      <section className="catalogue-section">
+      <section className="catalogue-index">
         <div className="site-shell">
           <span className="catalogue-skeleton catalogue-skeleton--section-title" />
           <div className="catalogue-loading__grid">

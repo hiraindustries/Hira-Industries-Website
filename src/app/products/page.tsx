@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 type ProductsSearchParams = Promise<{
   category?: string | string[];
   subcategory?: string | string[];
+  view?: string | string[];
 }>;
 
 function getFirstSearchValue(value?: string | string[]) {
@@ -32,6 +33,7 @@ export default async function ProductsPage({
   const subcategorySlug = getFirstSearchValue(
     resolvedSearchParams.subcategory,
   );
+  const viewAll = getFirstSearchValue(resolvedSearchParams.view) === "all";
   const catalogue = await getCatalogueData(categorySlug, subcategorySlug);
 
   const schema = {
@@ -81,7 +83,7 @@ export default async function ProductsPage({
               "@type": "Organization",
               name: "Hira Industries",
             },
-            url: `${siteUrl}/products#${product.slug}`,
+            url: `${siteUrl}/products/${product.slug}`,
           },
         })),
       },
@@ -96,7 +98,7 @@ export default async function ProductsPage({
           __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
         }}
       />
-      <ProductShowcase catalogue={catalogue} />
+      <ProductShowcase catalogue={catalogue} viewAll={viewAll} />
     </main>
   );
 }
