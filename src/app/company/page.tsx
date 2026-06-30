@@ -7,30 +7,15 @@ import {
   FiGlobe,
   FiHeart,
   FiHome,
-  FiLayers,
   FiShield,
   FiShoppingBag,
   FiStar,
   FiTruck,
-  FiUsers,
 } from "react-icons/fi";
 
 export const metadata = {
   title: "About Hira Industries",
 };
-
-const companyPillars = [
-  {
-    title: "Manufacturing Focus",
-    text: "Ceramic collections developed around repeatable quality, reliable production, and clean finishing.",
-    icon: FiLayers,
-  },
-  {
-    title: "Buyer Support",
-    text: "Clear category guidance, catalogue support, and practical communication for every enquiry.",
-    icon: FiUsers,
-  },
-];
 
 const missionVisionCards = [
   {

@@ -357,7 +357,6 @@ export async function loginAdminAction(
 ): Promise<AdminActionState> {
   const email = getString(formData, "email").toLowerCase();
   const password = getString(formData, "password");
-  const intent = getString(formData, "intent");
   const supabase = await createSupabaseAuthServerClient();
 
   if (!supabase) {
@@ -377,38 +376,7 @@ export async function loginAdminAction(
   if (!isApprovedAdminEmail(email)) {
     return {
       status: "error",
-      message: "This email is not approved for admin access.",
-    };
-  }
-
-  if (intent === "register") {
-    if (password.length < 8) {
-      return {
-        status: "error",
-        message: "Use a password with at least 8 characters.",
-      };
-    }
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      return {
-        status: "error",
-        message: error.message,
-      };
-    }
-
-    if (data.session && data.user) {
-      redirect("/admin");
-    }
-
-    return {
-      status: "success",
-      message:
-        "Admin account requested. Check this email inbox to confirm the account, then sign in.",
+      message: "Invalid admin email or password.",
     };
   }
 

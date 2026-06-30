@@ -1,10 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
-import { FiLock, FiLogIn, FiMail, FiShield } from "react-icons/fi";
-import {
-  loginAdminAction,
-} from "@/app/admin/actions";
+import { FiLock, FiLogIn, FiMail } from "react-icons/fi";
+import { loginAdminAction } from "@/app/admin/actions";
 import { initialAdminActionState } from "@/lib/admin/action-state";
 
 export default function LoginForm() {
@@ -48,36 +46,14 @@ export default function LoginForm() {
           {state.message}
         </p>
       ) : null}
-      {state.status === "success" ? (
-        <p className="admin-notice admin-notice--success" role="status">
-          {state.message}
-        </p>
-      ) : null}
-
       <button
         className="admin-button admin-button--primary admin-button--wide"
         type="submit"
-        name="intent"
-        value="login"
         disabled={isPending}
       >
         <FiLogIn aria-hidden="true" />
         {isPending ? "Signing in…" : "Sign in to dashboard"}
       </button>
-      <button
-        className="admin-button admin-button--ghost admin-button--wide"
-        type="submit"
-        name="intent"
-        value="register"
-        disabled={isPending}
-      >
-        <FiShield aria-hidden="true" />
-        First-time approved admin setup
-      </button>
-      <small className="admin-login__hint">
-        Setup only works for an email included in the server-side
-        ADMIN_EMAILS whitelist.
-      </small>
     </form>
   );
 }

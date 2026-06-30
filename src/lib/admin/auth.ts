@@ -3,23 +3,36 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { createSupabaseAuthServerClient } from "@/lib/supabase/auth-server";
 
-const fallbackAdminEmails = [
-  "hiraindustrieskhurja@gmail.com",
-  "loveg4686@gmail.com",
-];
+const approvedAdminEmail = "hiraindustrieskhurja@gmail.com";
+const fallbackAdminEmails = [approvedAdminEmail];
+
+export function normalizeEmail(email: string) {
+  return email.trim().toLowerCase();
+}
 
 function getAdminEmails() {
   const configuredEmails = process.env.ADMIN_EMAILS?.split(",")
-    .map((email) => email.trim().toLowerCase())
+    .map(normalizeEmail)
     .filter(Boolean);
+  const candidateEmails =
+    configuredEmails?.length ? configuredEmails : fallbackAdminEmails;
 
   return new Set(
-    configuredEmails?.length ? configuredEmails : fallbackAdminEmails,
+    candidateEmails.filter((email) => email === approvedAdminEmail),
   );
 }
 
 export function isApprovedAdminEmail(email: string | null | undefined) {
-  return Boolean(email && getAdminEmails().has(email.trim().toLowerCase()));
+  if (!email) {
+    return false;
+  }
+
+  const normalizedEmail = normalizeEmail(email);
+
+  return (
+    normalizedEmail === approvedAdminEmail &&
+    getAdminEmails().has(approvedAdminEmail)
+  );
 }
 
 export type AdminIdentity = {

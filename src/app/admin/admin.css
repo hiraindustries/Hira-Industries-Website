@@ -93,13 +93,6 @@ body:has(.admin-root) {
   margin-top: 2rem;
 }
 
-.admin-login__hint {
-  color: #7e756a;
-  font-size: 0.7rem;
-  line-height: 1.5;
-  text-align: center;
-}
-
 .admin-shell {
   display: grid;
   min-height: 100vh;
