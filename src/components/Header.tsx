@@ -58,6 +58,7 @@ export default function Header() {
             height={70}
             sizes="(max-width: 768px) 52px, 70px"
             loading="eager"
+            priority
             className="site-brand__logo"
           />
           <span className="site-brand__text">
