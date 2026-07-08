@@ -405,6 +405,12 @@ body:has(.admin-root) {
   color: #8ed5aa;
 }
 
+.admin-status.is-muted {
+  border-color: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  color: #8b857c;
+}
+
 .admin-notice {
   margin: 0 0 1.25rem;
   padding: 0.9rem 1rem;
@@ -522,6 +528,10 @@ body:has(.admin-root) {
   border-bottom: 0;
 }
 
+.admin-table tbody tr.is-muted {
+  opacity: 0.72;
+}
+
 .admin-product-cell {
   display: flex;
   min-width: 260px;
@@ -613,6 +623,31 @@ body:has(.admin-root) {
 .admin-table-note {
   color: #756e65;
   font-size: 0.75rem;
+}
+
+.admin-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.admin-filter-row .admin-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #b8ad9e;
+}
+
+.admin-filter-row .admin-text-link.is-active {
+  border-color: rgba(217, 180, 95, 0.35);
+  background: rgba(217, 180, 95, 0.12);
+  color: #efcf7a;
 }
 
 .admin-empty,
