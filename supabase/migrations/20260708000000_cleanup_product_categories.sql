@@ -1,7 +1,34 @@
 begin;
 
 -- Keep products and images intact. This migration only adjusts category visibility
--- and reassigns products only where there is an obvious parent/child mapping.
+-- and reassigns products where there is an obvious category mapping.
+
+insert into public.product_categories (
+  name,
+  slug,
+  parent_id,
+  description,
+  image_url,
+  sort_order,
+  is_active
+)
+values (
+  'Hira Industries Product Catalogue',
+  'crockery-website-product-categories',
+  null,
+  'Premium ceramic crockery catalogue for homes, hospitality, retail, wholesale, and gifting buyers.',
+  null,
+  0,
+  true
+)
+on conflict (slug) do update
+set
+  name = excluded.name,
+  parent_id = excluded.parent_id,
+  description = excluded.description,
+  image_url = excluded.image_url,
+  sort_order = excluded.sort_order,
+  is_active = excluded.is_active;
 
 with approved_main_categories as (
   select * from (values
@@ -84,7 +111,7 @@ where slug in (
 )
 and parent_id is null;
 
--- Reactivate the approved root-level categories if any were previously disabled.
+-- Reactivate the approved main categories if any were previously disabled.
 update public.product_categories
 set is_active = true
 where slug in (
