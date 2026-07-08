@@ -120,25 +120,35 @@ function isCatalogueRoot(category: ProductCategory) {
   );
 }
 
+function sortCategories(categories: ProductCategory[]) {
+  return [...categories].sort(
+    (left, right) =>
+      Number(left.sort_order) - Number(right.sort_order) ||
+      left.name.localeCompare(right.name),
+  );
+}
+
 function deriveCategoryHierarchy(categories: ProductCategory[]) {
   const rootCategory =
     categories.find((category) => category.slug === catalogueRootSlug) ?? null;
 
-  const mainCategories = rootCategory
-    ? categories.filter(
-        (category) => category.parent_id === rootCategory.id,
-      )
-    : categories.filter(
-        (category) => category.parent_id === null && !isCatalogueRoot(category),
-      );
+  const mainCategories = sortCategories(
+    rootCategory
+      ? categories.filter((category) => category.parent_id === rootCategory.id)
+      : categories.filter(
+          (category) => category.parent_id === null && !isCatalogueRoot(category),
+        ),
+  );
 
   const mainCategoryIds = new Set(
     mainCategories.map((category) => category.id),
   );
-  const allSubcategories = categories.filter(
-    (category) =>
-      category.parent_id !== null &&
-      mainCategoryIds.has(category.parent_id),
+  const allSubcategories = sortCategories(
+    categories.filter(
+      (category) =>
+        category.parent_id !== null &&
+        mainCategoryIds.has(category.parent_id),
+    ),
   );
 
   return {
@@ -255,7 +265,7 @@ export async function getCatalogueData(
       return getEmptyCatalogue("category-error");
     }
 
-    activeCategories = categories ?? [];
+    activeCategories = sortCategories(categories ?? []);
   } catch (error) {
     logDevelopmentError(
       "Unexpected error while loading active product categories:",
@@ -285,25 +295,16 @@ export async function getCatalogueData(
   let activeProducts: CatalogueProduct[];
 
   try {
-    let productQuery = supabase
-      .from("products")
-      .select(productSelect)
-      .eq("is_active", true);
-
-    if (selectedSubcategory) {
-      productQuery = productQuery.eq(
-        "subcategory_id",
-        selectedSubcategory.id,
-      );
-    } else if (selectedCategory) {
-      productQuery = productQuery.eq("category_id", selectedCategory.id);
-    }
+    const activeCategoryIds = new Set(activeCategories.map((category) => category.id));
 
     const [
       { data: products, error: productError },
       { data: productImages, error: productImageError },
     ] = await Promise.all([
-      productQuery
+      supabase
+        .from("products")
+        .select(productSelect)
+        .eq("is_active", true)
         .order("sort_order", { ascending: true })
         .order("name", { ascending: true }),
       supabase
@@ -330,8 +331,33 @@ export async function getCatalogueData(
       };
     }
 
+    const visibleProducts = (products ?? []).filter((product) => {
+      if (selectedSubcategory) {
+        return product.subcategory_id === selectedSubcategory.id;
+      }
+
+      if (selectedCategory) {
+        if (product.subcategory_id) {
+          const subcategory = activeCategories.find(
+            (category) => category.id === product.subcategory_id,
+          );
+
+          return subcategory?.parent_id === selectedCategory.id;
+        }
+
+        return product.category_id === selectedCategory.id;
+      }
+
+      return (
+        activeCategoryIds.has(product.category_id) ||
+        (product.subcategory_id
+          ? activeCategoryIds.has(product.subcategory_id)
+          : false)
+      );
+    });
+
     activeProducts = attachProductImages(
-      products ?? [],
+      visibleProducts,
       productImages ?? [],
     );
   } catch (error) {
@@ -447,10 +473,35 @@ export const getProductDetailData = cache(
         };
       }
 
-      const activeCategories = categories ?? [];
+      const activeCategories = sortCategories(categories ?? []);
+      const activeCategoryIds = new Set(activeCategories.map((category) => category.id));
       const { mainCategories } = deriveCategoryHierarchy(activeCategories);
+      const isProductVisible =
+        (product.subcategory_id && activeCategoryIds.has(product.subcategory_id)) ||
+        (product.category_id && activeCategoryIds.has(product.category_id));
+
+      if (!isProductVisible) {
+        return {
+          status: "not-found",
+          product: null,
+          category: null,
+          mainCategory: null,
+          relatedProducts: [],
+          categories: activeCategories,
+          message: null,
+        };
+      }
+
       const hydratedProducts = attachProductImages(
-        products ?? [],
+        (products ?? []).filter((item) => {
+          const candidateCategoryId = item.category_id;
+          const candidateSubcategoryId = item.subcategory_id;
+
+          return (
+            activeCategoryIds.has(candidateCategoryId) ||
+            (candidateSubcategoryId ? activeCategoryIds.has(candidateSubcategoryId) : false)
+          );
+        }),
         productImages ?? [],
       );
       const hydratedProduct =

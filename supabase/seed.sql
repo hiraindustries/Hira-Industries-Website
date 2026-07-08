@@ -95,6 +95,34 @@ with main_category_seed (
       'Trade-ready crockery solutions for hotels, restaurants, retailers, wholesalers, and repeat buyers.',
       '/images/Bulk Order Handling.png',
       80
+    ),
+    (
+      'Bathroom Accessories',
+      'bathroom-accessories',
+      'Coordinated ceramic bathroom accessories designed for premium hospitality and modern living spaces.',
+      null,
+      90
+    ),
+    (
+      'Glassware & Drinkware',
+      'glassware-drinkware',
+      'Elegant drinkware and glassware selections for presentation, hospitality, and gifting occasions.',
+      null,
+      100
+    ),
+    (
+      'Home Decor & Accents',
+      'home-decor-accents',
+      'Decorative ceramic accents and statement pieces suited for homes, retail display, and premium interiors.',
+      null,
+      110
+    ),
+    (
+      'Jar & Storage',
+      'jar-storage',
+      'Practical ceramic jars and storage pieces that pair function with a premium finish.',
+      null,
+      120
     )
 )
 insert into public.product_categories (

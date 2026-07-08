@@ -62,12 +62,36 @@ export const navLinks: NavLink[] = [
         href: "/products?category=plates",
       },
       {
+        label: "Bowls",
+        href: "/products?category=bowls",
+      },
+      {
         label: "Serving Sets",
         href: "/products?category=serving-sets",
       },
       {
+        label: "Gift Sets",
+        href: "/products?category=gift-sets",
+      },
+      {
         label: "Hotel / Bulk Orders",
         href: "/products?category=hotel-bulk-orders",
+      },
+      {
+        label: "Bathroom Accessories",
+        href: "/products?category=bathroom-accessories",
+      },
+      {
+        label: "Glassware & Drinkware",
+        href: "/products?category=glassware-drinkware",
+      },
+      {
+        label: "Home Decor & Accents",
+        href: "/products?category=home-decor-accents",
+      },
+      {
+        label: "Jar & Storage",
+        href: "/products?category=jar-storage",
       },
     ],
   },
@@ -242,12 +266,36 @@ export const footerGroups = [
         href: "/products?category=plates",
       },
       {
+        label: "Bowls",
+        href: "/products?category=bowls",
+      },
+      {
         label: "Serving Sets",
         href: "/products?category=serving-sets",
       },
       {
+        label: "Gift Sets",
+        href: "/products?category=gift-sets",
+      },
+      {
         label: "Hotel / Bulk Orders",
         href: "/products?category=hotel-bulk-orders",
+      },
+      {
+        label: "Bathroom Accessories",
+        href: "/products?category=bathroom-accessories",
+      },
+      {
+        label: "Glassware & Drinkware",
+        href: "/products?category=glassware-drinkware",
+      },
+      {
+        label: "Home Decor & Accents",
+        href: "/products?category=home-decor-accents",
+      },
+      {
+        label: "Jar & Storage",
+        href: "/products?category=jar-storage",
       },
     ],
   },

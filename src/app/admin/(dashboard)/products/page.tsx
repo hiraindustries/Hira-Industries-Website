@@ -48,6 +48,35 @@ export default async function AdminProductsPage({
     getAdminProducts(),
   ]);
   const query = params.q?.trim().toLowerCase() ?? "";
+  const activeMainCategories = [...categoryTree.mainCategories]
+    .filter((category) => category.is_active)
+    .sort(
+      (left, right) =>
+        Number(left.sort_order) - Number(right.sort_order) ||
+        left.name.localeCompare(right.name),
+    );
+  const activeSubcategories = [...categoryTree.subcategories]
+    .filter((category) => category.is_active)
+    .sort(
+      (left, right) =>
+        Number(left.sort_order) - Number(right.sort_order) ||
+        left.name.localeCompare(right.name),
+    );
+  const selectedMainCategoryId =
+    params.category &&
+    activeMainCategories.some((category) => category.id === params.category)
+      ? params.category
+      : "";
+  const selectedSubcategoryId =
+    params.subcategory &&
+    activeSubcategories.some((category) => category.id === params.subcategory)
+      ? params.subcategory
+      : "";
+  const visibleSubcategories = selectedMainCategoryId
+    ? activeSubcategories.filter(
+        (category) => category.parent_id === selectedMainCategoryId,
+      )
+    : activeSubcategories;
   const filteredProducts = products.filter((product) => {
     const matchesQuery =
       !query ||
@@ -55,10 +84,16 @@ export default async function AdminProductsPage({
       product.slug.toLowerCase().includes(query) ||
       product.product_code?.toLowerCase().includes(query);
     const matchesCategory =
-      !params.category || product.category_id === params.category;
+      !selectedMainCategoryId ||
+      product.category_id === selectedMainCategoryId ||
+      (product.subcategory_id
+        ? activeSubcategories.find(
+            (category) => category.id === product.subcategory_id,
+          )?.parent_id === selectedMainCategoryId
+        : false);
     const matchesSubcategory =
-      !params.subcategory ||
-      product.subcategory_id === params.subcategory;
+      !selectedSubcategoryId ||
+      product.subcategory_id === selectedSubcategoryId;
     const matchesStatus =
       !params.status ||
       (params.status === "active"
@@ -104,9 +139,9 @@ export default async function AdminProductsPage({
             placeholder="Search by name, slug, or code"
           />
         </label>
-        <select name="category" defaultValue={params.category ?? ""}>
+        <select name="category" defaultValue={selectedMainCategoryId}>
           <option value="">All main categories</option>
-          {categoryTree.mainCategories.map((category) => (
+          {activeMainCategories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
@@ -114,10 +149,10 @@ export default async function AdminProductsPage({
         </select>
         <select
           name="subcategory"
-          defaultValue={params.subcategory ?? ""}
+          defaultValue={selectedSubcategoryId}
         >
           <option value="">All subcategories</option>
-          {categoryTree.subcategories.map((category) => (
+          {visibleSubcategories.map((category) => (
             <option key={category.id} value={category.id}>
               {getCategoryDisplayName(category, categoryTree.all)}
             </option>
