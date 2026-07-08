@@ -1,3 +1,5 @@
+import "server-only";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -5,6 +7,8 @@ import { FiExternalLink, FiLogOut } from "react-icons/fi";
 import { logoutAdminAction } from "@/app/admin/actions";
 import AdminNav from "@/components/admin/AdminNav";
 import { requireAdminPage } from "@/lib/admin/auth";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardLayout({
   children,

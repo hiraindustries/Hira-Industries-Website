@@ -1,10 +1,13 @@
 import "server-only";
 
 import { createClient } from "@supabase/supabase-js";
+import { assertAdmin } from "@/lib/admin/auth";
 import type { Database } from "@/lib/supabase/database.types";
 import { getServiceRoleSupabaseCredentials } from "@/lib/supabase/env";
 
-export function createAdminServiceClient() {
+export async function createAdminServiceClient() {
+  await assertAdmin();
+
   const credentials = getServiceRoleSupabaseCredentials();
 
   if (!credentials) {

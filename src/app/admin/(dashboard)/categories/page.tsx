@@ -1,3 +1,5 @@
+import "server-only";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,7 +12,10 @@ import {
   getAdminCategoryTree,
   getCategoryDisplayName,
 } from "@/lib/admin/categories";
+import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminProducts } from "@/lib/admin/products";
+
+export const dynamic = "force-dynamic";
 
 type CategorySearchParams = Promise<{
   created?: string;
@@ -22,6 +27,8 @@ export default async function AdminCategoriesPage({
 }: {
   searchParams: CategorySearchParams;
 }) {
+  await requireAdminPage();
+
   const [params, categoryTree, products] = await Promise.all([
     searchParams,
     getAdminCategoryTree(),

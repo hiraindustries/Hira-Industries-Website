@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import ProductShowcase from "@/components/ProductShowcase";
 import { getCatalogueData } from "@/lib/catalogue";
-
-const siteUrl = "https://www.hiraindustrieskhurja.com";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Product Categories & Premium Crockery Catalogue",

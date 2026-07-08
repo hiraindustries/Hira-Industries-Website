@@ -178,7 +178,7 @@ export default function ProductListing({
             <span className="catalogue-state__icon" aria-hidden="true">
               <FiPackage />
             </span>
-            <h2>Products will be added soon</h2>
+            <h2>Products coming soon</h2>
             <p>
               This collection is ready for future products. Contact Hira
               Industries for the latest catalogue and buyer-specific options.

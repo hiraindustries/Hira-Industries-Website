@@ -1,3 +1,5 @@
+import "server-only";
+
 import Link from "next/link";
 import {
   FiArrowRight,
@@ -8,10 +10,15 @@ import {
   FiPlus,
   FiStar,
 } from "react-icons/fi";
+import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
 import { getAdminProducts } from "@/lib/admin/products";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
+  await requireAdminPage();
+
   const [categoryTree, products] = await Promise.all([
     getAdminCategoryTree(),
     getAdminProducts(),

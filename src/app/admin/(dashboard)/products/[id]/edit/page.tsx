@@ -1,13 +1,20 @@
 import { notFound } from "next/navigation";
 import ProductForm from "@/components/admin/ProductForm";
+import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
+import "server-only";
+
 import { getAdminProductById } from "@/lib/admin/products";
+
+export const dynamic = "force-dynamic";
 
 export default async function EditProductPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdminPage();
+
   const { id } = await params;
   const [categoryTree, product] = await Promise.all([
     getAdminCategoryTree(),

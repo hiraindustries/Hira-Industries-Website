@@ -1,10 +1,10 @@
 import "server-only";
 
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createSupabaseAuthServerClient } from "@/lib/supabase/auth-server";
 
 const approvedAdminEmail = "hiraindustrieskhurja@gmail.com";
-const fallbackAdminEmails = [approvedAdminEmail];
 
 export function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
@@ -14,8 +14,9 @@ function getAdminEmails() {
   const configuredEmails = process.env.ADMIN_EMAILS?.split(",")
     .map(normalizeEmail)
     .filter(Boolean);
-  const candidateEmails =
-    configuredEmails?.length ? configuredEmails : fallbackAdminEmails;
+  const candidateEmails = configuredEmails?.length
+    ? configuredEmails
+    : [approvedAdminEmail];
 
   return new Set(
     candidateEmails.filter((email) => email === approvedAdminEmail),
@@ -40,25 +41,27 @@ export type AdminIdentity = {
   email: string;
 };
 
-export async function getAdminIdentity(): Promise<AdminIdentity | null> {
-  const supabase = await createSupabaseAuthServerClient();
+export const getAdminIdentity = cache(
+  async (): Promise<AdminIdentity | null> => {
+    const supabase = await createSupabaseAuthServerClient();
 
-  if (!supabase) {
-    return null;
-  }
+    if (!supabase) {
+      return null;
+    }
 
-  const { data, error } = await supabase.auth.getClaims();
-  const email =
-    typeof data?.claims?.email === "string" ? data.claims.email : null;
-  const id =
-    typeof data?.claims?.sub === "string" ? data.claims.sub : null;
+    const { data, error } = await supabase.auth.getClaims();
+    const email =
+      typeof data?.claims?.email === "string" ? data.claims.email : null;
+    const id =
+      typeof data?.claims?.sub === "string" ? data.claims.sub : null;
 
-  if (error || !id || !email || !isApprovedAdminEmail(email)) {
-    return null;
-  }
+    if (error || !id || !email || !isApprovedAdminEmail(email)) {
+      return null;
+    }
 
-  return { id, email };
-}
+    return { id, email };
+  },
+);
 
 export async function requireAdminPage() {
   const identity = await getAdminIdentity();

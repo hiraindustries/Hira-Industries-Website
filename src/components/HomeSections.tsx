@@ -9,12 +9,11 @@ import {
   FiPackage,
   FiShield,
 } from "react-icons/fi";
+import type { CatalogueData } from "@/lib/catalogue";
 import {
   businessInfo,
   companyMilestones,
-  featuredProducts,
   galleryImages,
-  homeCategories,
   manufacturingSteps,
   qualityPromises,
 } from "@/lib/site-data";
@@ -26,7 +25,31 @@ const iconMap = {
   packaging: FiPackage,
 };
 
-export default function HomeSections() {
+const MAX_HOME_PRODUCTS = 6;
+
+function getProductCategoryName(
+  catalogue: CatalogueData,
+  productCategoryId: string | null | undefined,
+  fallback = "Hira Collection",
+) {
+  if (!productCategoryId) {
+    return fallback;
+  }
+
+  return (
+    catalogue.mainCategories.find((category) => category.id === productCategoryId)
+      ?.name ?? fallback
+  );
+}
+
+export default function HomeSections({ catalogue }: { catalogue: CatalogueData }) {
+  const categories = catalogue.mainCategories.slice(0, 6);
+  const featuredProducts =
+    catalogue.products.filter((product) => product.is_featured).slice(0, MAX_HOME_PRODUCTS) ?? [];
+  const fallbackProducts = catalogue.products.slice(0, MAX_HOME_PRODUCTS);
+  const visibleProducts = featuredProducts.length > 0 ? featuredProducts : fallbackProducts;
+  const showCatalogEmptyState =
+    catalogue.status !== "ok" || (categories.length === 0 && visibleProducts.length === 0);
   return (
     <div className="manufacturer-home">
       <section className="home-section home-about">
@@ -104,27 +127,55 @@ export default function HomeSections() {
             </p>
           </div>
 
-          <div className="category-grid">
-            {homeCategories.map((category) => (
-              <Link
-                key={`${category.title}-${category.href}`}
-                href={category.href}
-                className="category-tile"
-              >
-                <Image
-                  src={category.image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                />
-                <span className="category-tile__overlay" aria-hidden="true" />
-                <span className="category-tile__content">
-                  <strong>{category.title}</strong>
-                  <span>{category.description}</span>
-                </span>
-              </Link>
-            ))}
-          </div>
+          {categories.length > 0 ? (
+            <div className="category-grid">
+              {categories.map((category) => {
+                const isRemoteImage = Boolean(
+                  category.image_url && /^https?:\/\//.test(category.image_url),
+                );
+
+                return (
+                  <Link
+                    key={category.id}
+                    href={`/products?category=${category.slug}`}
+                    className="category-tile"
+                  >
+                    <Image
+                      src={category.image_url ?? "/images/build-pic-1.png"}
+                      alt={category.name}
+                      fill
+                      sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                      unoptimized={isRemoteImage}
+                    />
+                    <span className="category-tile__overlay" aria-hidden="true" />
+                    <span className="category-tile__content">
+                      <strong>{category.name}</strong>
+                      <span>{category.description ?? "Premium ceramic collection"}</span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="catalogue-state catalogue-state--compact">
+              <h3>Collections coming soon</h3>
+              <p>
+                Our CMS catalogue is being refreshed. Request the latest brochure
+                for current collections and trade-ready availability.
+              </p>
+              <div className="catalogue-state__actions">
+                <a
+                  href={businessInfo.whatsappCatalogueHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="light-button light-button--whatsapp"
+                >
+                  <FiMessageCircle aria-hidden="true" />
+                  Request Catalogue
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -140,55 +191,87 @@ export default function HomeSections() {
             </p>
           </div>
 
-          <div className="home-product-grid">
-            {featuredProducts.map((product) => (
-              <article key={product.slug} className="home-product-card">
-                <div className="home-product-card__media">
-                  <Image
-                    src={product.image}
-                    alt={`${product.name} by Hira Industries`}
-                    fill
-                    sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                  />
-                  <span className="home-product-card__badge">
-                    {product.categoryLabel}
-                  </span>
-                </div>
-                <div className="home-product-card__body">
-                  <h3>{product.name}</h3>
-                  <div className="home-product-card__code">
-                    Code: {product.code}
-                  </div>
-                  <p>{product.description}</p>
-                  <div className="home-product-card__actions">
-                    <Link
-                      href={`/products?category=${product.category}${
-                        product.subcategory
-                          ? `&subcategory=${product.subcategory}`
-                          : ""
-                      }#${product.slug}`}
-                      className="light-button light-button--outline"
-                    >
-                      View Details
-                    </Link>
-                    <Link
-                      href={`/contact?product=${product.slug}`}
-                      className="light-button light-button--gold"
-                    >
-                      Request Quote
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          {showCatalogEmptyState ? (
+            <div className="catalogue-state catalogue-state--compact">
+              <h3>Products coming soon</h3>
+              <p>
+                We are curating our latest ceramic collections. Request our
+                catalogue or contact us for bulk and hospitality enquiries.
+              </p>
+              <div className="catalogue-state__actions">
+                <a
+                  href={businessInfo.whatsappCatalogueHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="light-button light-button--whatsapp"
+                >
+                  <FiMessageCircle aria-hidden="true" />
+                  Request Catalogue
+                </a>
+                <Link href="/contact" className="light-button light-button--outline">
+                  Bulk Enquiry
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="home-product-grid">
+                {visibleProducts.map((product, index) => {
+                  const productCategoryName = getProductCategoryName(
+                    catalogue,
+                    product.category_id,
+                  );
+                  const isRemoteImage = /^https?:\/\//.test(product.image_url ?? "");
 
-          <div className="home-section__action">
-            <Link href="/products" className="light-button light-button--outline">
-              View All Products
-              <FiArrowRight aria-hidden="true" />
-            </Link>
-          </div>
+                  return (
+                    <article key={product.id} className="home-product-card">
+                      <div className="home-product-card__media">
+                        <Image
+                          src={product.image_url ?? "/images/build-pic-1.png"}
+                          alt={`${product.name} by Hira Industries`}
+                          fill
+                          sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                          loading={index < 2 ? "eager" : "lazy"}
+                          unoptimized={isRemoteImage}
+                        />
+                        <span className="home-product-card__badge">
+                          {productCategoryName}
+                        </span>
+                      </div>
+                      <div className="home-product-card__body">
+                        <h3>{product.name}</h3>
+                        <div className="home-product-card__code">
+                          {product.product_code ? `Code: ${product.product_code}` : "Catalogue item"}
+                        </div>
+                        <p>{product.short_description ?? "Premium ceramic catalogue piece."}</p>
+                        <div className="home-product-card__actions">
+                          <Link
+                            href={`/products/${product.slug}`}
+                            className="light-button light-button--outline"
+                          >
+                            View Details
+                          </Link>
+                          <Link
+                            href={`/contact?product=${encodeURIComponent(product.slug)}`}
+                            className="light-button light-button--gold"
+                          >
+                            Request Quote
+                          </Link>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+
+              <div className="home-section__action">
+                <Link href="/products" className="light-button light-button--outline">
+                  View All Products
+                  <FiArrowRight aria-hidden="true" />
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
 

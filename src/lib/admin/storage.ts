@@ -45,7 +45,7 @@ export async function uploadAdminImage({
 }) {
   validateImageFile(file);
 
-  const supabase = createAdminServiceClient();
+  const supabase = await createAdminServiceClient();
   const objectPath = `${folder}/${sanitizeFilename(file.name)}`;
   const bytes = new Uint8Array(await file.arrayBuffer());
   const { error } = await supabase.storage
@@ -93,7 +93,8 @@ export async function removeAdminImages(
     return;
   }
 
-  const { error } = await createAdminServiceClient().storage
+  const supabase = await createAdminServiceClient();
+  const { error } = await supabase.storage
     .from(bucket)
     .remove(objectPaths);
 

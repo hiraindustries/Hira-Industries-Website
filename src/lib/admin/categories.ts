@@ -14,7 +14,8 @@ export type AdminCategoryTree = {
 };
 
 export async function getAdminCategoryTree(): Promise<AdminCategoryTree> {
-  const { data, error } = await createAdminServiceClient()
+  const supabase = await createAdminServiceClient();
+  const { data, error } = await supabase
     .from("product_categories")
     .select("*")
     .order("sort_order", { ascending: true })
@@ -40,7 +41,8 @@ export async function getAdminCategoryTree(): Promise<AdminCategoryTree> {
 }
 
 export async function getAdminCategoryById(id: string) {
-  const { data, error } = await createAdminServiceClient()
+  const supabase = await createAdminServiceClient();
+  const { data, error } = await supabase
     .from("product_categories")
     .select("*")
     .eq("id", id)

@@ -15,9 +15,8 @@ import {
 import ProductDetailGallery from "@/components/ProductDetailGallery";
 import { getProductDetailData } from "@/lib/catalogue";
 import { getProductGallery, getStringList } from "@/lib/product-media";
+import { siteUrl } from "@/lib/site";
 import { businessInfo } from "@/lib/site-data";
-
-const siteUrl = "https://www.hiraindustrieskhurja.com";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;

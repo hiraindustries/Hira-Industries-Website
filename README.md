@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Production deployment notes
+
+The public site is configured for the domain https://www.hiraindustrieskhurja.com. Set the Vercel environment variable `NEXT_PUBLIC_SITE_URL` to this value and keep `SUPABASE_SERVICE_ROLE_KEY` server-only.
+
 ## Getting Started
 
 First, run the development server:

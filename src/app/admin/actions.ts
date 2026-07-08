@@ -106,7 +106,7 @@ async function validateProductCategories(
   categoryId: string,
   subcategoryId: string | null,
 ) {
-  const supabase = createAdminServiceClient();
+  const supabase = await createAdminServiceClient();
   const ids = [categoryId, subcategoryId].filter(
     (id): id is string => Boolean(id),
   );
@@ -177,7 +177,7 @@ function getProductPayload(formData: FormData) {
 }
 
 async function syncProductImages(productId: string, formData: FormData) {
-  const supabase = createAdminServiceClient();
+  const supabase = await createAdminServiceClient();
   const existingInputs = parseJsonArray<ExistingImageInput>(
     formData.get("existing_images"),
   );
@@ -413,7 +413,7 @@ export async function createProductAction(
       payload.category_id,
       payload.subcategory_id ?? null,
     );
-    const supabase = createAdminServiceClient();
+    const supabase = await createAdminServiceClient();
     const { data: product, error } = await supabase
       .from("products")
       .insert(payload)
@@ -456,7 +456,7 @@ export async function updateProductAction(
       payload.category_id,
       payload.subcategory_id ?? null,
     );
-    const supabase = createAdminServiceClient();
+    const supabase = await createAdminServiceClient();
     const { error } = await supabase
       .from("products")
       .update(payload)
@@ -484,7 +484,7 @@ export async function updateProductAction(
 export async function deleteProductAction(formData: FormData) {
   await assertAdmin();
   const productId = getString(formData, "product_id");
-  const supabase = createAdminServiceClient();
+  const supabase = await createAdminServiceClient();
   const { data: images } = await supabase
     .from("product_images")
     .select("image_url")
@@ -510,7 +510,8 @@ export async function toggleProductActiveAction(formData: FormData) {
   await assertAdmin();
   const productId = getString(formData, "product_id");
   const nextState = getString(formData, "next_state") === "true";
-  const { error } = await createAdminServiceClient()
+  const supabase = await createAdminServiceClient();
+  const { error } = await supabase
     .from("products")
     .update({ is_active: nextState })
     .eq("id", productId);
@@ -567,7 +568,7 @@ export async function createCategoryAction(
   try {
     await assertAdmin();
     const payload = getCategoryPayload(formData);
-    const supabase = createAdminServiceClient();
+    const supabase = await createAdminServiceClient();
     const { data: category, error } = await supabase
       .from("product_categories")
       .insert(payload)
@@ -624,7 +625,7 @@ export async function updateCategoryAction(
   try {
     await assertAdmin();
     const payload = getCategoryPayload(formData);
-    const supabase = createAdminServiceClient();
+    const supabase = await createAdminServiceClient();
     const { data: currentCategory, error: currentError } = await supabase
       .from("product_categories")
       .select("image_url, slug")

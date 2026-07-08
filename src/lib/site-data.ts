@@ -9,22 +9,6 @@ export type StatItem = {
   label: string;
 };
 
-export type ProductItem = {
-  slug: string;
-  name: string;
-  code: string;
-  category: string;
-  subcategory?: string;
-  categoryLabel: string;
-  description: string;
-  image: string;
-  imagePlaceholder?: boolean;
-  pieces: string;
-  material: string;
-  moq: string;
-  isNew: boolean;
-};
-
 export type DownloadItem = {
   title: string;
   description: string;
@@ -99,143 +83,11 @@ export const heroStats: StatItem[] = [
   { value: "Checks", label: "Consistent finishing" },
 ];
 
-export const featuredProducts: ProductItem[] = [
-  {
-    slug: "royal-elegance-dinner-set",
-    name: "Royal Elegance Dinner Set",
-    code: "HI-DS-001",
-    category: "dinner-sets",
-    subcategory: "white-gold-dinner-sets",
-    categoryLabel: "Dinner Sets",
-    description:
-      "A refined white and gold dinner collection designed for premium homes, hospitality, and gifting.",
-    image: "/images/build-pic-1.png",
-    pieces: "24 pcs / set",
-    material: "Ceramic",
-    moq: "5 sets",
-    isNew: true,
-  },
-  {
-    slug: "floral-charm-dinner-set",
-    name: "Floral Charm Dinner Set",
-    code: "HI-DS-002",
-    category: "dinner-sets",
-    subcategory: "ceramic-dinner-sets",
-    categoryLabel: "Dinner Sets",
-    description:
-      "Sculpted floral detailing and polished gold accents create a memorable table presentation.",
-    image: "/images/build-pic-2.png",
-    pieces: "18 pcs / set",
-    material: "Ceramic",
-    moq: "5 sets",
-    isNew: false,
-  },
-  {
-    slug: "heritage-tea-set",
-    name: "Heritage Tea Set",
-    code: "HI-TC-001",
-    category: "tea-coffee-sets",
-    subcategory: "premium-tea-sets",
-    categoryLabel: "Tea & Coffee Sets",
-    description:
-      "A timeless tea service with warm gold lines, balanced forms, and an elegant everyday finish.",
-    image: "/tea.png",
-    pieces: "6 pcs / set",
-    material: "Ceramic",
-    moq: "10 sets",
-    isNew: false,
-  },
-  {
-    slug: "artisan-ceramic-mug",
-    name: "Artisan Ceramic Mug",
-    code: "HI-MC-001",
-    category: "cups-mugs",
-    subcategory: "coffee-mugs",
-    categoryLabel: "Mugs & Cups",
-    description:
-      "A comfortable ceramic cup with a smooth finish, ideal for everyday service and premium gifting.",
-    image: "/blacktea.png",
-    pieces: "4 pcs / set",
-    material: "Ceramic",
-    moq: "20 sets",
-    isNew: false,
-  },
-  {
-    slug: "classic-dinner-plate-set",
-    name: "Classic Dinner Plate Set",
-    code: "HI-PB-001",
-    category: "plates",
-    subcategory: "dinner-plates",
-    categoryLabel: "Plates & Bowls",
-    description:
-      "Coordinated plates and bowls with durable glazing and a clean, buyer-ready presentation.",
-    image: "/images/build-pic-1.png",
-    pieces: "6 pcs / set",
-    material: "Ceramic",
-    moq: "12 sets",
-    isNew: false,
-  },
-  {
-    slug: "horeca-professional-range",
-    name: "Hotel & Bulk Professional Range",
-    code: "HI-HR-001",
-    category: "hotel-bulk-orders",
-    subcategory: "hotel-crockery",
-    categoryLabel: "Hotel / Bulk Orders",
-    description:
-      "A practical tableware range planned for hotels, restaurants, banquets, and repeat service.",
-    image: "/images/set.jpeg",
-    pieces: "Custom mix",
-    material: "Ceramic",
-    moq: "25 sets",
-    isNew: false,
-  },
-];
-
 export const companyMilestones: StatItem[] = [
   { value: "25+", label: "Years Experience" },
   { value: "500+", label: "Product Designs" },
   { value: "1000+", label: "Happy Clients" },
   { value: "15+", label: "Countries Served" },
-];
-
-export const homeCategories = [
-  {
-    title: "Dinner Sets",
-    description: "Complete dining collections for memorable service.",
-    image: "/images/build-pic-1.png",
-    href: "/products?category=dinner-sets",
-  },
-  {
-    title: "Tea & Coffee Sets",
-    description: "Elegant service sets for homes, cafes, and gifting.",
-    image: "/tea.png",
-    href: "/products?category=tea-coffee-sets",
-  },
-  {
-    title: "Mugs & Cups",
-    description: "Premium forms for daily use and custom collections.",
-    image: "/blacktea.png",
-    href: "/products?category=cups-mugs",
-  },
-  {
-    title: "Plates & Bowls",
-    description: "Coordinated shapes with polished, durable glazing.",
-    image: "/images/build-pic-2.png",
-    href: "/products?category=plates",
-  },
-  {
-    title: "Hotel / Bulk Orders",
-    description: "Dependable tableware planned for professional service.",
-    image: "/images/set.jpeg",
-    href: "/products?category=hotel-bulk-orders",
-  },
-  {
-    title: "Serving Sets",
-    description: "Presentation-ready serving bowls, trays, and platters.",
-    image: "/images/products/green-gold-dry-fruit-serving-bowl.png",
-    href: "/products?category=serving-sets",
-  },
 ];
 
 export const manufacturingSteps = [

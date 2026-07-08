@@ -11,7 +11,7 @@ import { createAdminServiceClient } from "@/lib/admin/service";
 export async function deleteUnauthorizedAdminAuthUsers() {
   await assertAdmin();
 
-  const supabase = createAdminServiceClient();
+  const supabase = await createAdminServiceClient();
   const unauthorizedUserIds: string[] = [];
   let page = 1;
 

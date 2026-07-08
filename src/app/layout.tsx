@@ -7,6 +7,7 @@ import { FiMessageCircle } from "react-icons/fi";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { businessInfo } from "@/lib/site-data";
+import { siteUrl } from "@/lib/site";
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: businessInfo.companyName,
     template: `%s | ${businessInfo.companyName}`,

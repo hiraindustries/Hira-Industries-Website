@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import CategoryForm from "@/components/admin/CategoryForm";
+import { requireAdminPage } from "@/lib/admin/auth";
 import {
   getAdminCategoryById,
   getAdminCategoryTree,
@@ -10,6 +11,8 @@ export default async function EditCategoryPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdminPage();
+
   const { id } = await params;
   const [categoryTree, category] = await Promise.all([
     getAdminCategoryTree(),

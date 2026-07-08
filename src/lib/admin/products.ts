@@ -11,7 +11,7 @@ export type AdminProduct = CatalogueProduct & {
 };
 
 export async function getAdminProducts() {
-  const supabase = createAdminServiceClient();
+  const supabase = await createAdminServiceClient();
   const [
     { data: products, error: productError },
     { data: images, error: imageError },
@@ -51,7 +51,7 @@ export async function getAdminProducts() {
 }
 
 export async function getAdminProductById(id: string) {
-  const supabase = createAdminServiceClient();
+  const supabase = await createAdminServiceClient();
   const [
     { data: product, error: productError },
     { data: images, error: imageError },

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowUpRight, FiImage } from "react-icons/fi";
-import { getProductGallery } from "@/lib/product-media";
+import { FiArrowUpRight, FiImage, FiMessageCircle } from "react-icons/fi";
+import { getProductGallery, getStringList } from "@/lib/product-media";
+import { businessInfo } from "@/lib/site-data";
 import type { CatalogueProduct } from "@/lib/supabase/database.types";
 
 export default function ProductCard({
@@ -20,6 +21,10 @@ export default function ProductCard({
   const features = product.features;
   const visibleFeatures = features.slice(0, 2);
   const remainingFeatures = Math.max(features.length - visibleFeatures.length, 0);
+  const colors = getStringList(product.available_colors);
+  const useCase = product.tags?.find((tag) =>
+    /home|hotel|restaurant|retail|gift|hospitality|bulk|office/i.test(tag),
+  );
   const isRemoteImage = /^https?:\/\//.test(coverImage.url);
 
   return (
@@ -76,13 +81,19 @@ export default function ProductCard({
 
           <dl className="catalogue-product-card__specs">
             <div>
-              <dt>Material</dt>
+              <dt>Finish</dt>
               <dd>{product.material ?? "Premium Ceramic"}</dd>
             </div>
-            {product.set_contents ? (
+            {colors.length > 0 ? (
               <div>
-                <dt>Set Contents</dt>
-                <dd>{product.set_contents}</dd>
+                <dt>Colours</dt>
+                <dd>{colors.join(", ")}</dd>
+              </div>
+            ) : null}
+            {useCase ? (
+              <div>
+                <dt>Use case</dt>
+                <dd>{useCase}</dd>
               </div>
             ) : null}
           </dl>
@@ -90,6 +101,20 @@ export default function ProductCard({
           <div className="catalogue-product-card__footer">
             <span>{subcategoryName}</span>
             {product.product_code ? <small>{product.product_code}</small> : null}
+          </div>
+
+          <div className="catalogue-product-card__quick-actions">
+            <Link href={`/contact?product=${encodeURIComponent(product.slug)}`}>
+              Request Quote
+            </Link>
+            <a
+              href={`https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(`Hello Hira Industries, I am interested in ${product.name}. Please share details and quotation.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiMessageCircle aria-hidden="true" />
+              Enquire
+            </a>
           </div>
         </div>
       </article>

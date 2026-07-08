@@ -1,7 +1,14 @@
+import "server-only";
+
 import ProductForm from "@/components/admin/ProductForm";
+import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewProductPage() {
+  await requireAdminPage();
+
   const categoryTree = await getAdminCategoryTree();
 
   return (

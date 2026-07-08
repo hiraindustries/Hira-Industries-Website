@@ -1,7 +1,14 @@
+import "server-only";
+
 import CategoryForm from "@/components/admin/CategoryForm";
+import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewCategoryPage() {
+  await requireAdminPage();
+
   const categoryTree = await getAdminCategoryTree();
   const parentOptions = [
     ...(categoryTree.root ? [categoryTree.root] : []),

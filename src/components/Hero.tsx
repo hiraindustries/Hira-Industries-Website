@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { heroStats } from "@/lib/site-data";
@@ -23,14 +24,19 @@ const heroSlides = [
 
 export default function Hero() {
   const [slideIndex, setSlideIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     const timer = window.setInterval(() => {
       setSlideIndex((current) => (current + 1) % heroSlides.length);
     }, 4000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [prefersReducedMotion]);
 
   const currentSlide = heroSlides[slideIndex];
 
@@ -41,8 +47,8 @@ export default function Hero() {
           <div className="hero-section__grid">
             <motion.div
               className="hero-copy"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <div className="hero-kicker">Crafting Elegance</div>
@@ -76,25 +82,30 @@ export default function Hero() {
 
             <motion.div
               className="hero-visual"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.96 }}
+              animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
               transition={{ duration: 0.9, ease: "easeOut", delay: 0.08 }}
             >
               <div className="hero-visual__frame">
                 <div className="hero-visual__glow" aria-hidden="true" />
 
                 <AnimatePresence mode="wait">
-                  <motion.img
+                  <motion.div
                     key={currentSlide.src}
-                    src={currentSlide.src}
-                    alt={currentSlide.alt}
-                    className="hero-visual__image"
-                    loading="eager"
-                    initial={{ opacity: 0, scale: 1.04 }}
-                    animate={{ opacity: 1, scale: 1.02 }}
-                    exit={{ opacity: 0, scale: 1.04 }}
+                    initial={prefersReducedMotion ? false : { opacity: 0, scale: 1.04 }}
+                    animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1.02 }}
+                    exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 1.04 }}
                     transition={{ duration: 0.8, ease: "easeInOut" }}
-                  />
+                  >
+                    <Image
+                      src={currentSlide.src}
+                      alt={currentSlide.alt}
+                      fill
+                      sizes="(max-width: 720px) 100vw, 50vw"
+                      priority={slideIndex === 0}
+                      className="hero-visual__image"
+                    />
+                  </motion.div>
                 </AnimatePresence>
               </div>
             </motion.div>

@@ -1,3 +1,5 @@
+import "server-only";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -15,11 +17,14 @@ import {
   toggleProductActiveAction,
 } from "@/app/admin/actions";
 import ConfirmSubmitButton from "@/components/admin/ConfirmSubmitButton";
+import { requireAdminPage } from "@/lib/admin/auth";
 import {
   getAdminCategoryTree,
   getCategoryDisplayName,
 } from "@/lib/admin/categories";
 import { getAdminProducts } from "@/lib/admin/products";
+
+export const dynamic = "force-dynamic";
 
 type ProductsSearchParams = Promise<{
   q?: string;
@@ -35,6 +40,8 @@ export default async function AdminProductsPage({
 }: {
   searchParams: ProductsSearchParams;
 }) {
+  await requireAdminPage();
+
   const [params, categoryTree, products] = await Promise.all([
     searchParams,
     getAdminCategoryTree(),
