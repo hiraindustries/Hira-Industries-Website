@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import UrlHashCleaner from "@/components/UrlHashCleaner";
 import CookieConsent from "@/components/CookieConsent";
+import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import { businessInfo } from "@/lib/site-data";
 import { siteUrl } from "@/lib/site";
 
@@ -56,6 +57,7 @@ export default function RootLayout({
         <div className="app-main">{children}</div>
         <Footer />
         <CookieConsent />
+        <GoogleAnalyticsConsent />
         <a
           href={businessInfo.whatsappHref}
           target="_blank"

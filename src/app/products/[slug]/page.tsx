@@ -98,17 +98,18 @@ export default async function ProductDetailPage({
   const colors = getStringList(product.available_colors);
   const features = product.features;
   const productImages = getProductGallery(product);
-  const schema = {
+  const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
-    description: product.description,
-    sku: product.product_code ?? undefined,
-    material: product.material ?? undefined,
-    image: productImages.map((image) =>
-      /^https?:\/\//.test(image.url) ? image.url : `${siteUrl}${image.url}`,
-    ),
-    category: mainCategory?.name ?? category?.name,
+    description: product.description || undefined,
+    sku: product.product_code || undefined,
+    image:
+      productImages.length > 0
+        ? productImages.map((image) =>
+            /^https?:\/\//.test(image.url) ? image.url : `${siteUrl}${image.url}`,
+          )
+        : undefined,
     brand: {
       "@type": "Brand",
       name: "Hira Industries",
@@ -119,6 +120,21 @@ export default async function ProductDetailPage({
     },
     url: `${siteUrl}/products/${product.slug}`,
   };
+
+  const shouldRenderProductSchema = Boolean(
+    product.name &&
+      (product.description || product.product_code || productImages.length > 0),
+  );
+
+  const schema = shouldRenderProductSchema
+    ? productSchema
+    : {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: product.name,
+        description: product.description || product.short_description || undefined,
+        url: `${siteUrl}/products/${product.slug}`,
+      };
 
   return (
     <main className="product-detail-page">

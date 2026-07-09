@@ -31,6 +31,7 @@ export default function CookieConsent() {
 
   const saveChoice = (choice: ConsentChoice) => {
     window.localStorage.setItem(STORAGE_KEY, choice);
+    window.dispatchEvent(new Event("cookie-consent-updated"));
     setBannerState("hidden");
   };
 

@@ -62,28 +62,8 @@ export default async function ProductsPage({
         itemListElement: catalogue.products.map((product, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          item: {
-            "@type": "Product",
-            name: product.name,
-            description: product.short_description,
-            ...(product.product_code ? { sku: product.product_code } : {}),
-            ...(product.image_url
-              ? {
-                  image: /^https?:\/\//.test(product.image_url)
-                    ? product.image_url
-                    : `${siteUrl}${product.image_url}`,
-                }
-              : {}),
-            brand: {
-              "@type": "Brand",
-              name: "Hira Industries",
-            },
-            manufacturer: {
-              "@type": "Organization",
-              name: "Hira Industries",
-            },
-            url: `${siteUrl}/products/${product.slug}`,
-          },
+          url: `${siteUrl}/products/${product.slug}`,
+          name: product.name,
         })),
       },
     ],
