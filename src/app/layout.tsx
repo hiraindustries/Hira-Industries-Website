@@ -7,6 +7,7 @@ import { FiMessageCircle } from "react-icons/fi";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import UrlHashCleaner from "@/components/UrlHashCleaner";
+import CookieConsent from "@/components/CookieConsent";
 import { businessInfo } from "@/lib/site-data";
 import { siteUrl } from "@/lib/site";
 
@@ -51,6 +52,7 @@ export default function RootLayout({
         <Header />
         <div className="app-main">{children}</div>
         <Footer />
+        <CookieConsent />
         <a
           href={businessInfo.whatsappHref}
           target="_blank"
