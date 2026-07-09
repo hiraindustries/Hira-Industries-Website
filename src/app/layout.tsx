@@ -34,8 +34,11 @@ export const metadata: Metadata = {
   description:
     `Premium ceramic tableware manufacturer in ${businessInfo.location} for tea sets, dinner sets, hospitality buyers, gifting requirements, and trade-ready enquiries.`,
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   },
 };
