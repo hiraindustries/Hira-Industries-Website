@@ -48,14 +48,16 @@ export async function generateMetadata({
     : undefined;
 
   return {
-    title: product.name,
-    description: product.short_description,
+    title: `${product.name} | Ceramic Crockery | Hira Industries`,
+    description:
+      `${product.short_description || "Premium ceramic tableware"} Explore premium ceramic crockery, hospitality tableware, and bulk-ready products from Hira Industries.`,
     alternates: {
       canonical: `${siteUrl}/products/${product.slug}`,
     },
     openGraph: {
-      title: `${product.name} | Hira Industries`,
-      description: product.short_description,
+      title: `${product.name} | Ceramic Crockery | Hira Industries`,
+      description:
+        `${product.short_description || "Premium ceramic tableware"} Explore premium ceramic crockery, hospitality tableware, and bulk-ready products from Hira Industries.`,
       ...(image ? { images: [{ url: image }] } : {}),
     },
   };

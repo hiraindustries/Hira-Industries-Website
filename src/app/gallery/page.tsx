@@ -53,9 +53,9 @@ const galleryItems = [
 ];
 
 export const metadata = {
-  title: "Photo Gallery",
+  title: "Gallery | Ceramic Crockery Collections",
   description:
-    "Explore Hira Industries ceramic collections, manufacturing process, packaging, and product range.",
+    "Browse Hira Industries photo gallery to see premium ceramic crockery collections, manufacturing, packaging and hospitality products.",
 };
 
 export default function GalleryPage() {

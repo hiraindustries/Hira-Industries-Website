@@ -14,7 +14,9 @@ import {
 } from "react-icons/fi";
 
 export const metadata = {
-  title: "About Hira Industries",
+  title: "About Hira Industries | Ceramic Crockery Manufacturer",
+  description:
+    "Learn about Hira Industries, a Khurja-based ceramic crockery manufacturer serving homes, hotels, restaurants, retailers, wholesalers, and gifting buyers.",
 };
 
 const missionVisionCards = [

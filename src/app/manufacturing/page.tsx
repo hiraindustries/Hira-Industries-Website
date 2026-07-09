@@ -9,7 +9,9 @@ import {
 } from "react-icons/fi";
 
 export const metadata = {
-  title: "Manufacturing",
+  title: "Manufacturing | Ceramic Crockery Production",
+  description:
+    "Discover how Hira Industries manufactures premium ceramic crockery and hospitality tableware with quality control, packaging and bulk order readiness.",
 };
 
 const processSteps = [

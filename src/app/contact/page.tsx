@@ -11,7 +11,9 @@ import ContactForm from "@/components/ContactForm";
 import { businessInfo, downloadResources } from "@/lib/site-data";
 
 export const metadata = {
-  title: "Contact",
+  title: "Contact | Ceramic Crockery Supplier",
+  description:
+    "Contact Hira Industries for product enquiries, catalogue requests, bulk pricing, and hospitality or trade order support.",
 };
 
 type ContactPageProps = {

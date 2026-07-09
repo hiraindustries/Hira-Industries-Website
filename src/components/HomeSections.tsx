@@ -70,6 +70,13 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
               ranges, every collection is developed for polished presentation,
               reliable daily use, and practical bulk sourcing.
             </p>
+            <p>
+              Explore our <Link href="/products">products</Link>, learn more about
+              our <Link href="/manufacturing">manufacturing process</Link>, review
+              our <Link href="/quality">quality standards</Link>, or
+              <Link href="/contact">contact us</Link> for bulk orders and catalogue
+              support.
+            </p>
 
             <div className="about-stats">
               {companyMilestones.map((item) => (

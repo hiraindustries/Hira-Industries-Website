@@ -3,7 +3,9 @@ import HomeSections from "@/components/HomeSections";
 import { getCatalogueData } from "@/lib/catalogue";
 
 export const metadata = {
-  title: "Home",
+  title: "Ceramic Crockery Manufacturer | Hira Industries",
+  description:
+    "Hira Industries manufactures premium ceramic tableware in Khurja for dinner sets, tea sets, hospitality buyers, retailers, wholesalers, and bulk enquiries.",
 };
 
 export const revalidate = 300;

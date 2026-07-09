@@ -4,9 +4,9 @@ import { getCatalogueData } from "@/lib/catalogue";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Product Categories & Premium Crockery Catalogue",
+  title: "Ceramic Crockery Catalogue | Hira Industries",
   description:
-    "Explore premium crockery categories and active Hira Industries products for homes, hotels, restaurants, retailers, wholesalers, and gifting buyers.",
+    "Explore Hira Industries premium ceramic crockery catalogue for dinner sets, tea sets, mugs, plates, hospitality tableware, and wholesale buyers.",
   alternates: {
     canonical: `${siteUrl}/products`,
   },

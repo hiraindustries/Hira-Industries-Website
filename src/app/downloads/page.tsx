@@ -3,7 +3,9 @@ import { FiArrowRight } from "react-icons/fi";
 import { downloadResources } from "@/lib/site-data";
 
 export const metadata = {
-  title: "Downloads",
+  title: "Downloads | Product Catalogue & Care Guide",
+  description:
+    "Download Hira Industries company profile, product catalogue, and care guide for ceramic crockery buyers, hotels, retailers, and wholesale orders.",
 };
 
 export default function DownloadsPage() {

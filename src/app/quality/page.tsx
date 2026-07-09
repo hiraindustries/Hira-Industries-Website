@@ -14,7 +14,9 @@ import {
 } from "react-icons/fi";
 
 export const metadata = {
-  title: "Quality Assurance",
+  title: "Quality Assurance | Ceramic Crockery",
+  description:
+    "See Hira Industries quality assurance process for ceramic tableware, including inspection, finishing, packaging, and bulk order support.",
 };
 
 const qualityStandards = [
