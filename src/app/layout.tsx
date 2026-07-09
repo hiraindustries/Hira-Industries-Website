@@ -28,10 +28,7 @@ const sans = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: {
-    default: businessInfo.companyName,
-    template: `%s | ${businessInfo.companyName}`,
-  },
+  title: businessInfo.companyName,
   description:
     `Premium ceramic tableware manufacturer in ${businessInfo.location} for tea sets, dinner sets, hospitality buyers, gifting requirements, and trade-ready enquiries.`,
   icons: {
