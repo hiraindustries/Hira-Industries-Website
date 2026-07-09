@@ -4,4 +4,4 @@ Allow: /icon.png
 Allow: /apple-icon.png
 Allow: /images/Hira-Logo.png
 
-Sitemap: https://www.hiraindustries.com/sitemap.xml
+Sitemap: https://www.hiraindustrieskhurja.com/sitemap.xml
