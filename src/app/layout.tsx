@@ -34,9 +34,9 @@ export const metadata: Metadata = {
   description:
     `Premium ceramic tableware manufacturer in ${businessInfo.location} for tea sets, dinner sets, hospitality buyers, gifting requirements, and trade-ready enquiries.`,
   icons: {
-    icon: "/images/Hira-Logo.png",
-    shortcut: "/images/Hira-Logo.png",
-    apple: "/images/Hira-Logo.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
   },
 };
 
