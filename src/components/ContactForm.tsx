@@ -2,10 +2,8 @@
 
 import { useActionState } from "react";
 import { FiMessageCircle, FiSend } from "react-icons/fi";
-import {
-  contactEnquiryInitialState,
-  submitContactEnquiryAction,
-} from "@/app/contact/actions";
+import { submitContactEnquiryAction } from "@/app/contact/actions";
+import { contactEnquiryInitialState } from "@/lib/contact/enquiry-state";
 import { businessInfo } from "@/lib/site-data";
 
 type ContactFormState = {

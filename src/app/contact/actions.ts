@@ -2,19 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import type { ContactEnquiryActionState } from "@/lib/contact/enquiry-state";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import type { Database } from "@/lib/supabase/database.types";
-
-export type ContactEnquiryActionState = {
-  status: "idle" | "success" | "error";
-  message: string;
-  submissionId?: string;
-};
-
-export const contactEnquiryInitialState: ContactEnquiryActionState = {
-  status: "idle",
-  message: "",
-};
 
 const successMessage =
   "Thank you. Your enquiry has been submitted successfully. Our team will contact you shortly.";
