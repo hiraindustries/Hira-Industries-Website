@@ -72,12 +72,6 @@ const customerCards = [
 
 const owners = [
   {
-    name: "Shanu Beg Sahab",
-    role: "Owner, Hira Industries",
-    description:
-      "Contributes strategic direction and business leadership, helping strengthen the brand’s market presence and long-term growth.",
-  },
-  {
     name: "Salman Beg Sahab",
     role: "Owner, Hira Industries",
     description:
@@ -88,6 +82,12 @@ const owners = [
     role: "Owner, Hira Industries",
     description:
       "Supports operations, execution, and customer commitment, ensuring dependable service and smooth coordination across the business.",
+  },
+  {
+    name: "Shanu Beg Sahab",
+    role: "Owner, Hira Industries",
+    description:
+      "Contributes strategic direction and business leadership, helping strengthen the brand’s market presence and long-term growth.",
   },
 ];
 
@@ -154,17 +154,8 @@ export default function CompanyPage() {
           <div className="about-collage">
             <div className="about-collage__item about-collage__item--wide">
               <Image
-                src="/images/build-pic-2.png"
-                alt="Close-up of premium ceramic crockery"
-                fill
-                loading="eager"
-                sizes="(max-width: 900px) 100vw, 48vw"
-              />
-            </div>
-            <div className="about-collage__item about-collage__item--tall">
-              <Image
-                src="/images/PM.png"
-                alt="Industry representative greeting the Prime Minister of India"
+                src="/images/products/white-gold-pattern-dinner-plate-set.png"
+                alt="Premium white and gold ceramic dinner plate set"
                 fill
                 loading="eager"
                 sizes="(max-width: 900px) 100vw, 48vw"
@@ -173,16 +164,16 @@ export default function CompanyPage() {
             <div className="about-collage__item">
               <Image
                 src="/images/owner.jpg"
-                alt="Ceramic production and handling"
+                alt="Owner of Hira Industries"
                 fill
                 loading="eager"
                 sizes="(max-width: 900px) 100vw, 48vw"
               />
             </div>
-            <div className="about-collage__item">
+            <div className="about-collage__item about-collage__item--tall">
               <Image
-                src="/images/salman-beg-image.jpg"
-                alt="Salman Beg, Owner of Hira Industries"
+                src="/images/products/white-gold-rim-soup-bowl-lifestyle.png"
+                alt="Elegant premium soup bowl and serving ware"
                 fill
                 loading="eager"
                 sizes="(max-width: 900px) 100vw, 48vw"

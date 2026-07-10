@@ -1,11 +1,15 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useActionState } from "react";
 import { FiMessageCircle, FiSend } from "react-icons/fi";
+import {
+  contactEnquiryInitialState,
+  submitContactEnquiryAction,
+} from "@/app/contact/actions";
 import { businessInfo } from "@/lib/site-data";
 
 type ContactFormState = {
-  name: string;
+  fullName: string;
   phone: string;
   email: string;
   enquiryType: string;
@@ -17,7 +21,7 @@ type ContactFormProps = {
 };
 
 const createInitialState = (requestedResource?: string): ContactFormState => ({
-  name: "",
+  fullName: "",
   phone: "",
   email: "",
   enquiryType: requestedResource ? "catalogue-request" : "",
@@ -27,46 +31,21 @@ const createInitialState = (requestedResource?: string): ContactFormState => ({
 });
 
 export default function ContactForm({ requestedResource }: ContactFormProps) {
-  const [form, setForm] = useState<ContactFormState>(() =>
-    createInitialState(requestedResource),
+  const [state, formAction, isPending] = useActionState(
+    submitContactEnquiryAction,
+    contactEnquiryInitialState,
   );
-  const [status, setStatus] = useState<"idle" | "ready">("idle");
-
-  const updateField = (key: keyof ContactFormState, value: string) => {
-    setForm((current) => ({
-      ...current,
-      [key]: value,
-    }));
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const subject = encodeURIComponent(
-      requestedResource
-        ? `Hira Industries ${requestedResource} request`
-        : `Hira Industries ${form.enquiryType} enquiry`,
-    );
-    const body = encodeURIComponent(
-      [
-        `Name: ${form.name}`,
-        `Phone: ${form.phone}`,
-        `Email: ${form.email || "Not provided"}`,
-        `Enquiry type: ${form.enquiryType}`,
-        "",
-        form.message,
-      ].join("\n"),
-    );
-
-    setStatus("ready");
-    window.location.href = `mailto:${businessInfo.email}?subject=${subject}&body=${body}`;
-  };
+  const initialForm = createInitialState(requestedResource);
+  const formKey = `${requestedResource ?? "general-enquiry"}-${
+    state.submissionId ?? "initial"
+  }`;
 
   return (
     <form
+      key={formKey}
       id="contact-form"
       className="contact-form-card"
-      onSubmit={handleSubmit}
+      action={formAction}
     >
       <div className="contact-form-card__heading">
         <h2>Send an Enquiry</h2>
@@ -84,10 +63,9 @@ export default function ContactForm({ requestedResource }: ContactFormProps) {
           <span>Full Name *</span>
           <input
             type="text"
-            name="name"
+            name="full_name"
             placeholder="Your full name"
-            value={form.name}
-            onChange={(event) => updateField("name", event.target.value)}
+            defaultValue={initialForm.fullName}
             autoComplete="name"
             required
           />
@@ -99,8 +77,7 @@ export default function ContactForm({ requestedResource }: ContactFormProps) {
             type="tel"
             name="phone"
             placeholder="Your phone number"
-            value={form.phone}
-            onChange={(event) => updateField("phone", event.target.value)}
+            defaultValue={initialForm.phone}
             autoComplete="tel"
             required
           />
@@ -112,8 +89,7 @@ export default function ContactForm({ requestedResource }: ContactFormProps) {
             type="email"
             name="email"
             placeholder="Your email address"
-            value={form.email}
-            onChange={(event) => updateField("email", event.target.value)}
+            defaultValue={initialForm.email}
             autoComplete="email"
           />
         </label>
@@ -121,11 +97,8 @@ export default function ContactForm({ requestedResource }: ContactFormProps) {
         <label className="contact-field">
           <span>Enquiry Type *</span>
           <select
-            name="enquiryType"
-            value={form.enquiryType}
-            onChange={(event) =>
-              updateField("enquiryType", event.target.value)
-            }
+            name="enquiry_type"
+            defaultValue={initialForm.enquiryType}
             required
           >
             <option value="" disabled>
@@ -146,17 +119,20 @@ export default function ContactForm({ requestedResource }: ContactFormProps) {
             name="message"
             rows={7}
             placeholder="Tell us about your requirements..."
-            value={form.message}
-            onChange={(event) => updateField("message", event.target.value)}
+            defaultValue={initialForm.message}
             required
           />
         </label>
       </div>
 
       <div className="contact-form-actions">
-        <button type="submit" className="contact-button contact-button--gold">
+        <button
+          type="submit"
+          className="contact-button contact-button--gold"
+          disabled={isPending}
+        >
           <FiSend aria-hidden="true" />
-          Submit Enquiry
+          {isPending ? "Submitting..." : "Submit Enquiry"}
         </button>
         <a
           href={businessInfo.whatsappHref}
@@ -169,11 +145,15 @@ export default function ContactForm({ requestedResource }: ContactFormProps) {
         </a>
       </div>
 
-      <p className="contact-form-status" aria-live="polite">
-        {status === "ready"
-          ? "Opening your email app now."
-          : "Submitting opens a prepared email draft."}
-      </p>
+      {state.message ? (
+        <p
+          className={`contact-form-status contact-form-status--${state.status}`}
+          aria-live="polite"
+          role={state.status === "error" ? "alert" : undefined}
+        >
+          {state.message}
+        </p>
+      ) : null}
     </form>
   );
 }

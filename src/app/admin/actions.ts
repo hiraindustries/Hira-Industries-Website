@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { assertAdmin, isApprovedAdminEmail } from "@/lib/admin/auth";
 import type { AdminActionState } from "@/lib/admin/action-state";
 import { catalogueRootSlug } from "@/lib/admin/categories";
+import { isContactEnquiryStatus } from "@/lib/admin/enquiries";
 import { createAdminServiceClient } from "@/lib/admin/service";
 import {
   removeAdminImages,
@@ -522,6 +523,29 @@ export async function toggleProductActiveAction(formData: FormData) {
 
   revalidatePath("/products");
   revalidatePath("/admin/products");
+}
+
+export async function updateContactEnquiryStatusAction(formData: FormData) {
+  await assertAdmin();
+  const enquiryId = getString(formData, "enquiry_id");
+  const nextStatus = getString(formData, "next_status");
+
+  if (!enquiryId || !isContactEnquiryStatus(nextStatus)) {
+    throw new Error("Select a valid enquiry status.");
+  }
+
+  const supabase = await createAdminServiceClient();
+  const { error } = await supabase
+    .from("contact_enquiries")
+    .update({ status: nextStatus })
+    .eq("id", enquiryId);
+
+  if (error) {
+    throw new Error(`Could not update enquiry status: ${error.message}`);
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/enquiries");
 }
 
 function getCategoryPayload(formData: FormData) {

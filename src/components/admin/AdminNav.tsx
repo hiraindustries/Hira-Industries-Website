@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   FiGrid,
+  FiInbox,
   FiLayers,
   FiPackage,
   FiPlusCircle,
@@ -15,6 +16,11 @@ const links = [
     href: "/admin/products",
     label: "Products",
     icon: FiPackage,
+  },
+  {
+    href: "/admin/enquiries",
+    label: "Enquiries",
+    icon: FiInbox,
   },
   {
     href: "/admin/products/new",

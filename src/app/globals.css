@@ -2840,6 +2840,12 @@ a.contact-info-card:hover {
   transform: translateY(-2px);
 }
 
+.contact-button:disabled {
+  cursor: wait;
+  opacity: 0.68;
+  transform: none;
+}
+
 .contact-button:focus-visible,
 .contact-info-card:focus-visible,
 .contact-breadcrumb a:focus-visible {
@@ -2869,6 +2875,14 @@ a.contact-info-card:hover {
   margin: 0.85rem 0 0;
   color: var(--muted-soft);
   font-size: 0.78rem;
+}
+
+.contact-form-status--success {
+  color: #8ed5aa;
+}
+
+.contact-form-status--error {
+  color: #ef8d86;
 }
 
 .contact-map-section {

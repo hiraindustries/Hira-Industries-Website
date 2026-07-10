@@ -5,6 +5,7 @@ import {
   FiArrowRight,
   FiCheckCircle,
   FiImage,
+  FiInbox,
   FiLayers,
   FiPackage,
   FiPlus,
@@ -12,6 +13,7 @@ import {
 } from "react-icons/fi";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
+import { getNewContactEnquiryCount } from "@/lib/admin/enquiries";
 import { getAdminProducts } from "@/lib/admin/products";
 
 export const dynamic = "force-dynamic";
@@ -19,9 +21,10 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboardPage() {
   await requireAdminPage();
 
-  const [categoryTree, products] = await Promise.all([
+  const [categoryTree, products, newEnquiryCount] = await Promise.all([
     getAdminCategoryTree(),
     getAdminProducts(),
+    getNewContactEnquiryCount(),
   ]);
   const imageCount = products.reduce(
     (total, product) => total + product.images.length,
@@ -95,6 +98,16 @@ export default async function AdminDashboardPage() {
           <span>Featured</span>
           <strong>{featuredProducts}</strong>
           <small>Priority catalogue items</small>
+        </article>
+        <article>
+          <FiInbox aria-hidden="true" />
+          <span>New enquiries</span>
+          <strong>{newEnquiryCount}</strong>
+          <small>
+            <Link href="/admin/enquiries" className="admin-card-link">
+              View enquiries
+            </Link>
+          </small>
         </article>
       </section>
 

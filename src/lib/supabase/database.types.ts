@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      contact_enquiries: {
+        Row: {
+          id: string;
+          full_name: string;
+          phone: string;
+          email: string | null;
+          enquiry_type: string;
+          message: string;
+          source: string;
+          status: "new" | "read" | "contacted" | "archived";
+          user_agent: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          full_name: string;
+          phone: string;
+          email?: string | null;
+          enquiry_type: string;
+          message: string;
+          source?: string;
+          status?: "new" | "read" | "contacted" | "archived";
+          user_agent?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          full_name?: string;
+          phone?: string;
+          email?: string | null;
+          enquiry_type?: string;
+          message?: string;
+          source?: string;
+          status?: "new" | "read" | "contacted" | "archived";
+          user_agent?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       product_categories: {
         Row: {
           id: string;
@@ -238,3 +280,8 @@ export type CatalogueProduct =
 
 export type ProductImage =
   Database["public"]["Tables"]["product_images"]["Row"];
+
+export type ContactEnquiry =
+  Database["public"]["Tables"]["contact_enquiries"]["Row"];
+
+export type ContactEnquiryStatus = ContactEnquiry["status"];

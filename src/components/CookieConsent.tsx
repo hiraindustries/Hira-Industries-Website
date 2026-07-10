@@ -40,7 +40,7 @@ export default function CookieConsent() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[60] border-t border-[#d9b45f]/30 bg-[#050403]/95 px-4 py-4 shadow-[0_-18px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:px-6 lg:px-8">
+    <div className="fixed inset-x-0 bottom-0 z-60 border-t border-[#d9b45f]/30 bg-[#050403]/95 px-4 py-4 shadow-[0_-18px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 rounded-[20px] border border-[#d9b45f]/20 bg-[#080706]/95 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-5 lg:p-6">
         <div className="max-w-3xl space-y-2">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#d9b45f]">

@@ -37,14 +37,12 @@ export default function Hero() {
   const heroCopyContent = (
     <>
       <div className="hero-kicker">Crafting Elegance</div>
-      <h1 className="hero-title">
-        <span>Hira</span>
-        <span>Industries</span>
-      </h1>
+      <h1 className="hero-title">Hira Industries Khurja</h1>
       <p>
-        Premium ceramic tableware for buyers who need polished design,
-        consistent finishing, and dependable support for retail, hospitality,
-        gifting, and bulk enquiries.
+        Hira Industries is a ceramic crockery manufacturer and supplier in
+        Khurja, Uttar Pradesh. Premium ceramic tableware for buyers who need
+        polished design, consistent finishing, and dependable support for retail,
+        hospitality, gifting, and bulk enquiries.
       </p>
 
       <div className="hero-actions">
