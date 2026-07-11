@@ -10,7 +10,7 @@ const galleryFilters = [
   { value: "mugs-cups", label: "Mugs & Cups" },
   { value: "plates-bowls", label: "Plates & Bowls" },
   { value: "horeca", label: "Hotel / HoReCa Collection" },
-  { value: "export", label: "Export Range" },
+  { value: "trade", label: "Trade Range" },
   { value: "manufacturing", label: "Manufacturing / Packaging" },
 ] as const;
 

@@ -13,10 +13,17 @@ import {
   FiShield,
 } from "react-icons/fi";
 import ProductDetailGallery from "@/components/ProductDetailGallery";
+import JsonLd from "@/components/seo/JsonLd";
 import { getProductDetailData } from "@/lib/catalogue";
-import { getProductGallery, getStringList } from "@/lib/product-media";
-import { siteUrl } from "@/lib/site";
+import { getStringList } from "@/lib/product-media";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import type { BreadcrumbItem } from "@/lib/seo/schemas/breadcrumb";
+import { buildProductPageGraph } from "@/lib/seo/schemas/product";
 import { businessInfo } from "@/lib/site-data";
+import type {
+  CatalogueProduct,
+  ProductCategory,
+} from "@/lib/supabase/database.types";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -28,39 +35,74 @@ function getWhatsAppHref(productName: string) {
   return `https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
 
+function getProductDescription(product: CatalogueProduct) {
+  return `${product.short_description || product.description || "Premium ceramic tableware"} Explore ceramic crockery, hospitality tableware, and bulk-ready products from Hira Industries.`;
+}
+
+function getProductBreadcrumbs({
+  product,
+  mainCategory,
+  category,
+}: {
+  product: CatalogueProduct;
+  mainCategory: ProductCategory | null;
+  category: ProductCategory | null;
+}): BreadcrumbItem[] {
+  const breadcrumbs: BreadcrumbItem[] = [
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+  ];
+
+  if (mainCategory) {
+    breadcrumbs.push({
+      name: mainCategory.name,
+      path: `/products?category=${mainCategory.slug}`,
+    });
+  }
+
+  if (category) {
+    breadcrumbs.push({
+      name: category.name,
+      path: `/products?category=${mainCategory?.slug ?? category.slug}&subcategory=${category.slug}`,
+    });
+  }
+
+  breadcrumbs.push({
+    name: product.name,
+    path: `/products/${product.slug}`,
+  });
+
+  return breadcrumbs;
+}
+
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const detail = await getProductDetailData(slug);
 
+  if (detail.status === "not-found") {
+    notFound();
+  }
+
   if (!detail.product) {
-    return {
-      title: "Product Not Found",
-    };
+    return createPageMetadata({
+      title: "Product Details Temporarily Unavailable",
+      description:
+        "The requested Hira Industries product details are temporarily unavailable.",
+      path: `/products/${slug}`,
+      noIndex: true,
+    });
   }
 
   const product = detail.product;
-  const image = product.image_url
-    ? /^https?:\/\//.test(product.image_url)
-      ? product.image_url
-      : `${siteUrl}${product.image_url}`
-    : undefined;
 
-  return {
+  return createPageMetadata({
     title: `${product.name} | Ceramic Crockery | Hira Industries`,
-    description:
-      `${product.short_description || "Premium ceramic tableware"} Explore premium ceramic crockery, hospitality tableware, and bulk-ready products from Hira Industries.`,
-    alternates: {
-      canonical: `${siteUrl}/products/${product.slug}`,
-    },
-    openGraph: {
-      title: `${product.name} | Ceramic Crockery | Hira Industries`,
-      description:
-        `${product.short_description || "Premium ceramic tableware"} Explore premium ceramic crockery, hospitality tableware, and bulk-ready products from Hira Industries.`,
-      ...(image ? { images: [{ url: image }] } : {}),
-    },
-  };
+    description: getProductDescription(product),
+    path: `/products/${product.slug}`,
+    imagePath: product.image_url ?? undefined,
+  });
 }
 
 export default async function ProductDetailPage({
@@ -99,52 +141,17 @@ export default async function ProductDetailPage({
     detail;
   const colors = getStringList(product.available_colors);
   const features = product.features;
-  const productImages = getProductGallery(product);
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.description || undefined,
-    sku: product.product_code || undefined,
-    image:
-      productImages.length > 0
-        ? productImages.map((image) =>
-            /^https?:\/\//.test(image.url) ? image.url : `${siteUrl}${image.url}`,
-          )
-        : undefined,
-    brand: {
-      "@type": "Brand",
-      name: "Hira Industries",
-    },
-    manufacturer: {
-      "@type": "Organization",
-      name: "Hira Industries",
-    },
-    url: `${siteUrl}/products/${product.slug}`,
-  };
-
-  const shouldRenderProductSchema = Boolean(
-    product.name &&
-      (product.description || product.product_code || productImages.length > 0),
-  );
-
-  const schema = shouldRenderProductSchema
-    ? productSchema
-    : {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: product.name,
-        description: product.description || product.short_description || undefined,
-        url: `${siteUrl}/products/${product.slug}`,
-      };
+  const breadcrumbs = getProductBreadcrumbs({ product, mainCategory, category });
 
   return (
     <main className="product-detail-page">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
-        }}
+      <JsonLd
+        data={buildProductPageGraph({
+          product,
+          mainCategory,
+          category,
+          breadcrumbs,
+        })}
       />
 
       <section className="product-detail">
@@ -191,6 +198,10 @@ export default async function ProductDetailPage({
                 </p>
               ) : null}
               <p className="product-detail__intro">{product.description}</p>
+              <p className="product-detail__manufacturer">
+                Manufactured and supplied by Hira Industries in Khurja,
+                Uttar Pradesh.
+              </p>
 
               <section
                 className="product-detail__specifications"

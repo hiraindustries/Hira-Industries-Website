@@ -11,11 +11,21 @@ import {
   removeAdminImages,
   uploadAdminImage,
 } from "@/lib/admin/storage";
+import { submitIndexNowUrls } from "@/lib/seo/indexnow";
 import { createSupabaseAuthServerClient } from "@/lib/supabase/auth-server";
 import type {
   Database,
   ProductImage,
 } from "@/lib/supabase/database.types";
+
+type AdminServiceClient = Awaited<ReturnType<typeof createAdminServiceClient>>;
+
+type ProductIndexCandidate = {
+  slug: string | null;
+  category_id: string | null;
+  subcategory_id: string | null;
+  includeProductUrl: boolean;
+};
 
 type ExistingImageInput = {
   id: string;
@@ -101,6 +111,102 @@ function formatDatabaseError(error: { message: string; code?: string }) {
   }
 
   return error.message;
+}
+
+async function getProductIndexCandidate(
+  supabase: AdminServiceClient,
+  productId: string,
+) {
+  const { data, error } = await supabase
+    .from("products")
+    .select("slug, category_id, subcategory_id, is_active")
+    .eq("id", productId)
+    .maybeSingle();
+
+  if (error) {
+    console.warn("[indexnow] Could not load product URL data", {
+      productId,
+      message: error.message,
+    });
+    return null;
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return {
+    slug: data.slug,
+    category_id: data.category_id,
+    subcategory_id: data.subcategory_id,
+    includeProductUrl: data.is_active,
+  } satisfies ProductIndexCandidate;
+}
+
+async function getProductCategoryIndexPaths(
+  supabase: AdminServiceClient,
+  candidate: ProductIndexCandidate,
+) {
+  const ids = [candidate.category_id, candidate.subcategory_id].filter(
+    (id): id is string => Boolean(id),
+  );
+
+  if (ids.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("product_categories")
+    .select("id, slug, parent_id")
+    .in("id", ids);
+
+  if (error) {
+    console.warn("[indexnow] Could not load category URL data", {
+      message: error.message,
+    });
+    return [];
+  }
+
+  const mainCategory = data?.find(
+    (category) => category.id === candidate.category_id,
+  );
+  const subcategory = candidate.subcategory_id
+    ? data?.find((category) => category.id === candidate.subcategory_id)
+    : null;
+  const paths: string[] = [];
+
+  if (mainCategory?.slug) {
+    paths.push(`/products?category=${mainCategory.slug}`);
+  }
+
+  if (mainCategory?.slug && subcategory?.slug) {
+    paths.push(
+      `/products?category=${mainCategory.slug}&subcategory=${subcategory.slug}`,
+    );
+  }
+
+  return paths;
+}
+
+async function submitProductIndexNowUrls(
+  supabase: AdminServiceClient,
+  candidates: ProductIndexCandidate[],
+) {
+  const paths = new Set<string>(["/products"]);
+
+  for (const candidate of candidates) {
+    if (candidate.includeProductUrl && candidate.slug) {
+      paths.add(`/products/${candidate.slug}`);
+    }
+
+    const categoryPaths = await getProductCategoryIndexPaths(
+      supabase,
+      candidate,
+    );
+    categoryPaths.forEach((path) => paths.add(path));
+  }
+
+  await submitIndexNowUrls(Array.from(paths));
 }
 
 async function validateProductCategories(
@@ -433,7 +539,16 @@ export async function createProductAction(
     }
 
     revalidatePath("/products");
+    revalidatePath(`/products/${payload.slug}`);
     revalidatePath("/admin/products");
+    await submitProductIndexNowUrls(supabase, [
+      {
+        slug: payload.slug,
+        category_id: payload.category_id,
+        subcategory_id: payload.subcategory_id ?? null,
+        includeProductUrl: payload.is_active === true,
+      },
+    ]);
   } catch (error) {
     return {
       status: "error",
@@ -458,6 +573,10 @@ export async function updateProductAction(
       payload.subcategory_id ?? null,
     );
     const supabase = await createAdminServiceClient();
+    const currentProduct = await getProductIndexCandidate(
+      supabase,
+      productId,
+    );
     const { error } = await supabase
       .from("products")
       .update(payload)
@@ -469,8 +588,25 @@ export async function updateProductAction(
 
     await syncProductImages(productId, formData);
     revalidatePath("/products");
+    if (currentProduct?.slug && currentProduct.slug !== payload.slug) {
+      revalidatePath(`/products/${currentProduct.slug}`);
+    }
     revalidatePath(`/products/${payload.slug}`);
     revalidatePath("/admin/products");
+    const indexNowCandidates: ProductIndexCandidate[] = [
+      {
+        slug: payload.slug,
+        category_id: payload.category_id,
+        subcategory_id: payload.subcategory_id ?? null,
+        includeProductUrl: payload.is_active === true,
+      },
+    ];
+
+    if (currentProduct) {
+      indexNowCandidates.unshift(currentProduct);
+    }
+
+    await submitProductIndexNowUrls(supabase, indexNowCandidates);
   } catch (error) {
     return {
       status: "error",
@@ -486,6 +622,7 @@ export async function deleteProductAction(formData: FormData) {
   await assertAdmin();
   const productId = getString(formData, "product_id");
   const supabase = await createAdminServiceClient();
+  const currentProduct = await getProductIndexCandidate(supabase, productId);
   const { data: images } = await supabase
     .from("product_images")
     .select("image_url")
@@ -504,7 +641,15 @@ export async function deleteProductAction(formData: FormData) {
     (images ?? []).map((image) => image.image_url),
   );
   revalidatePath("/products");
+  if (currentProduct?.slug) {
+    revalidatePath(`/products/${currentProduct.slug}`);
+  }
   revalidatePath("/admin/products");
+  if (currentProduct) {
+    await submitProductIndexNowUrls(supabase, [
+      { ...currentProduct, includeProductUrl: true },
+    ]);
+  }
 }
 
 export async function toggleProductActiveAction(formData: FormData) {
@@ -512,6 +657,7 @@ export async function toggleProductActiveAction(formData: FormData) {
   const productId = getString(formData, "product_id");
   const nextState = getString(formData, "next_state") === "true";
   const supabase = await createAdminServiceClient();
+  const currentProduct = await getProductIndexCandidate(supabase, productId);
   const { error } = await supabase
     .from("products")
     .update({ is_active: nextState })
@@ -522,7 +668,15 @@ export async function toggleProductActiveAction(formData: FormData) {
   }
 
   revalidatePath("/products");
+  if (currentProduct?.slug) {
+    revalidatePath(`/products/${currentProduct.slug}`);
+  }
   revalidatePath("/admin/products");
+  if (currentProduct) {
+    await submitProductIndexNowUrls(supabase, [
+      { ...currentProduct, includeProductUrl: true },
+    ]);
+  }
 }
 
 export async function updateContactEnquiryStatusAction(formData: FormData) {

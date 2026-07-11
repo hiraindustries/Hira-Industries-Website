@@ -1,97 +1,36 @@
 import type { MetadataRoute } from "next";
 import { getCatalogueData } from "@/lib/catalogue";
-import { siteUrl } from "@/lib/site";
+import {
+  dedupeSitemap,
+  getCategorySitemapEntries,
+  getProductSitemapEntries,
+  getStaticSitemapEntries,
+} from "@/lib/seo/sitemap";
+
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticEntries: MetadataRoute.Sitemap = [
-    {
-      url: `${siteUrl}/`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${siteUrl}/company`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/products`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${siteUrl}/collections`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/manufacturing`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/quality`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/downloads`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${siteUrl}/downloads/care-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${siteUrl}/downloads/company-profile`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${siteUrl}/downloads/product-catalogue`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-  ];
+  const staticEntries = getStaticSitemapEntries();
+  let catalogueData: Awaited<ReturnType<typeof getCatalogueData>>;
 
   try {
-    const catalogueData = await getCatalogueData();
+    catalogueData = await getCatalogueData();
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[sitemap] Could not load dynamic catalogue URLs:", error);
+    }
 
-    const productEntries: MetadataRoute.Sitemap = (catalogueData.products ?? [])
-      .filter((product) => Boolean(product.slug))
-      .map((product) => ({
-        url: `${siteUrl}/products/${product.slug}`,
-        lastModified: new Date(),
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      }));
-
-    return [...staticEntries, ...productEntries];
-  } catch {
     return staticEntries;
   }
+
+  return dedupeSitemap([
+    ...staticEntries,
+    ...getCategorySitemapEntries({
+      mainCategories: catalogueData.mainCategories,
+      subcategories: catalogueData.categories.filter(
+        (category) => category.parent_id !== null,
+      ),
+    }),
+    ...getProductSitemapEntries(catalogueData.products),
+  ]);
 }

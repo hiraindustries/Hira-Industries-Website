@@ -12,12 +12,23 @@ import {
   FiStar,
   FiTruck,
 } from "react-icons/fi";
+import JsonLd from "@/components/seo/JsonLd";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
+import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
 
-export const metadata = {
+const pageDescription =
+  "Learn about Hira Industries, a Khurja-based ceramic crockery manufacturer serving homes, hotels, restaurants, retailers, wholesalers, and gifting buyers.";
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "About Us", path: "/company" },
+];
+
+export const metadata = createPageMetadata({
   title: "About Hira Industries | Ceramic Crockery Manufacturer",
-  description:
-    "Learn about Hira Industries, a Khurja-based ceramic crockery manufacturer serving homes, hotels, restaurants, retailers, wholesalers, and gifting buyers.",
-};
+  description: pageDescription,
+  path: "/company",
+});
 
 const missionVisionCards = [
   {
@@ -37,7 +48,7 @@ const missionVisionCards = [
   },
   {
     title: "Our Promise",
-    text: "Every order that leaves our facility meets our finishing standards — packed securely, dispatched on time, and backed by responsive after-sales support to keep your business running smoothly.",
+    text: "We aim to support every enquiry with clear product details, finishing guidance, practical packing discussion, and responsive communication.",
     icon: FiShield,
   },
 ];
@@ -50,7 +61,7 @@ const customerCards = [
   },
   {
     title: "Hotels",
-    description: "Premium tableware solutions for luxury and business hotels worldwide.",
+    description: "Premium tableware options for luxury and business hotel requirements.",
     icon: FiBriefcase,
   },
   {
@@ -65,35 +76,48 @@ const customerCards = [
   },
   {
     title: "Wholesalers",
-    description: "Bulk supply with competitive pricing for wholesale distribution.",
+    description: "Bulk enquiry support for wholesale distribution requirements.",
     icon: FiTruck,
   },
 ];
 
-const owners = [
+const ownershipFocus = [
   {
-    name: "Salman Beg Sahab",
-    role: "Owner, Hira Industries",
+    name: "Product Quality",
+    role: "Leadership Focus",
     description:
-      "Focused on product quality, finishing standards, and maintaining strong relationships with buyers and trade partners.",
+      "Focused on product quality, finishing standards, and strong relationships with buyers and trade partners.",
   },
   {
-    name: "Arbaz Beg Sahab",
-    role: "Owner, Hira Industries",
+    name: "Operations",
+    role: "Leadership Focus",
     description:
-      "Supports operations, execution, and customer commitment, ensuring dependable service and smooth coordination across the business.",
+      "Supports operations, execution, and customer communication for smoother coordination across the business.",
   },
   {
-    name: "Shanu Beg Sahab",
-    role: "Owner, Hira Industries",
+    name: "Customer Coordination",
+    role: "Leadership Focus",
     description:
-      "Contributes strategic direction and business leadership, helping strengthen the brand’s market presence and long-term growth.",
+      "Helps buyers connect product needs, catalogue details, and order requirements with the right next step.",
   },
 ];
 
 export default function CompanyPage() {
   return (
     <main className="light-page about-page">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            buildBreadcrumbListSchema(breadcrumbs),
+            buildWebPageSchema({
+              path: "/company",
+              name: "About Hira Industries",
+              description: pageDescription,
+            }),
+          ],
+        }}
+      />
       <section className="about-hero-bg">
         <div className="about-hero-content">
           <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -102,9 +126,9 @@ export default function CompanyPage() {
             <span>About Us</span>
           </nav>
           <div className="light-kicker">About Hira Industries</div>
-          <h1>Crafting premium ceramic crockery with passion, precision, and purpose since 1995.</h1>
+          <h1>Crafting premium ceramic crockery with practical quality and buyer-focused support.</h1>
           <p>
-            Founded in Khurja, Uttar Pradesh, Hira Industries serves homes,
+            Based in Khurja, Uttar Pradesh, Hira Industries serves homes,
             hotels, restaurants, retailers, wholesalers, gifting buyers, and
             trade clients with premium ceramic collections.
           </p>
@@ -119,11 +143,11 @@ export default function CompanyPage() {
               A Legacy of <span className="gold-text">Quality</span> &amp; Craftsmanship
             </h2>
             <p className="internal-copy">
-              Founded in 1995, Hira Industries began with a clear vision: to
-              create ceramic crockery that brings elegance, durability, and
-              dependable quality to every table. Over the years, we have grown
-              into a trusted name for homes, hospitality buyers, retailers,
-              wholesalers, and gifting requirements.
+              Hira Industries works with a clear focus: to present ceramic
+              crockery that brings elegance, durability, and dependable quality
+              to everyday and business tables. The business serves homes,
+              hospitality buyers, retailers, wholesalers, and gifting
+              requirements.
             </p>
             <p className="internal-copy">
               Our work is guided by careful material selection, refined
@@ -142,8 +166,8 @@ export default function CompanyPage() {
               sizes="(max-width: 900px) 100vw, 48vw"
             />
             <div className="about-badge">
-              <strong>25+</strong>
-              <span>Years of Excellence</span>
+              <strong>Khurja</strong>
+              <span>Ceramic Crockery</span>
             </div>
           </div>
         </div>
@@ -164,7 +188,7 @@ export default function CompanyPage() {
             <div className="about-collage__item">
               <Image
                 src="/images/owner.jpg"
-                alt="Owner of Hira Industries"
+                alt="Hira Industries ceramic crockery team"
                 fill
                 loading="eager"
                 sizes="(max-width: 900px) 100vw, 48vw"
@@ -209,20 +233,19 @@ export default function CompanyPage() {
       <section className="owners-section" aria-labelledby="owners-heading">
         <div className="light-shell owners-section__inner">
           <header className="owners-section__header">
-            <p className="owners-section__label">OWNER&apos;S MESSAGE</p>
+            <p className="owners-section__label">LEADERSHIP FOCUS</p>
             <h2 id="owners-heading" className="owners-section__title">
-              Meet the Owners Behind Hira Industries
+              How Hira Industries Supports Buyers
             </h2>
             <p className="owners-section__intro">
-              Hira Industries is led by a dedicated ownership team committed to
-              quality, trust, and long-term customer relationships — ensuring
-              every collection reflects the brand’s standards of craftsmanship,
-              reliability, and premium finish.
+              Hira Industries is led with a focus on quality, trust, and
+              responsive buyer communication so each enquiry can be matched with
+              the right catalogue and product details.
             </p>
           </header>
 
           <div className="owners-grid">
-            {owners.map((owner) => (
+            {ownershipFocus.map((owner) => (
               <article key={owner.name} className="owner-card">
                 <span className="owner-card__icon" aria-hidden="true">
                   <FiStar />

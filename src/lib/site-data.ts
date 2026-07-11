@@ -1,3 +1,5 @@
+import { businessProfile, withBusinessUrl } from "@/lib/site/business-info";
+
 export type NavLink = {
   href: string;
   label: string;
@@ -20,22 +22,22 @@ export type DownloadItem = {
 };
 
 export const businessInfo = {
-  companyName: "Hira Industries",
-  email: "info@hiraindustries.com",
-  phoneDisplay: "+91 97838 05565",
-  phoneHref: "tel:+919783805565",
-  whatsappNumber: "919783805565",
-  whatsappHref: "https://wa.me/919783805565",
+  companyName: businessProfile.officialName,
+  email: businessProfile.email,
+  phoneDisplay: businessProfile.telephoneDisplay,
+  phoneHref: `tel:${businessProfile.telephone}`,
+  whatsappNumber: businessProfile.whatsappNumber,
+  whatsappHref: `https://wa.me/${businessProfile.whatsappNumber}`,
   whatsappCatalogueHref:
-    "https://wa.me/919783805565?text=Hello%20Hira%20Industries%2C%20please%20share%20your%20product%20catalogue.",
-  location: "Khurja, Uttar Pradesh, India",
+    `https://wa.me/${businessProfile.whatsappNumber}?text=Hello%20Hira%20Industries%2C%20please%20share%20your%20product%20catalogue.`,
+  location: `${businessProfile.address.city}, ${businessProfile.address.state}, India`,
   mapsQuery: "Hira Industries Khurja Uttar Pradesh India",
   mapsEmbedHref:
     "https://www.google.com/maps?q=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India&output=embed",
   mapsHref:
     "https://www.google.com/maps/search/?api=1&query=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India",
-  businessHours: "Mon - Sat: 9:00 AM - 7:00 PM",
-  sundayHours: "Sunday: Closed",
+  businessHours: "Please contact before visiting",
+  sundayHours: "Current hours should be confirmed directly",
 } as const;
 
 export const navLinks: NavLink[] = [
@@ -98,6 +100,7 @@ export const navLinks: NavLink[] = [
   { href: "/manufacturing", label: "Manufacturing" },
   { href: "/quality", label: "Quality" },
   { href: "/collections", label: "Gallery" },
+  { href: "/resources", label: "Resources" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -108,10 +111,10 @@ export const heroStats: StatItem[] = [
 ];
 
 export const companyMilestones: StatItem[] = [
-  { value: "25+", label: "Years Experience" },
-  { value: "500+", label: "Product Designs" },
-  { value: "1000+", label: "Happy Clients" },
-  { value: "15+", label: "Countries Served" },
+  { value: "Khurja", label: "Ceramic Cluster" },
+  { value: "Bulk", label: "Order Enquiries" },
+  { value: "Trade", label: "Buyer Support" },
+  { value: "Catalog", label: "Product Range" },
 ];
 
 export const manufacturingSteps = [
@@ -204,7 +207,7 @@ export const downloadResources: DownloadItem[] = [
   {
     title: "Product Catalogue",
     description:
-      "Featured tea sets, dinner sets, cup & saucer options, and pricing notes for buyers.",
+      "Featured tea sets, dinner sets, cup & saucer options, and enquiry notes for buyers.",
     href: "/contact?request=product-catalogue",
     meta: "Catalogue request",
     actionLabel: "Request Product Catalogue",
@@ -306,7 +309,12 @@ export const footerGroups = [
       { label: "Manufacturing", href: "/manufacturing" },
       { label: "Quality", href: "/quality" },
       { label: "Gallery", href: "/collections" },
+      { label: "Buyer Resources", href: "/resources" },
       { label: "Contact Us", href: "/contact" },
     ],
   },
 ];
+
+export const defaultShareImageUrl = withBusinessUrl(
+  businessProfile.defaultShareImagePath,
+);

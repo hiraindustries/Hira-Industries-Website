@@ -12,62 +12,86 @@ import {
   FiShield,
   FiTruck,
 } from "react-icons/fi";
+import JsonLd from "@/components/seo/JsonLd";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
+import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
 
-export const metadata = {
+const pageDescription =
+  "See Hira Industries quality focus for ceramic tableware, including inspection, finishing, packaging, and bulk order support.";
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Quality", path: "/quality" },
+];
+
+export const metadata = createPageMetadata({
   title: "Quality Assurance | Ceramic Crockery",
-  description:
-    "See Hira Industries quality assurance process for ceramic tableware, including inspection, finishing, packaging, and bulk order support.",
-};
+  description: pageDescription,
+  path: "/quality",
+});
 
 const qualityStandards = [
   {
     title: "Premium Ceramic Material",
     description:
-      "We use high-grade ceramic raw materials selected for consistency, durability, and refined presentation.",
+      "Ceramic materials are selected with attention to consistency, durability, and refined presentation.",
     icon: FiLayers,
   },
   {
     title: "Smooth Finishing",
     description:
-      "Every piece goes through finishing stages including smoothing, glazing, and polishing for a clean premium surface.",
+      "Products go through finishing stages including smoothing, glazing, and polishing for a clean surface.",
     icon: FiDroplet,
   },
   {
     title: "Strong Build Quality",
     description:
-      "Our products are fired and finished to support regular handling, daily use, and long-term durability.",
+      "Products are prepared with regular handling, daily use, and durability expectations in mind.",
     icon: FiShield,
   },
   {
     title: "Design Quality",
     description:
-      "From classic white to detailed patterns, every design is created with precision, balance, and visual consistency.",
+      "From classic white to detailed patterns, designs are reviewed for balance and visual consistency.",
     icon: FiFeather,
   },
   {
     title: "Damage & Crack Checking",
     description:
-      "Each piece is inspected for cracks, chips, scratches, glaze issues, and surface imperfections before packing.",
+      "Products are checked for cracks, chips, scratches, glaze issues, and surface imperfections before packing.",
     icon: FiSearch,
   },
   {
     title: "Safe Packaging",
     description:
-      "Multi-layer packaging protects products during storage, dispatch, local delivery, and bulk order movement.",
+      "Packaging is planned to support storage, dispatch, and bulk order movement.",
     icon: FiPackage,
   },
 ] as const;
 
 const qualityStats = [
-  { value: "100%", label: "Batch Checking" },
-  { value: "<0.5%", label: "Defect Target" },
-  { value: "6+", label: "Inspection Points" },
-  { value: "Yes", label: "Sample Approval" },
+  { value: "Batch", label: "Checking" },
+  { value: "Finish", label: "Review" },
+  { value: "Packing", label: "Support" },
+  { value: "Care", label: "Guidance" },
 ] as const;
 
 export default function QualityPage() {
   return (
     <main className="quality-page">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            buildBreadcrumbListSchema(breadcrumbs),
+            buildWebPageSchema({
+              path: "/quality",
+              name: "Quality Assurance",
+              description: pageDescription,
+            }),
+          ],
+        }}
+      />
       <section className="quality-hero">
         <Image
           src="/images/Product Making & Sourcing.png"
@@ -87,8 +111,8 @@ export default function QualityPage() {
           <h1>Quality Assurance</h1>
           <div className="quality-heading-rule" aria-hidden="true" />
           <p>
-            Quality is not just a process &mdash; it&apos;s our promise. Every
-            product carries our commitment to excellence.
+            Quality is part of every buyer conversation, from product selection
+            to finishing and packing expectations.
           </p>
         </div>
       </section>
@@ -102,19 +126,17 @@ export default function QualityPage() {
             </h2>
             <div className="quality-heading-rule" aria-hidden="true" />
             <p>
-              At Hira Industries, quality is the foundation of everything we do.
-              From raw material selection to final packaging, every stage of our
-              production process is governed by strict quality control measures.
+              At Hira Industries, quality is a core part of product selection,
+              finishing, handling, and packaging preparation.
             </p>
             <p>
-              Our multi-point quality inspection system ensures that only perfect
-              products reach our customers. We believe that every piece of
-              crockery carrying our name should be worthy of premium tables.
+              Products are reviewed for visible finish, surface quality, shape,
+              and packing readiness before being prepared for buyer enquiries.
             </p>
             <p>
               Whether you&apos;re buying for your home, hotel, restaurant, or retail
-              store &mdash; you can trust that Hira Industries products meet strong
-              standards of quality, safety, and durability.
+              store &mdash; confirm product-specific care, suitability, and packing
+              details with the team before ordering.
             </p>
           </div>
 
@@ -131,8 +153,8 @@ export default function QualityPage() {
               <span className="quality-certified__icon" aria-hidden="true">
                 <FiAward />
               </span>
-              <strong>Quality Certified</strong>
-              <span>Multi-Point Inspection</span>
+              <strong>Quality Checked</strong>
+              <span>Finish &amp; Packing Review</span>
             </div>
           </div>
         </div>
@@ -144,7 +166,7 @@ export default function QualityPage() {
             <div className="quality-kicker">Quality Pillars</div>
             <h2>Our Quality Standards</h2>
             <div className="quality-heading-rule" aria-hidden="true" />
-            <p>Six pillars of quality that define every Hira Industries product.</p>
+            <p>Six practical quality areas considered during product preparation.</p>
           </div>
 
           <div className="quality-standards__grid">
@@ -174,14 +196,13 @@ export default function QualityPage() {
             Bulk Order <span>Quality Support</span>
           </h2>
           <p>
-            We understand that bulk orders require consistent quality across every
-            piece. Our quality process is designed to maintain uniform finishing,
-            reliable packing, and buyer-ready presentation across large orders.
+            Bulk orders require consistent communication around product finish,
+            packing, and buyer-ready presentation across the selected items.
           </p>
           <p>
-            For bulk orders, we provide careful inspection, practical packaging
-            checks, and clear dispatch preparation so buyers receive products ready
-            for retail, hospitality, gifting, or trade use.
+            For bulk orders, ask Hira Industries to confirm inspection, packaging,
+            dispatch preparation, and product suitability for retail, hospitality,
+            gifting, or trade use.
           </p>
 
           <div className="quality-bulk__stats">
@@ -202,8 +223,8 @@ export default function QualityPage() {
           </span>
           <h2>Experience Our Quality First-Hand</h2>
           <p>
-            Request a product catalogue or order samples to experience the Hira
-            Industries quality difference.
+            Request a product catalogue or speak with the team to confirm current
+            quality, care, and packing details.
           </p>
           <div className="quality-cta__actions">
             <Link

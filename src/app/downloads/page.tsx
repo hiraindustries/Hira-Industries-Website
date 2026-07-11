@@ -1,16 +1,40 @@
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import JsonLd from "@/components/seo/JsonLd";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
+import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
 import { downloadResources } from "@/lib/site-data";
 
-export const metadata = {
+const pageDescription =
+  "Request Hira Industries company profile, product catalogue, and care guide for ceramic crockery buyers, hotels, retailers, and wholesale orders.";
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Downloads", path: "/downloads" },
+];
+
+export const metadata = createPageMetadata({
   title: "Downloads | Product Catalogue & Care Guide",
-  description:
-    "Download Hira Industries company profile, product catalogue, and care guide for ceramic crockery buyers, hotels, retailers, and wholesale orders.",
-};
+  description: pageDescription,
+  path: "/downloads",
+});
 
 export default function DownloadsPage() {
   return (
     <main className="light-page">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            buildBreadcrumbListSchema(breadcrumbs),
+            buildWebPageSchema({
+              path: "/downloads",
+              name: "Downloads",
+              description: pageDescription,
+            }),
+          ],
+        }}
+      />
       <section className="page-section">
         <div className="site-shell">
           <div className="breadcrumb">
@@ -67,10 +91,10 @@ export default function DownloadsPage() {
               <div className="split-copy">
                 <div className="section-kicker">Need something custom?</div>
                 <h2 className="section-title section-title--tight">
-                  We can share specs, pricing notes, and sample pack guidance
+                  We can share product specs, enquiry notes, and care guidance
                 </h2>
                 <p className="split-copy__text">
-                  Send us the product segment you need and we will point you toward the right file, price notes, or care guidance.
+                  Send us the product segment you need and we will point you toward the right file, catalogue notes, or care guidance.
                 </p>
               </div>
 

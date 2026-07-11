@@ -6,14 +6,18 @@ ${businessInfo.companyName}
 Product Catalogue
 
 Featured products
-- Royal Marble Tea Set - INR 4,995
-- Golden Essence Tea Set - INR 5,200
-- Classic Black Tea Set - INR 3,999
-- Ivory Grace Tea Set - INR 4,800
-- Royal Gold Dinner Set - INR 12,500
-- Premium Cup and Saucer - INR 2,450
-- Coffee Ritual Set - INR 5,650
-- Serveware Accent Bowl - INR 3,150
+- Dinner sets
+- Tea and coffee sets
+- Cups and mugs
+- Plates and bowls
+- Serveware
+- Hospitality crockery
+- Retail and gifting crockery
+- Bulk order ranges
+
+Pricing
+- Product pricing is available on enquiry.
+- Trade quotes depend on selected items, quantity, finish, packaging, and delivery requirements.
 
 Buying support
 - Custom quotes for trade orders

@@ -237,7 +237,7 @@ function resolveCategorySelection(
   };
 }
 
-export async function getCatalogueData(
+async function loadCatalogueData(
   categorySlug?: string,
   subcategorySlug?: string,
 ): Promise<CatalogueData> {
@@ -388,6 +388,8 @@ export async function getCatalogueData(
     message: null,
   };
 }
+
+export const getCatalogueData = cache(loadCatalogueData);
 
 export const getProductDetailData = cache(
   async (slug: string): Promise<ProductDetailData> => {

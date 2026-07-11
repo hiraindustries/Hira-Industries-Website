@@ -57,7 +57,7 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
           <div className="about-copy">
             <div className="light-kicker">Welcome to Hira Industries</div>
             <h2 className="light-title">
-              Crafting Excellence in <span>Ceramic Crockery</span> Since 1995
+              Crafting Excellence in <span>Ceramic Crockery</span> from Khurja
             </h2>
             <div className="light-rule" aria-hidden="true" />
             <p>
@@ -423,8 +423,8 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
           </h2>
           <p>
             Looking for crockery in bulk for hotels, restaurants, retail stores,
-            or wholesale supply? We offer competitive pricing, custom branding,
-            and reliable delivery for large orders.
+            or wholesale supply? Share your product, quantity, packing, and
+            delivery requirements so our team can confirm current details.
           </p>
           <div className="bulk-band__actions">
             <Link

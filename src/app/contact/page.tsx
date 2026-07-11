@@ -8,13 +8,24 @@ import {
   FiPhone,
 } from "react-icons/fi";
 import ContactForm from "@/components/ContactForm";
+import JsonLd from "@/components/seo/JsonLd";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
+import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
 import { businessInfo, downloadResources } from "@/lib/site-data";
 
-export const metadata = {
+const pageDescription =
+  "Contact Hira Industries for product enquiries, catalogue requests, bulk pricing, and hospitality or trade order support.";
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Contact", path: "/contact" },
+];
+
+export const metadata = createPageMetadata({
   title: "Contact | Ceramic Crockery Supplier",
-  description:
-    "Contact Hira Industries for product enquiries, catalogue requests, bulk pricing, and hospitality or trade order support.",
-};
+  description: pageDescription,
+  path: "/contact",
+});
 
 type ContactPageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -59,6 +70,19 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
   return (
     <main className="contact-page">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            buildBreadcrumbListSchema(breadcrumbs),
+            buildWebPageSchema({
+              path: "/contact",
+              name: "Contact Hira Industries",
+              description: pageDescription,
+            }),
+          ],
+        }}
+      />
       <section className="contact-hero">
         <Image
           src="/images/set.jpeg"
@@ -138,7 +162,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                   <FiClock />
                 </span>
                 <span className="contact-info-card__copy">
-                  <strong>Business Hours</strong>
+                  <strong>Visit Timing</strong>
                   <span>{businessInfo.businessHours}</span>
                   <span>{businessInfo.sundayHours}</span>
                 </span>

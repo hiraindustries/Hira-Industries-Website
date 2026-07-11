@@ -2,7 +2,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Production deployment notes
 
-The public site is configured for the domain https://www.hiraindustrieskhurja.com. Set the Vercel environment variable `NEXT_PUBLIC_SITE_URL` to this value and keep `SUPABASE_SERVICE_ROLE_KEY` server-only.
+The public site is configured for the canonical domain https://www.hiraindustrieskhurja.com. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only.
+
+Optional SEO and search verification environment variables are documented in
+`.env.example`. Owner setup steps for Google Search Console, Bing Webmaster
+Tools, Google Business Profile and IndexNow are in
+`docs/AI_SEARCH_AND_SEO_SETUP.md`.
 
 ## Getting Started
 

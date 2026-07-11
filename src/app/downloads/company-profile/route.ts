@@ -5,7 +5,7 @@ const profile = `
 ${businessInfo.companyName}
 Company Profile
 
-Premium ceramic tableware crafted for modern homes, hospitality spaces, and export buyers.
+Premium ceramic tableware crafted for modern homes, hospitality spaces, and trade buyers.
 
 Core product range
 - Tea sets

@@ -65,8 +65,12 @@ export default function ProductShowcase({
     message,
   } = catalogue;
   const showListing = viewAll || Boolean(selectedCategory);
-  const pageTitle = selectedCategory?.name ?? (viewAll ? "All Products" : "Product Categories");
+  const pageTitle =
+    selectedSubcategory?.name ??
+    selectedCategory?.name ??
+    (viewAll ? "All Products" : "Product Categories");
   const pageDescription =
+    selectedSubcategory?.description ??
     selectedCategory?.description ??
     (viewAll
       ? "Browse the complete Hira Industries catalogue and refine the range by category, product name, code, or material."
@@ -82,6 +86,14 @@ export default function ProductShowcase({
             {selectedCategory || viewAll ? (
               <>
                 <Link href="/products">Products</Link>
+                <span>/</span>
+              </>
+            ) : null}
+            {selectedCategory && selectedSubcategory ? (
+              <>
+                <Link href={`/products?category=${selectedCategory.slug}`}>
+                  {selectedCategory.name}
+                </Link>
                 <span>/</span>
               </>
             ) : null}
