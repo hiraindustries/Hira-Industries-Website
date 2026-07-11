@@ -119,6 +119,15 @@ export default function CompanyPage() {
         }}
       />
       <section className="about-hero-bg">
+        <Image
+          src="/images/hira-industries-outlet.webp"
+          alt="Hira Industries factory outlet and ceramic crockery showroom in Khurja"
+          fill
+          priority
+          quality={86}
+          sizes="100vw"
+          className="about-hero-bg__image"
+        />
         <div className="about-hero-content">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
@@ -159,16 +168,11 @@ export default function CompanyPage() {
 
           <div className="internal-image about-hero-image">
             <Image
-              src="/images/build-pic-1.png"
-              alt="Premium ceramic crockery with polished presentation"
+              src="/images/owner.jpg"
+              alt="Hira Industries representative during an official meeting"
               fill
-              loading="eager"
-              sizes="(max-width: 900px) 100vw, 48vw"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <div className="about-badge">
-              <strong>Khurja</strong>
-              <span>Ceramic Crockery</span>
-            </div>
           </div>
         </div>
       </section>

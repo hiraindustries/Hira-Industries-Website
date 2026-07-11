@@ -96,26 +96,29 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
           <div className="about-collage" aria-label="Hira Industries ceramic collections">
             <div className="about-collage__item about-collage__item--wide">
               <Image
-                src="/images/build-pic-1.png"
-                alt="White and gold ceramic dinnerware collection"
+                src="/images/Hira-office.webp"
+                alt="Hira Industries factory outlet reception in Khurja"
                 fill
                 sizes="(max-width: 900px) 100vw, 34vw"
+                style={{ objectPosition: "center center" }}
+              />
+            </div>
+            <div className="about-collage__item about-collage__item--bottom">
+              <Image
+                src="/images/home-decor-showroom.webp"
+                alt="Hira Industries home decor and crockery showroom interior"
+                fill
+                sizes="(max-width: 420px) 100vw, (max-width: 900px) 50vw, 18vw"
+                style={{ objectPosition: "center center" }}
               />
             </div>
             <div className="about-collage__item about-collage__item--tall">
               <Image
-                src="/tea.png"
-                alt="White tea set with gold detailing"
+                src="/images/ceramics-showcase.webp"
+                alt="Hira Industries ceramic crockery showroom display in Khurja"
                 fill
-                sizes="(max-width: 900px) 50vw, 18vw"
-              />
-            </div>
-            <div className="about-collage__item">
-              <Image
-                src="/images/build-pic-2.png"
-                alt="White ceramic serveware with gold accents"
-                fill
-                sizes="(max-width: 900px) 50vw, 18vw"
+                sizes="(max-width: 420px) 100vw, (max-width: 900px) 50vw, 18vw"
+                style={{ objectPosition: "center center" }}
               />
             </div>
           </div>
