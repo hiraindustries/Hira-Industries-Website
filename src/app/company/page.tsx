@@ -12,6 +12,7 @@ import {
   FiStar,
   FiTruck,
 } from "react-icons/fi";
+import AboutDisplaySlideshow from "@/components/about/AboutDisplaySlideshow";
 import JsonLd from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
@@ -81,24 +82,24 @@ const customerCards = [
   },
 ];
 
-const ownershipFocus = [
+const owners = [
   {
-    name: "Product Quality",
-    role: "Leadership Focus",
+    name: "Salman Beg Sahab",
+    role: "Owner, Hira Industries",
     description:
-      "Focused on product quality, finishing standards, and strong relationships with buyers and trade partners.",
+      "Focused on product quality, finishing standards, and maintaining strong relationships with buyers and trade partners.",
   },
   {
-    name: "Operations",
-    role: "Leadership Focus",
+    name: "Arbaz Beg Sahab",
+    role: "Owner, Hira Industries",
     description:
-      "Supports operations, execution, and customer communication for smoother coordination across the business.",
+      "Supports operations, execution, and customer commitment, ensuring dependable service and smooth coordination across the business.",
   },
   {
-    name: "Customer Coordination",
-    role: "Leadership Focus",
+    name: "Shanu Beg Sahab",
+    role: "Owner, Hira Industries",
     description:
-      "Helps buyers connect product needs, catalogue details, and order requirements with the right next step.",
+      "Contributes strategic direction and business leadership, helping strengthen the brand’s market presence and long-term growth.",
   },
 ];
 
@@ -179,55 +180,26 @@ export default function CompanyPage() {
 
       <section className="internal-section internal-section--dark">
         <div className="light-shell internal-split about-collage-wrap">
-          <div className="about-collage">
-            <div className="about-collage__item about-collage__item--wide">
-              <Image
-                src="/images/products/white-gold-pattern-dinner-plate-set.png"
-                alt="Premium white and gold ceramic dinner plate set"
-                fill
-                loading="eager"
-                sizes="(max-width: 900px) 100vw, 48vw"
-              />
-            </div>
-            <div className="about-collage__item">
-              <Image
-                src="/images/owner.jpg"
-                alt="Hira Industries ceramic crockery team"
-                fill
-                loading="eager"
-                sizes="(max-width: 900px) 100vw, 48vw"
-              />
-            </div>
-            <div className="about-collage__item about-collage__item--tall">
-              <Image
-                src="/images/products/white-gold-rim-soup-bowl-lifestyle.png"
-                alt="Elegant premium soup bowl and serving ware"
-                fill
-                loading="eager"
-                sizes="(max-width: 900px) 100vw, 48vw"
-              />
-            </div>
-          </div>
+          <AboutDisplaySlideshow />
 
           <div>
             <div className="light-kicker">BRAND STORY</div>
             <h2 className="internal-title">
-              From Local Craft to Trusted Ceramic Collections
+              From Khurja Craft to Complete Ceramic Collections
             </h2>
             <p className="internal-copy">
-              What started as a focused ceramic manufacturing effort has grown
-              into a complete crockery range serving homes, hotels, restaurants,
-              retailers, gifting buyers, and trade clients.
+              Hira Industries brings together a broad range of ceramic crockery
+              for homes, hotels, restaurants, retailers, gifting buyers, and
+              trade customers.
             </p>
             <p className="internal-copy">
-              Our collections include tea sets, dinner sets, mugs, bowls, plates,
-              serveware, and hospitality-ready tableware. We focus on clean
-              design, stable finishing, careful handling, and buyer-ready
-              presentation.
+              Our showroom features dinner sets, tea and coffee sets, mugs,
+              bowls, plates, serveware, decorative ceramics, and hospitality
+              tableware in varied colours, shapes, and finishes.
             </p>
             <p className="internal-copy">
-              Today, Hira Industries stands for practical quality, polished
-              ceramic collections, and dependable support for everyday and bulk
+              We focus on clean presentation, dependable product selection, and
+              practical support for everyday, retail, hospitality, and bulk
               requirements.
             </p>
           </div>
@@ -237,19 +209,20 @@ export default function CompanyPage() {
       <section className="owners-section" aria-labelledby="owners-heading">
         <div className="light-shell owners-section__inner">
           <header className="owners-section__header">
-            <p className="owners-section__label">LEADERSHIP FOCUS</p>
+            <p className="owners-section__label">OWNER&apos;S MESSAGE</p>
             <h2 id="owners-heading" className="owners-section__title">
-              How Hira Industries Supports Buyers
+              Meet the Owners Behind Hira Industries
             </h2>
             <p className="owners-section__intro">
-              Hira Industries is led with a focus on quality, trust, and
-              responsive buyer communication so each enquiry can be matched with
-              the right catalogue and product details.
+              Hira Industries is led by a dedicated ownership team committed to
+              quality, trust, and long-term customer relationships — ensuring
+              every collection reflects the brand’s standards of craftsmanship,
+              reliability, and premium finish.
             </p>
           </header>
 
           <div className="owners-grid">
-            {ownershipFocus.map((owner) => (
+            {owners.map((owner) => (
               <article key={owner.name} className="owner-card">
                 <span className="owner-card__icon" aria-hidden="true">
                   <FiStar />

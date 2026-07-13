@@ -28,12 +28,12 @@ export default function ProductCard({
   const isRemoteImage = /^https?:\/\//.test(coverImage.url);
 
   return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="catalogue-product-card__link"
-      aria-label={`View details for ${product.name}`}
-    >
-      <article className="catalogue-product-card">
+    <article className="catalogue-product-card">
+      <Link
+        href={`/products/${product.slug}`}
+        className="catalogue-product-card__primary-link"
+        aria-label={`View details for ${product.name}`}
+      >
         <div className="catalogue-product-card__media">
           <Image
             src={coverImage.url}
@@ -102,22 +102,22 @@ export default function ProductCard({
             <span>{subcategoryName}</span>
             {product.product_code ? <small>{product.product_code}</small> : null}
           </div>
-
-          <div className="catalogue-product-card__quick-actions">
-            <Link href={`/contact?product=${encodeURIComponent(product.slug)}`}>
-              Request Quote
-            </Link>
-            <a
-              href={`https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(`Hello Hira Industries, I am interested in ${product.name}. Please share details and quotation.`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FiMessageCircle aria-hidden="true" />
-              Enquire
-            </a>
-          </div>
         </div>
-      </article>
-    </Link>
+      </Link>
+
+      <div className="catalogue-product-card__quick-actions">
+        <Link href={`/contact?product=${encodeURIComponent(product.slug)}`}>
+          Request Quote
+        </Link>
+        <a
+          href={`https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(`Hello Hira Industries, I am interested in ${product.name}. Please share details and quotation.`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FiMessageCircle aria-hidden="true" />
+          Enquire
+        </a>
+      </div>
+    </article>
   );
 }

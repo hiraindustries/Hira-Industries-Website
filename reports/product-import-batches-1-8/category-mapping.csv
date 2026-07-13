@@ -1,0 +1,124 @@
+product_code,manifest_main_category_slug,manifest_subcategory_slug,final_main_category_slug,final_subcategory_slug,notes
+HBS-354,plates,dinner-plates,plates,dinner-plates,
+HBS-355,plates,snack-plates,plates,snack-plates,
+HBS-356,plates,dinner-plates,plates,dinner-plates,
+HBS-357,bowls,serving-bowls,bowls,serving-bowls,
+HBS-358,bowls,serving-bowls,bowls,serving-bowls,
+HBS-359,bowls,serving-bowls,bowls,serving-bowls,
+HBS-360,bowls,soup-bowls,bowls,soup-bowls,
+HBS-361,bowls,snack-bowls,bowls,snack-bowls,
+HBS-362,bowls,snack-bowls,bowls,snack-bowls,
+HBS-363,bowls,snack-bowls,bowls,snack-bowls,
+HJS-419,jar-storage,,jar-storage,,Blank Jar & Storage subcategory kept as null because products.subcategory_id is nullable.
+HJS-420,jar-storage,,jar-storage,,Blank Jar & Storage subcategory kept as null because products.subcategory_id is nullable.
+HJS-421,jar-storage,,jar-storage,,Blank Jar & Storage subcategory kept as null because products.subcategory_id is nullable.
+HTC-260,tea-coffee-sets,cup-saucer-sets,tea-coffee-sets,cup-saucer-sets,
+HTC-261,tea-coffee-sets,cup-saucer-sets,tea-coffee-sets,cup-saucer-sets,
+HTC-262,cups-mugs,premium-ceramic-mugs,cups-mugs,premium-ceramic-mugs,
+HTC-263,cups-mugs,premium-ceramic-mugs,cups-mugs,premium-ceramic-mugs,
+HTC-264,tea-coffee-sets,cup-saucer-sets,tea-coffee-sets,cup-saucer-sets,
+HTC-265,tea-coffee-sets,cup-saucer-sets,tea-coffee-sets,cup-saucer-sets,
+HBS-364,bowls,serving-bowls,bowls,serving-bowls,
+HBS-365,bowls,serving-bowls,bowls,serving-bowls,
+HBS-366,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HBS-367,plates,serving-plates,plates,serving-plates,
+HBS-368,bowls,serving-bowls,bowls,serving-bowls,
+HBS-369,plates,serving-plates,plates,serving-plates,
+HBS-370,plates,serving-plates,plates,serving-plates,
+HBS-371,bowls,serving-bowls,bowls,serving-bowls,
+HBS-372,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HBS-373,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HBS-374,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HBS-375,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HGD-429,glassware-drinkware,decorative-glassware,glassware-drinkware,decorative-glassware,
+HGD-430,glassware-drinkware,decorative-glassware,glassware-drinkware,decorative-glassware,
+HJS-422,jar-storage,glass-jars,jar-storage,glass-jars,
+HTC-266,tea-coffee-sets,tea-cup-sets,tea-coffee-sets,tea-cup-sets,
+HTC-267,tea-coffee-sets,tea-cup-sets,tea-coffee-sets,tea-cup-sets,
+HBS-376,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HBS-377,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HBS-378,bowls,bowl-sets,bowls,ceramic-bowl-sets,Mapped Bowl Sets to existing Ceramic Bowl Sets.
+HBS-379,bowls,serving-bowls,bowls,serving-bowls,
+HBS-380,bowls,serving-bowls,bowls,serving-bowls,
+HBS-381,plates,serving-plates,plates,serving-plates,
+HBS-382,bowls,serving-bowls,bowls,serving-bowls,
+HBS-383,bowls,serving-bowls,bowls,serving-bowls,
+HTC-268,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HBS-384,bowls,serving-bowls,bowls,serving-bowls,
+HBS-385,bowls,serving-bowls,bowls,serving-bowls,
+HBS-386,bowls,serving-bowls,bowls,serving-bowls,
+HBS-387,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-388,plates,serving-plates,plates,serving-plates,
+HBS-389,serveware,serving-trays,serving-sets,serving-trays,Mapped manifest Serveware to existing Serving Sets.
+HBS-390,serveware,snack-plates,plates,snack-plates,Mapped manifest Serveware to existing Serving Sets. Mapped serveware Snack Plates to Plates > Snack Plates.
+HBS-391,serveware,snack-plates,plates,snack-plates,Mapped manifest Serveware to existing Serving Sets. Mapped serveware Snack Plates to Plates > Snack Plates.
+HBS-392,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-393,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-394,plates,serving-plates,plates,serving-plates,
+HBS-395,serveware,snack-plates,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped serveware snack-platter product to Platter Sets.
+HBS-396,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-397,bowls,serving-bowls,bowls,serving-bowls,
+HBS-398,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-399,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-400,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-401,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HTC-269,cups-mugs,coffee-cups,cups-mugs,coffee-cups,
+HTC-270,tea-coffee-sets,tea-pots,tea-coffee-sets,tea-pots,
+HBS-402,serveware,snack-plates,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped serveware snack-platter product to Platter Sets.
+HBS-403,serveware,decorative-platters,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped Decorative Platters to existing Platter Sets.
+HBS-404,serveware,snack-plates,serving-sets,platter-sets,Mapped manifest Serveware to existing Serving Sets. Mapped serveware snack-platter product to Platter Sets.
+HBS-405,plates,serving-plates,plates,serving-plates,
+HTC-271,cups-mugs,soup-mugs,cups-mugs,soup-mugs,
+HTC-272,cups-mugs,lidded-mugs,cups-mugs,lidded-mugs,
+HTC-273,cups-mugs,novelty-mugs,cups-mugs,novelty-mugs,
+HTC-274,cups-mugs,soup-mugs,cups-mugs,soup-mugs,
+HTC-275,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-276,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-277,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-278,cups-mugs,lidded-mugs,cups-mugs,lidded-mugs,
+HTC-279,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-280,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-281,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-282,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-283,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-284,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HBS-406,bowls,serving-bowls,bowls,serving-bowls,
+HBS-407,bowls,serving-bowls,bowls,serving-bowls,
+HJS-601,jar-storage,decorative-jars,jar-storage,decorative-jars,
+HJS-602,jar-storage,decorative-jars,jar-storage,decorative-jars,
+HTC-285,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-286,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-287,cups-mugs,printed-mugs,cups-mugs,printed-mugs,
+HTC-288,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-289,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-290,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-291,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-292,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-293,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-294,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-295,cups-mugs,novelty-mugs,cups-mugs,novelty-mugs,
+HTC-296,cups-mugs,coffee-mugs,cups-mugs,coffee-mugs,
+HTC-297,cups-mugs,novelty-mugs,cups-mugs,novelty-mugs,
+HTC-298,cups-mugs,printed-mugs,cups-mugs,printed-mugs,
+HTC-299,cups-mugs,printed-mugs,cups-mugs,printed-mugs,
+HTC-300,cups-mugs,printed-mugs,cups-mugs,printed-mugs,
+HBA-519,bathroom-accessories,soap-dispensers,bathroom-accessories,soap-dispensers,
+HBA-520,bathroom-accessories,soap-dispensers,bathroom-accessories,soap-dispensers,
+HBA-521,bathroom-accessories,soap-dispensers,bathroom-accessories,soap-dispensers,
+HBA-522,bathroom-accessories,soap-dispensers,bathroom-accessories,soap-dispensers,
+HBA-523,bathroom-accessories,soap-dispensers,bathroom-accessories,soap-dispensers,
+HBS-408,bowls,serving-bowls,bowls,serving-bowls,
+HBS-409,bowls,serving-bowls,bowls,serving-bowls,
+HDA-601,home-decor-accents,vases,home-decor-accents,vases,
+HDA-602,home-decor-accents,vases,home-decor-accents,vases,
+HDA-609,home-decor-accents,planters,home-decor-accents,planters,
+HDA-610,home-decor-accents,planters,home-decor-accents,planters,
+HDA-611,home-decor-accents,planters,home-decor-accents,planters,
+HJS-603,jar-storage,storage-containers,jar-storage,storage-containers,
+HJS-604,jar-storage,storage-containers,jar-storage,storage-containers,
+HBS-410,bowls,serving-bowls,bowls,serving-bowls,
+HDA-612,home-decor-accents,vases,home-decor-accents,vases,
+HDA-613,home-decor-accents,vases,home-decor-accents,vases,
+HDA-614,home-decor-accents,vases,home-decor-accents,vases,
+HDA-615,home-decor-accents,vases,home-decor-accents,vases,
+HDA-616,home-decor-accents,vases,home-decor-accents,vases,
