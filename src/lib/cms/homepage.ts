@@ -862,14 +862,16 @@ export function getHomepageCategories(
   const selectedIds = content.categories.selectedCategoryIds;
 
   if (selectedIds.length > 0) {
-    const byId = new Map(catalogue.mainCategories.map((category) => [category.id, category]));
+    const byId = new Map(
+      catalogue.categoryCards.map((category) => [category.id, category]),
+    );
     return selectedIds
       .map((id) => byId.get(id))
-      .filter((category): category is CatalogueData["mainCategories"][number] =>
-        Boolean(category?.is_active),
+      .filter((category): category is CatalogueData["categoryCards"][number] =>
+        Boolean(category),
       )
       .slice(0, 6);
   }
 
-  return catalogue.mainCategories.slice(0, 6);
+  return catalogue.categoryCards.slice(0, 6);
 }

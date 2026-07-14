@@ -206,6 +206,15 @@ export default function CategoryForm({
             }}
           />
         </label>
+        {category?.image_url ? (
+          <label className="admin-check-field">
+            <input type="checkbox" name="remove_category_image" />
+            <span>
+              <strong>Remove current image</strong>
+              Keep this unchecked when uploading a replacement image.
+            </span>
+          </label>
+        ) : null}
       </section>
     </form>
   );

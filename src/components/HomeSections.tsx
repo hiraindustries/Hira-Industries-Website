@@ -149,7 +149,7 @@ export default function HomeSections({
             <div className="category-grid">
               {categories.map((category) => {
                 const isRemoteImage = Boolean(
-                  category.image_url && /^https?:\/\//.test(category.image_url),
+                  category.image?.unoptimized,
                 );
 
                 return (
@@ -158,13 +158,16 @@ export default function HomeSections({
                     href={`/products?category=${category.slug}`}
                     className="category-tile"
                   >
-                    <Image
-                      src={category.image_url ?? "/images/build-pic-1.png"}
-                      alt={category.name}
-                      fill
-                      sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                      unoptimized={isRemoteImage}
-                    />
+                    {category.image?.src ? (
+                      <Image
+                        src={category.image.src}
+                        alt={category.image.alt}
+                        fill
+                        sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        unoptimized={isRemoteImage}
+                        style={{ objectFit: category.image.fit }}
+                      />
+                    ) : null}
                     <span className="category-tile__overlay" aria-hidden="true" />
                     <span className="category-tile__content">
                       <strong>{category.name}</strong>

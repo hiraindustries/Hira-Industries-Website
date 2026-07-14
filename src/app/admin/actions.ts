@@ -727,7 +727,9 @@ async function getCategoryImage(
   const entry = formData.get("category_image");
 
   if (typeof entry === "string" || !entry || entry.size === 0) {
-    return currentImageUrl;
+    return getBoolean(formData, "remove_category_image")
+      ? null
+      : currentImageUrl;
   }
 
   const { publicUrl } = await uploadAdminImage({

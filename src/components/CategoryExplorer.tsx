@@ -17,10 +17,7 @@ import {
   FiLayers,
   FiList,
 } from "react-icons/fi";
-import type {
-  CatalogueProduct,
-  ProductCategory,
-} from "@/lib/supabase/database.types";
+import type { PublicCategoryCard } from "@/lib/catalogue";
 
 const categoryIcons: Record<string, IconType> = {
   "dinner-sets": FiGrid,
@@ -34,13 +31,9 @@ const categoryIcons: Record<string, IconType> = {
 };
 
 export default function CategoryExplorer({
-  categories,
-  mainCategories,
-  products,
+  categoryCards,
 }: {
-  categories: ProductCategory[];
-  mainCategories: ProductCategory[];
-  products: CatalogueProduct[];
+  categoryCards: PublicCategoryCard[];
 }) {
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
@@ -55,7 +48,7 @@ export default function CategoryExplorer({
             <Link href="/products" className="catalogue-filter-pill is-active">
               All Categories
             </Link>
-            {mainCategories.map((category) => (
+            {categoryCards.map((category) => (
               <Link
                 key={category.id}
                 href={`/products?category=${category.slug}`}
@@ -91,7 +84,7 @@ export default function CategoryExplorer({
         <div className="catalogue-count-line">
           <span />
           <p id="categories-heading">
-            Showing <strong>{mainCategories.length}</strong> categories
+            Showing <strong>{categoryCards.length}</strong> categories
           </p>
           <span />
         </div>
@@ -101,33 +94,28 @@ export default function CategoryExplorer({
             layout === "list" ? "is-list" : ""
           }`}
         >
-          {mainCategories.map((category) => {
-            const subcategories = categories.filter(
-              (item) => item.parent_id === category.id,
-            );
-            const categoryIds = new Set([
-              category.id,
-              ...subcategories.map((item) => item.id),
-            ]);
-            const productCount = products.filter((product) =>
-              categoryIds.has(product.category_id),
-            ).length;
+          {categoryCards.map((category, index) => {
             const CategoryIcon = categoryIcons[category.slug] ?? FiGrid;
-            const isRemoteImage = Boolean(
-              category.image_url && /^https?:\/\//.test(category.image_url),
-            );
 
             return (
               <article key={category.id} className="catalogue-category-card">
-                <div className="catalogue-category-card__visual">
-                  {category.image_url ? (
+                <div
+                  className={`catalogue-category-card__visual ${
+                    category.image?.src
+                      ? "catalogue-category-card__visual--has-image"
+                      : ""
+                  }`}
+                >
+                  {category.image?.src ? (
                     <Image
-                      src={category.image_url}
-                      alt={`${category.name} collection`}
+                      src={category.image.src}
+                      alt={category.image.alt}
                       fill
                       sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                      unoptimized={isRemoteImage}
+                      loading={index < 3 ? "eager" : "lazy"}
+                      unoptimized={category.image.unoptimized}
                       className="catalogue-category-card__image"
+                      style={{ objectFit: category.image.fit }}
                     />
                   ) : (
                     <span
@@ -145,7 +133,8 @@ export default function CategoryExplorer({
                     <CategoryIcon />
                   </span>
                   <span className="catalogue-category-card__count">
-                    {productCount} {productCount === 1 ? "Product" : "Products"}
+                    {category.productCount}{" "}
+                    {category.productCount === 1 ? "Product" : "Products"}
                   </span>
                 </div>
 
@@ -162,7 +151,7 @@ export default function CategoryExplorer({
                       <FiChevronDown aria-hidden="true" />
                     </summary>
                     <div>
-                      {subcategories.map((subcategory) => (
+                      {category.subcategories.map((subcategory) => (
                         <Link
                           key={subcategory.id}
                           href={`/products?category=${category.slug}&subcategory=${subcategory.slug}`}

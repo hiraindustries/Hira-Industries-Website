@@ -1,6 +1,8 @@
 import "server-only";
 
 import { cache } from "react";
+import { existsSync, readdirSync } from "node:fs";
+import { join, normalize } from "node:path";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type {
   CatalogueProduct,
@@ -22,10 +24,35 @@ export type CatalogueData = {
   categories: ProductCategory[];
   mainCategories: ProductCategory[];
   subcategories: ProductCategory[];
+  categoryCards: PublicCategoryCard[];
   products: CatalogueProduct[];
   selectedCategory: ProductCategory | null;
   selectedSubcategory: ProductCategory | null;
   message: string | null;
+};
+
+export type PublicCategoryCard = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  productCount: number;
+  image: {
+    src: string | null;
+    alt: string;
+    source:
+      | "explicit-category-image"
+      | "direct-product"
+      | "subcategory-product"
+      | "static-fallback"
+      | "fallback-icon";
+    fit: "cover" | "contain";
+    unoptimized: boolean;
+    productCode: string | null;
+    productName: string | null;
+  } | null;
+  icon: string | null;
+  subcategories: ProductCategory[];
 };
 
 export type ProductDetailData = {
@@ -49,6 +76,142 @@ const categorySelect =
 
 const productImageSelect =
   "id, product_id, image_url, alt_text, is_primary, sort_order, created_at";
+
+let productCodeImageIndex: Map<string, string> | null = null;
+
+const curatedCategoryImageFallbacks: Record<string, string> = {
+  "bathroom-accessories":
+    "/images/products/hba-519-aqua-etched-pear-soap-dispenser.webp",
+  "glassware-drinkware":
+    "/images/products/hgd-429-smoked-glass-floral-serving-stand.webp",
+  "jar-storage":
+    "/images/products/hjs-601-midnight-reactive-ginger-jar-trio.webp",
+};
+
+function isSafeRemoteImageUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
+function normalizePublicImagePath(value: string | null | undefined) {
+  const src = value?.trim();
+
+  if (!src || /^\s*(javascript|data|file):/i.test(src)) {
+    return null;
+  }
+
+  if (/^https?:\/\//i.test(src)) {
+    return isSafeRemoteImageUrl(src) ? src : null;
+  }
+
+  if (!src.startsWith("/") || src.startsWith("//") || src.includes("\0")) {
+    return null;
+  }
+
+  const pathname = src.split(/[?#]/, 1)[0];
+
+  if (pathname.includes("..")) {
+    return null;
+  }
+
+  const publicRoot = join(process.cwd(), "public");
+  const absolutePath = normalize(join(publicRoot, pathname));
+
+  if (!absolutePath.startsWith(publicRoot) || !existsSync(absolutePath)) {
+    return null;
+  }
+
+  return src;
+}
+
+function getGalleryImageCandidates(product: CatalogueProduct) {
+  if (!Array.isArray(product.gallery_images)) {
+    return [];
+  }
+
+  return product.gallery_images.flatMap((image): string[] => {
+    if (typeof image === "string") {
+      return [image];
+    }
+
+    if (
+      image &&
+      typeof image === "object" &&
+      !Array.isArray(image) &&
+      typeof image.url === "string"
+    ) {
+      return [image.url];
+    }
+
+    return [];
+  });
+}
+
+function getProductCodeImageIndex() {
+  if (productCodeImageIndex) {
+    return productCodeImageIndex;
+  }
+
+  const index = new Map<string, string>();
+  const productImageDir = join(process.cwd(), "public", "images", "products");
+
+  try {
+    const filenames = readdirSync(productImageDir)
+      .filter((filename) => /\.(?:webp|png|jpe?g)$/i.test(filename))
+      .sort((left, right) => left.localeCompare(right));
+
+    for (const filename of filenames) {
+      const code = filename
+        .match(/^([a-z]{2,4}-\d{2,4})[-.]/i)?.[1]
+        ?.toLowerCase();
+
+      if (code && !index.has(code)) {
+        index.set(code, `/images/products/${filename}`);
+      }
+    }
+  } catch {
+    // Static product images are optional. Database image fields remain primary.
+  }
+
+  productCodeImageIndex = index;
+  return productCodeImageIndex;
+}
+
+function getProductCodeImage(product: CatalogueProduct) {
+  const code = product.product_code?.trim().toLowerCase();
+
+  if (!code) {
+    return null;
+  }
+
+  return getProductCodeImageIndex().get(code) ?? null;
+}
+
+function getFirstValidProductImage(product: CatalogueProduct) {
+  const imageCandidates = [
+    product.image_url,
+    ...getGalleryImageCandidates(product),
+    getProductCodeImage(product),
+  ];
+
+  for (const candidate of imageCandidates) {
+    const src = normalizePublicImagePath(candidate);
+
+    if (src) {
+      return src;
+    }
+  }
+
+  return null;
+}
+
+function getProductImageFit(src: string) {
+  return src.startsWith("/images/products/") ? "contain" : "cover";
+}
 
 function attachProductImages(
   products: CatalogueProduct[],
@@ -166,11 +329,141 @@ function getEmptyCatalogue(
     categories: [],
     mainCategories: [],
     subcategories: [],
+    categoryCards: [],
     products: [],
     selectedCategory: null,
     selectedSubcategory: null,
     message: unavailableMessage,
   };
+}
+
+function productBelongsToCategoryIds(
+  product: CatalogueProduct,
+  categoryIds: Set<string>,
+) {
+  return (
+    categoryIds.has(product.category_id) ||
+    (product.subcategory_id ? categoryIds.has(product.subcategory_id) : false)
+  );
+}
+
+function sortProductImageCandidates(products: CatalogueProduct[]) {
+  return [...products].sort(
+    (left, right) =>
+      Number(right.is_featured) - Number(left.is_featured) ||
+      Number(left.sort_order) - Number(right.sort_order) ||
+      (left.product_code ?? left.id).localeCompare(
+        right.product_code ?? right.id,
+      ) ||
+      left.id.localeCompare(right.id),
+  );
+}
+
+function getFirstProductWithImage(products: CatalogueProduct[]) {
+  for (const product of sortProductImageCandidates(products)) {
+    const src = getFirstValidProductImage(product);
+
+    if (src) {
+      return { product, src };
+    }
+  }
+
+  return null;
+}
+
+export function buildPublicCategoryCards({
+  categories,
+  mainCategories,
+  products,
+}: {
+  categories: ProductCategory[];
+  mainCategories: ProductCategory[];
+  products: CatalogueProduct[];
+}): PublicCategoryCard[] {
+  const subcategoriesByParentId = new Map<string, ProductCategory[]>();
+
+  for (const category of categories) {
+    if (!category.parent_id) {
+      continue;
+    }
+
+    const current = subcategoriesByParentId.get(category.parent_id) ?? [];
+    current.push(category);
+    subcategoriesByParentId.set(category.parent_id, current);
+  }
+
+  return mainCategories.map((category) => {
+    const subcategories = sortCategories(
+      subcategoriesByParentId.get(category.id) ?? [],
+    );
+    const categoryIds = new Set([
+      category.id,
+      ...subcategories.map((subcategory) => subcategory.id),
+    ]);
+    const subcategoryIds = new Set(
+      subcategories.map((subcategory) => subcategory.id),
+    );
+    const categoryProducts = products.filter((product) =>
+      productBelongsToCategoryIds(product, categoryIds),
+    );
+    const productCount = categoryProducts.length;
+    const categoryImage = normalizePublicImagePath(category.image_url);
+    const directProductImage = getFirstProductWithImage(
+      categoryProducts.filter(
+        (product) =>
+          product.category_id === category.id && !product.subcategory_id,
+      ),
+    );
+    const subcategoryProductImage = getFirstProductWithImage(
+      categoryProducts.filter((product) =>
+        product.subcategory_id
+          ? subcategoryIds.has(product.subcategory_id)
+          : false,
+      ),
+    );
+    const fallbackImage = normalizePublicImagePath(
+      curatedCategoryImageFallbacks[category.slug],
+    );
+    const selectedImage =
+      categoryImage ??
+      directProductImage?.src ??
+      subcategoryProductImage?.src ??
+      fallbackImage ??
+      null;
+    const selectedProduct =
+      directProductImage?.product ?? subcategoryProductImage?.product ?? null;
+    const imageSource = categoryImage
+      ? "explicit-category-image"
+      : directProductImage
+        ? "direct-product"
+        : subcategoryProductImage
+          ? "subcategory-product"
+        : fallbackImage
+          ? "static-fallback"
+          : "fallback-icon";
+
+    return {
+      id: category.id,
+      name: category.name,
+      slug: category.slug,
+      description: category.description,
+      productCount,
+      image: {
+        src: selectedImage,
+        alt: `Hira Industries ${category.name} collection`,
+        source: imageSource,
+        fit:
+          selectedImage && imageSource !== "explicit-category-image"
+            ? getProductImageFit(selectedImage)
+            : "cover",
+        unoptimized: selectedImage ? /^https?:\/\//i.test(selectedImage) : false,
+        productCode: selectedProduct?.product_code ?? null,
+        productName: selectedProduct?.name ?? null,
+      },
+      icon: category.icon,
+      subcategories,
+    };
+  });
 }
 
 function resolveCategorySelection(
@@ -324,6 +617,11 @@ async function loadCatalogueData(
         categories: activeCategories,
         mainCategories,
         subcategories,
+        categoryCards: buildPublicCategoryCards({
+          categories: activeCategories,
+          mainCategories,
+          products: [],
+        }),
         products: [],
         selectedCategory,
         selectedSubcategory,
@@ -370,6 +668,11 @@ async function loadCatalogueData(
       categories: activeCategories,
       mainCategories,
       subcategories,
+      categoryCards: buildPublicCategoryCards({
+        categories: activeCategories,
+        mainCategories,
+        products: [],
+      }),
       products: [],
       selectedCategory,
       selectedSubcategory,
@@ -382,6 +685,11 @@ async function loadCatalogueData(
     categories: activeCategories,
     mainCategories,
     subcategories,
+    categoryCards: buildPublicCategoryCards({
+      categories: activeCategories,
+      mainCategories,
+      products: activeProducts,
+    }),
     products: activeProducts,
     selectedCategory,
     selectedSubcategory,

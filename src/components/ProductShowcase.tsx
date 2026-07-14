@@ -58,6 +58,7 @@ export default function ProductShowcase({
     status,
     categories,
     mainCategories,
+    categoryCards,
     subcategories,
     products,
     selectedCategory,
@@ -128,9 +129,7 @@ export default function ProductShowcase({
         </section>
       ) : !showListing ? (
         <CategoryExplorer
-          categories={categories}
-          mainCategories={mainCategories}
-          products={status === "product-error" ? [] : products}
+          categoryCards={categoryCards}
         />
       ) : status === "product-error" ? (
         <section className="catalogue-products-section">
