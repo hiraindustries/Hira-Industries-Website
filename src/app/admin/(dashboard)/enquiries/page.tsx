@@ -5,14 +5,20 @@ import {
   FiArchive,
   FiCheckCircle,
   FiClock,
+  FiFlag,
   FiEye,
   FiInbox,
   FiMail,
   FiMessageSquare,
   FiPhone,
+  FiRepeat,
+  FiSlash,
 } from "react-icons/fi";
+import Link from "next/link";
+import { convertEnquiryToLeadAction } from "@/app/admin/crm-actions";
 import { updateContactEnquiryStatusAction } from "@/app/admin/actions";
 import { requireAdminPage } from "@/lib/admin/auth";
+import { getCrmAvailability } from "@/lib/admin/crm/availability";
 import { getAdminContactEnquiries } from "@/lib/admin/enquiries";
 import type {
   ContactEnquiry,
@@ -25,6 +31,8 @@ const statusLabels: Record<ContactEnquiryStatus, string> = {
   new: "New",
   read: "Read",
   contacted: "Contacted",
+  converted: "Converted",
+  spam: "Spam",
   archived: "Archived",
 };
 
@@ -37,7 +45,11 @@ function getStatusClass(status: ContactEnquiryStatus) {
     return "admin-status is-active";
   }
 
-  if (status === "archived") {
+  if (status === "converted") {
+    return "admin-status is-active";
+  }
+
+  if (status === "archived" || status === "spam") {
     return "admin-status is-muted";
   }
 
@@ -72,6 +84,8 @@ function getStatusCounts(enquiries: ContactEnquiry[]) {
       new: 0,
       read: 0,
       contacted: 0,
+      converted: 0,
+      spam: 0,
       archived: 0,
     } satisfies Record<ContactEnquiryStatus, number>,
   );
@@ -100,13 +114,36 @@ function StatusAction({
   );
 }
 
-function EnquiryActions({ enquiry }: { enquiry: ContactEnquiry }) {
-  if (enquiry.status === "archived") {
+function EnquiryActions({
+  enquiry,
+  crmReady,
+}: {
+  enquiry: ContactEnquiry;
+  crmReady: boolean;
+}) {
+  if (enquiry.status === "archived" || enquiry.status === "spam") {
     return null;
   }
 
   return (
     <div className="admin-row-actions admin-enquiry-card__actions">
+      {crmReady && enquiry.converted_lead_id ? (
+        <Link
+          href={`/admin/leads/${enquiry.converted_lead_id}`}
+          className="admin-enquiry-action"
+        >
+          <FiRepeat aria-hidden="true" />
+          <span>View lead</span>
+        </Link>
+      ) : crmReady ? (
+        <form action={convertEnquiryToLeadAction}>
+          <input type="hidden" name="enquiry_id" value={enquiry.id} />
+          <button type="submit" className="admin-enquiry-action">
+            <FiRepeat aria-hidden="true" />
+            <span>Convert to lead</span>
+          </button>
+        </form>
+      ) : null}
       {enquiry.status === "new" ? (
         <StatusAction
           enquiryId={enquiry.id}
@@ -125,6 +162,15 @@ function EnquiryActions({ enquiry }: { enquiry: ContactEnquiry }) {
           <FiCheckCircle aria-hidden="true" />
         </StatusAction>
       ) : null}
+      {crmReady ? (
+        <StatusAction
+          enquiryId={enquiry.id}
+          nextStatus="spam"
+          label="Mark spam"
+        >
+          <FiSlash aria-hidden="true" />
+        </StatusAction>
+      ) : null}
       <StatusAction
         enquiryId={enquiry.id}
         nextStatus="archived"
@@ -139,7 +185,11 @@ function EnquiryActions({ enquiry }: { enquiry: ContactEnquiry }) {
 export default async function AdminEnquiriesPage() {
   await requireAdminPage();
 
-  const enquiries = await getAdminContactEnquiries();
+  const [enquiries, crmAvailability] = await Promise.all([
+    getAdminContactEnquiries(),
+    getCrmAvailability(),
+  ]);
+  const crmReady = crmAvailability.status === "ready";
   const counts = getStatusCounts(enquiries);
 
   return (
@@ -174,6 +224,14 @@ export default async function AdminEnquiriesPage() {
           <strong>{counts.contacted}</strong>
           <small>Follow-up started</small>
         </article>
+        {crmReady ? (
+          <article>
+            <FiRepeat aria-hidden="true" />
+            <span>Converted</span>
+            <strong>{counts.converted}</strong>
+            <small>CRM leads created</small>
+          </article>
+        ) : null}
         <article>
           <FiArchive aria-hidden="true" />
           <span>Archived</span>
@@ -213,6 +271,10 @@ export default async function AdminEnquiriesPage() {
                         <FiMessageSquare aria-hidden="true" />
                         {enquiry.enquiry_type}
                       </span>
+                      <span>
+                        <FiFlag aria-hidden="true" />
+                        {enquiry.priority}
+                      </span>
                     </div>
                   </div>
                   <time dateTime={enquiry.created_at}>
@@ -241,10 +303,26 @@ export default async function AdminEnquiriesPage() {
                       <dt>Last updated</dt>
                       <dd>{formatDate(enquiry.updated_at)}</dd>
                     </div>
+                    <div>
+                      <dt>Assigned admin</dt>
+                      <dd>{enquiry.assigned_admin_email ?? "Unassigned"}</dd>
+                    </div>
+                    <div>
+                      <dt>Follow-up</dt>
+                      <dd>
+                        {enquiry.follow_up_at
+                          ? formatDate(enquiry.follow_up_at)
+                          : "Not scheduled"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Internal note</dt>
+                      <dd>{enquiry.internal_note ?? "No note"}</dd>
+                    </div>
                   </dl>
                 </details>
 
-                <EnquiryActions enquiry={enquiry} />
+                <EnquiryActions enquiry={enquiry} crmReady={crmReady} />
               </article>
             ))}
           </div>

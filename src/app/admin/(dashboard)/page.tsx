@@ -13,7 +13,10 @@ import {
 } from "react-icons/fi";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
-import { getNewContactEnquiryCount } from "@/lib/admin/enquiries";
+import {
+  getNewContactEnquiryCount,
+  getRecentContactEnquiries,
+} from "@/lib/admin/enquiries";
 import { getAdminProducts } from "@/lib/admin/products";
 
 export const dynamic = "force-dynamic";
@@ -21,11 +24,13 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboardPage() {
   await requireAdminPage();
 
-  const [categoryTree, products, newEnquiryCount] = await Promise.all([
-    getAdminCategoryTree(),
-    getAdminProducts(),
-    getNewContactEnquiryCount(),
-  ]);
+  const [categoryTree, products, newEnquiryCount, recentEnquiries] =
+    await Promise.all([
+      getAdminCategoryTree(),
+      getAdminProducts(),
+      getNewContactEnquiryCount(),
+      getRecentContactEnquiries().catch(() => []),
+    ]);
   const imageCount = products.reduce(
     (total, product) => total + product.images.length,
     0,
@@ -60,10 +65,10 @@ export default async function AdminDashboardPage() {
     <main className="admin-page">
       <header className="admin-page-header">
         <div>
-          <span className="admin-eyebrow">Catalogue overview</span>
-          <h1>Product dashboard</h1>
+          <span className="admin-eyebrow">Website overview</span>
+          <h1>Website dashboard</h1>
           <p>
-            Manage public catalogue content, media, and visibility.
+            Manage website content, products, media, enquiries and publishing.
           </p>
         </div>
         <Link
@@ -109,6 +114,53 @@ export default async function AdminDashboardPage() {
             </Link>
           </small>
         </article>
+      </section>
+
+      <section className="admin-dashboard-grid">
+        <div className="admin-panel">
+          <div className="admin-panel__heading">
+            <div>
+              <span className="admin-eyebrow">Recent enquiries</span>
+              <h2>Website leads</h2>
+            </div>
+            <Link href="/admin/enquiries" className="admin-text-link">
+              View all <FiArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="admin-mini-list">
+            {recentEnquiries.map((enquiry) => (
+              <article key={enquiry.id}>
+                <strong>{enquiry.full_name}</strong>
+                <span>
+                  {enquiry.enquiry_type} · {enquiry.status}
+                </span>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="admin-panel">
+          <div className="admin-panel__heading">
+            <div>
+              <span className="admin-eyebrow">Quick actions</span>
+              <h2>Website controls</h2>
+            </div>
+          </div>
+          <div className="admin-quick-actions">
+            <Link href="/admin/products" className="admin-button">
+              Products <FiArrowRight aria-hidden="true" />
+            </Link>
+            <Link href="/admin/categories" className="admin-button">
+              Categories <FiArrowRight aria-hidden="true" />
+            </Link>
+            <Link href="/admin/enquiries" className="admin-button">
+              Enquiries <FiArrowRight aria-hidden="true" />
+            </Link>
+            <Link href="/" target="_blank" className="admin-button">
+              Public website <FiArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
       </section>
 
       <section className="admin-panel">

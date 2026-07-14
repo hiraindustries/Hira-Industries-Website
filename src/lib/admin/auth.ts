@@ -18,9 +18,22 @@ function getAdminEmails() {
     ? configuredEmails
     : [approvedAdminEmail];
 
+  if (isLocalSupabaseEnvironment()) {
+    return new Set(candidateEmails);
+  }
+
   return new Set(
     candidateEmails.filter((email) => email === approvedAdminEmail),
   );
+}
+
+function isLocalSupabaseEnvironment() {
+  try {
+    const url = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "");
+    return url.hostname === "127.0.0.1" || url.hostname === "localhost";
+  } catch {
+    return false;
+  }
 }
 
 export function isApprovedAdminEmail(email: string | null | undefined) {
@@ -30,10 +43,7 @@ export function isApprovedAdminEmail(email: string | null | undefined) {
 
   const normalizedEmail = normalizeEmail(email);
 
-  return (
-    normalizedEmail === approvedAdminEmail &&
-    getAdminEmails().has(approvedAdminEmail)
-  );
+  return getAdminEmails().has(normalizedEmail);
 }
 
 export type AdminIdentity = {

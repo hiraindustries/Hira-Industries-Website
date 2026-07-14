@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "crm:check": "node scripts/check-crm-readiness.mjs",
+    "cms:check": "node scripts/check-cms-readiness.mjs",
+    "crm:test:local": "node scripts/test-crm-local-runtime.mjs",
+    "cms:test:homepage:local": "node scripts/test-homepage-cms-local.mjs",
     "import:products:batches-1-8": "node scripts/import-products-batches-1-8.mjs"
   },
   "dependencies": {

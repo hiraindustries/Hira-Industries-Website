@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import {
   FiArrowRight,
   FiBox,
@@ -11,9 +12,14 @@ import {
 } from "react-icons/fi";
 import type { CatalogueData } from "@/lib/catalogue";
 import {
+  getHomepageCategories,
+  getHomepageProducts,
+  type HomepageContent,
+  type HomepageSectionKey,
+} from "@/lib/cms/homepage";
+import {
   businessInfo,
   companyMilestones,
-  galleryImages,
   manufacturingSteps,
   qualityPromises,
 } from "@/lib/site-data";
@@ -24,8 +30,6 @@ const iconMap = {
   quality: FiShield,
   packaging: FiPackage,
 };
-
-const MAX_HOME_PRODUCTS = 6;
 
 function getProductCategoryName(
   catalogue: CatalogueData,
@@ -42,41 +46,43 @@ function getProductCategoryName(
   );
 }
 
-export default function HomeSections({ catalogue }: { catalogue: CatalogueData }) {
-  const categories = catalogue.mainCategories.slice(0, 6);
-  const featuredProducts =
-    catalogue.products.filter((product) => product.is_featured).slice(0, MAX_HOME_PRODUCTS) ?? [];
-  const fallbackProducts = catalogue.products.slice(0, MAX_HOME_PRODUCTS);
-  const visibleProducts = featuredProducts.length > 0 ? featuredProducts : fallbackProducts;
+function getSectionStyle(
+  content: HomepageContent,
+  sectionKey: HomepageSectionKey,
+): CSSProperties {
+  const index = content.sectionOrder.indexOf(sectionKey);
+  return { order: index === -1 ? 999 : index };
+}
+
+export default function HomeSections({
+  catalogue,
+  content,
+}: {
+  catalogue: CatalogueData;
+  content: HomepageContent;
+}) {
+  const categories = getHomepageCategories(catalogue, content);
+  const visibleProducts = getHomepageProducts(catalogue, content);
   const showCatalogEmptyState =
     catalogue.status !== "ok" || (categories.length === 0 && visibleProducts.length === 0);
   return (
     <div className="manufacturer-home">
-      <section className="home-section home-about">
+      {content.introduction.visible ? (
+      <section
+        className="home-section home-about"
+        style={getSectionStyle(content, "introduction")}
+      >
         <div className="light-shell about-layout">
           <div className="about-copy">
-            <div className="light-kicker">Welcome to Hira Industries</div>
+            <div className="light-kicker">{content.introduction.eyebrow}</div>
             <h2 className="light-title">
-              Crafting Excellence in <span>Ceramic Crockery</span> from Khurja
+              {content.introduction.heading}{" "}
+              <span>{content.introduction.highlightedText}</span> from Khurja
             </h2>
             <div className="light-rule" aria-hidden="true" />
-            <p>
-              Hira Industries is a manufacturer and supplier of premium ceramic
-              crockery, serving homes, hotels, restaurants, retailers, and
-              wholesale buyers with dependable product collections.
-            </p>
-            <p>
-              From dinner sets and tea service to buyer-ready hospitality
-              ranges, every collection is developed for polished presentation,
-              reliable daily use, and practical bulk sourcing.
-            </p>
-            <p>
-              Explore our <Link href="/products">products</Link>, learn more about
-              our <Link href="/manufacturing">manufacturing process</Link>, review
-              our <Link href="/quality">quality standards</Link>, or
-              <Link href="/contact">contact us</Link> for bulk orders and catalogue
-              support.
-            </p>
+            {content.introduction.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
 
             <div className="about-stats">
               {companyMilestones.map((item) => (
@@ -87,8 +93,8 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
               ))}
             </div>
 
-            <Link href="/company" className="light-text-link">
-              Learn More About Us
+            <Link href={content.introduction.ctaUrl} className="light-text-link">
+              {content.introduction.ctaLabel}
               <FiArrowRight aria-hidden="true" />
             </Link>
           </div>
@@ -124,17 +130,19 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
           </div>
         </div>
       </section>
+      ) : null}
 
-      <section className="home-section home-section--cream">
+      {content.categories.visible ? (
+      <section
+        className="home-section home-section--cream"
+        style={getSectionStyle(content, "categories")}
+      >
         <div className="light-shell">
           <div className="light-heading">
             <div className="light-kicker">Our Collections</div>
-            <h2 className="light-title">Explore Product Categories</h2>
+            <h2 className="light-title">{content.categories.heading}</h2>
             <div className="light-rule" aria-hidden="true" />
-            <p>
-              Discover our wide range of premium ceramic crockery collections
-              designed for every need.
-            </p>
+            <p>{content.categories.description}</p>
           </div>
 
           {categories.length > 0 ? (
@@ -188,17 +196,19 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
           )}
         </div>
       </section>
+      ) : null}
 
-      <section className="home-section home-section--white">
+      {content.featuredProducts.visible ? (
+      <section
+        className="home-section home-section--white"
+        style={getSectionStyle(content, "featured_products")}
+      >
         <div className="light-shell">
           <div className="light-heading">
             <div className="light-kicker">Featured Products</div>
-            <h2 className="light-title">Our Premium Collection</h2>
+            <h2 className="light-title">{content.featuredProducts.heading}</h2>
             <div className="light-rule" aria-hidden="true" />
-            <p>
-              Handpicked products from our finest collections, ready for homes,
-              hotels, and retail.
-            </p>
+            <p>{content.featuredProducts.description}</p>
           </div>
 
           {showCatalogEmptyState ? (
@@ -284,11 +294,16 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
           )}
         </div>
       </section>
+      ) : null}
 
-      <section className="process-band">
+      {content.manufacturingPreview.visible ? (
+      <section
+        className="process-band"
+        style={getSectionStyle(content, "manufacturing_preview")}
+      >
         <Image
-          src="/images/build-pic-2.png"
-          alt=""
+          src={content.manufacturingPreview.imageUrl}
+          alt={content.manufacturingPreview.imageAlt}
           fill
           sizes="100vw"
           className="process-band__image"
@@ -296,13 +311,10 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
         <div className="process-band__overlay" aria-hidden="true" />
         <div className="light-shell process-band__content">
           <div className="light-heading light-heading--inverse">
-            <div className="light-kicker">Our Process</div>
-            <h2 className="light-title">How We Craft Excellence</h2>
+            <div className="light-kicker">{content.manufacturingPreview.eyebrow}</div>
+            <h2 className="light-title">{content.manufacturingPreview.heading}</h2>
             <div className="light-rule" aria-hidden="true" />
-            <p>
-              Every piece goes through a meticulous process to ensure premium
-              quality.
-            </p>
+            <p>{content.manufacturingPreview.description}</p>
           </div>
 
           <div className="process-grid">
@@ -324,26 +336,28 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
 
           <div className="home-section__action">
             <Link
-              href="/manufacturing"
+              href={content.manufacturingPreview.ctaUrl}
               className="light-button light-button--dark-outline"
             >
-              Learn About Manufacturing
+              {content.manufacturingPreview.ctaLabel}
               <FiArrowRight aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
+      ) : null}
 
-      <section className="home-section home-section--cream">
+      {content.qualityPreview.visible ? (
+      <section
+        className="home-section home-section--cream"
+        style={getSectionStyle(content, "quality_preview")}
+      >
         <div className="light-shell">
           <div className="light-heading">
-            <div className="light-kicker">Our Promise</div>
-            <h2 className="light-title">Quality You Can Trust</h2>
+            <div className="light-kicker">{content.qualityPreview.eyebrow}</div>
+            <h2 className="light-title">{content.qualityPreview.heading}</h2>
             <div className="light-rule" aria-hidden="true" />
-            <p>
-              Every product from Hira Industries carries our commitment to
-              excellence.
-            </p>
+            <p>{content.qualityPreview.description}</p>
           </div>
 
           <div className="promise-grid">
@@ -363,25 +377,30 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
           </div>
 
           <div className="home-section__action">
-            <Link href="/quality" className="light-text-link">
-              View Quality Standards
+            <Link href={content.qualityPreview.ctaUrl} className="light-text-link">
+              {content.qualityPreview.ctaLabel}
               <FiArrowRight aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
+      ) : null}
 
-      <section className="home-section home-section--white">
+      {content.galleryPreview.visible ? (
+      <section
+        className="home-section home-section--white"
+        style={getSectionStyle(content, "gallery_preview")}
+      >
         <div className="light-shell">
           <div className="light-heading">
             <div className="light-kicker">Gallery</div>
-            <h2 className="light-title">Our Finest Showcase</h2>
+            <h2 className="light-title">{content.galleryPreview.heading}</h2>
             <div className="light-rule" aria-hidden="true" />
-            <p>A glimpse of our premium collections and craftsmanship.</p>
+            <p>{content.galleryPreview.description}</p>
           </div>
 
           <div className="home-gallery-grid">
-            {galleryImages.map((image, index) => (
+            {content.galleryPreview.images.map((image, index) => (
               <div
                 key={image.src}
                 className={`home-gallery-grid__item home-gallery-grid__item--${index + 1}`}
@@ -398,19 +417,24 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
 
           <div className="home-section__action">
             <Link
-              href="/collections"
+              href={content.galleryPreview.ctaUrl}
               className="light-button light-button--outline"
             >
-              View Full Gallery
+              {content.galleryPreview.ctaLabel}
               <FiArrowRight aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
+      ) : null}
 
-      <section className="bulk-band">
+      {content.bulkEnquiryCta.visible ? (
+      <section
+        className="bulk-band"
+        style={getSectionStyle(content, "bulk_enquiry_cta")}
+      >
         <Image
-          src="/images/build-pic-1.png"
+          src={content.bulkEnquiryCta.backgroundImage}
           alt=""
           fill
           sizes="100vw"
@@ -422,65 +446,69 @@ export default function HomeSections({ catalogue }: { catalogue: CatalogueData }
             <FiBox />
           </span>
           <h2>
-            Need Crockery in <span>Bulk?</span>
+            {content.bulkEnquiryCta.heading}{" "}
+            <span>{content.bulkEnquiryCta.highlightedText}</span>
           </h2>
-          <p>
-            Looking for crockery in bulk for hotels, restaurants, retail stores,
-            or wholesale supply? Share your product, quantity, packing, and
-            delivery requirements so our team can confirm current details.
-          </p>
+          <p>{content.bulkEnquiryCta.description}</p>
           <div className="bulk-band__actions">
             <Link
-              href="/contact?intent=bulk-details"
+              href={content.bulkEnquiryCta.buttonUrl}
               className="light-button light-button--gold"
             >
-              Send Bulk Enquiry
+              {content.bulkEnquiryCta.buttonLabel}
               <FiArrowRight aria-hidden="true" />
             </Link>
             <Link
-              href="/contact"
+              href={content.bulkEnquiryCta.secondaryButtonUrl}
               className="light-button light-button--dark-outline"
             >
-              Contact Us
+              {content.bulkEnquiryCta.secondaryButtonLabel}
             </Link>
           </div>
         </div>
       </section>
+      ) : null}
 
-      <section className="catalogue-section">
+      {content.catalogueCta.visible ? (
+      <section
+        className="catalogue-section"
+        style={getSectionStyle(content, "catalogue_cta")}
+      >
         <div className="light-shell">
           <div className="catalogue-card">
             <div>
-              <div className="light-kicker">Buyer Resources</div>
+              <div className="light-kicker">{content.catalogueCta.eyebrow}</div>
               <h2>
-                Get Our Latest <span>Product Catalogue</span>
+                {content.catalogueCta.heading}{" "}
+                <span>{content.catalogueCta.highlightedText}</span>
               </h2>
-              <p>
-                Explore our complete range of premium ceramic crockery. Get the
-                latest Hira Industries product catalogue delivered to your
-                WhatsApp instantly.
-              </p>
+              <p>{content.catalogueCta.description}</p>
             </div>
             <div className="catalogue-card__actions">
               <a
-                href={businessInfo.whatsappCatalogueHref}
+                href={
+                  content.catalogueCta.catalogueUrl === "whatsapp_catalogue"
+                    ? businessInfo.whatsappCatalogueHref
+                    : content.catalogueCta.catalogueUrl
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="light-button light-button--whatsapp"
               >
                 <FiMessageCircle aria-hidden="true" />
-                Request Catalogue
+                {content.catalogueCta.buttonLabel}
               </a>
               <Link
-                href="/products"
+                href={content.catalogueCta.secondaryButtonUrl}
                 className="light-button light-button--outline"
               >
-                View Products
+                {content.catalogueCta.secondaryButtonLabel}
               </Link>
             </div>
           </div>
         </div>
       </section>
+      ) : null}
     </div>
   );
 }

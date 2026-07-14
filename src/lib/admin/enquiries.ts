@@ -10,6 +10,8 @@ export const contactEnquiryStatuses = [
   "new",
   "read",
   "contacted",
+  "converted",
+  "spam",
   "archived",
 ] as const satisfies readonly ContactEnquiryStatus[];
 
@@ -45,4 +47,19 @@ export async function getNewContactEnquiryCount() {
   }
 
   return count ?? 0;
+}
+
+export async function getRecentContactEnquiries(limit = 5) {
+  const supabase = await createAdminServiceClient();
+  const { data, error } = await supabase
+    .from("contact_enquiries")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    throw new Error(`Could not load recent contact enquiries: ${error.message}`);
+  }
+
+  return (data ?? []) satisfies ContactEnquiry[];
 }

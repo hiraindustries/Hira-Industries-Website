@@ -2,56 +2,30 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
+import type { HomepageHeroContent } from "@/lib/cms/homepage";
 import { heroStats } from "@/lib/site-data";
 
-const heroSlides = [
-  {
-    src: "/images/set.jpeg",
-    alt: "Black ceramic tea set with gold accents",
-  },
-  {
-    src: "/tea.png",
-    alt: "Elegant gold line tea set collection",
-  },
-  {
-    src: "/blacktea.png",
-    alt: "Classic black tea set with refined detailing",
-  },
-];
-
-export default function Hero() {
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setSlideIndex((current) => (current + 1) % heroSlides.length);
-    }, 4000);
-
-    return () => window.clearInterval(timer);
-  }, []);
-
-  const currentSlide = heroSlides[slideIndex];
-
+export default function Hero({ content }: { content: HomepageHeroContent }) {
   const heroCopyContent = (
     <>
-      <div className="hero-kicker">Crafting Elegance</div>
-      <h1 className="hero-title">Hira Industries Khurja</h1>
-      <p>
-        Hira Industries is a ceramic crockery manufacturer and supplier in
-        Khurja, Uttar Pradesh. Premium ceramic tableware for buyers who need
-        polished design, consistent finishing, and dependable support for retail,
-        hospitality, gifting, and bulk enquiries.
-      </p>
+      <div className="hero-kicker">{content.eyebrow}</div>
+      <h1 className="hero-title">{content.heading}</h1>
+      <p>{content.description}</p>
 
       <div className="hero-actions">
-        <Link href="/products" className="site-button site-button--solid">
-          Explore Products
+        <Link
+          href={content.primaryCtaUrl}
+          className="site-button site-button--solid"
+        >
+          {content.primaryCtaLabel}
           <FiArrowRight className="button-arrow" />
         </Link>
-        <Link href="/company" className="site-button site-button--ghost">
-          Company Profile
+        <Link
+          href={content.secondaryCtaUrl}
+          className="site-button site-button--ghost"
+        >
+          {content.secondaryCtaLabel}
         </Link>
       </div>
 
@@ -71,12 +45,11 @@ export default function Hero() {
       <div className="hero-visual__glow" aria-hidden="true" />
       <div className="hero-visual__media">
         <Image
-          key={currentSlide.src}
-          src={currentSlide.src}
-          alt={currentSlide.alt}
+          src={content.imageUrl}
+          alt={content.imageAlt}
           fill
           sizes="(max-width: 768px) 92vw, 42vw"
-          priority={slideIndex === 0}
+          priority
           className="hero-visual__image"
         />
       </div>

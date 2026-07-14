@@ -5,6 +5,7 @@ const privateRoutes = [
   "/admin",
   "/admin/",
   "/api/",
+  "/api/admin/",
   "/auth/",
   "/login",
   "/preview/",

@@ -6,7 +6,9 @@ import type { ReactNode } from "react";
 import { FiExternalLink, FiLogOut } from "react-icons/fi";
 import { logoutAdminAction } from "@/app/admin/actions";
 import AdminNav from "@/components/admin/AdminNav";
-import { requireAdminPage } from "@/lib/admin/auth";
+import { getCurrentAdmin } from "@/lib/admin/permissions";
+import { getCmsAvailability } from "@/lib/cms/availability";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +17,13 @@ export default async function AdminDashboardLayout({
 }: {
   children: ReactNode;
 }) {
-  const admin = await requireAdminPage();
+  const admin = await getCurrentAdmin();
+
+  if (!admin) {
+    redirect("/admin/login");
+  }
+  const cmsAvailability = await getCmsAvailability();
+  const showCms = cmsAvailability.status === "ready";
 
   return (
     <div className="admin-shell">
@@ -29,11 +37,11 @@ export default async function AdminDashboardLayout({
           />
           <span>
             <strong>Hira Industries</strong>
-            Product CMS
+            Website Control Center
           </span>
         </Link>
 
-        <AdminNav />
+        <AdminNav showCms={showCms} />
 
         <div className="admin-sidebar__footer">
           <Link href="/products" target="_blank">
@@ -46,7 +54,9 @@ export default async function AdminDashboardLayout({
               Sign out
             </button>
           </form>
-          <span title={admin.email}>{admin.email}</span>
+          <span title={admin.email}>
+            {admin.email} · {admin.role}
+          </span>
         </div>
       </aside>
 

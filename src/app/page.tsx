@@ -1,7 +1,7 @@
-import Hero from "@/components/Hero";
-import HomeSections from "@/components/HomeSections";
+import HomepageRenderer from "@/components/home/HomepageRenderer";
 import JsonLd from "@/components/seo/JsonLd";
 import { getCatalogueData } from "@/lib/catalogue";
+import { getPublishedHomepageContent } from "@/lib/cms/homepage-service";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { buildHomeGraphSchema } from "@/lib/seo/schemas/organization";
 
@@ -16,13 +16,15 @@ export const metadata = createPageMetadata({
 export const revalidate = 300;
 
 export default async function Home() {
-  const catalogue = await getCatalogueData();
+  const [catalogue, homepageContent] = await Promise.all([
+    getCatalogueData(),
+    getPublishedHomepageContent(),
+  ]);
 
   return (
     <main>
       <JsonLd data={buildHomeGraphSchema()} />
-      <Hero />
-      <HomeSections catalogue={catalogue} />
+      <HomepageRenderer catalogue={catalogue} content={homepageContent} />
     </main>
   );
 }

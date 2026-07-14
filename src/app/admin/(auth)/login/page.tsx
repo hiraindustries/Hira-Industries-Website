@@ -23,12 +23,12 @@ export default async function AdminLoginPage() {
           <span>Hira Industries</span>
         </div>
         <span className="admin-login__eyebrow">
-          <FiShield aria-hidden="true" /> Secure product CMS
+          <FiShield aria-hidden="true" /> Secure website control
         </span>
         <h1>Admin sign in</h1>
         <p>
-          Manage catalogue products, category hierarchy, and product
-          galleries from one protected dashboard.
+          Manage website content, catalogue products, categories and enquiries
+          from one protected dashboard.
         </p>
         <LoginForm />
       </section>

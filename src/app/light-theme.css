@@ -307,6 +307,8 @@ textarea:focus-visible {
 /* Homepage light sections */
 
 .manufacturer-home {
+  display: flex;
+  flex-direction: column;
   overflow: clip;
   background: var(--bg);
   color: var(--light-ink);

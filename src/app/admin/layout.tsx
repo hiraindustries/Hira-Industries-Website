@@ -3,10 +3,11 @@ import type { ReactNode } from "react";
 import "./admin.css";
 
 export const metadata: Metadata = {
-  title: "Product CMS",
+  title: "Hira Industries Admin",
   robots: {
     index: false,
     follow: false,
+    nocache: true,
   },
 };
 
