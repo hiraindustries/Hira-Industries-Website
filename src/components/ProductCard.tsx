@@ -1,40 +1,84 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowUpRight, FiImage, FiMessageCircle } from "react-icons/fi";
+import { FiMessageCircle } from "react-icons/fi";
 import { getProductGallery, getStringList } from "@/lib/product-media";
 import { businessInfo } from "@/lib/site-data";
 import type { CatalogueProduct } from "@/lib/supabase/database.types";
 
+function getFeatureValue(
+  features: string[],
+  labelPattern: RegExp,
+): string | null {
+  const feature = features.find((item) => {
+    const separatorIndex = item.indexOf(":");
+
+    if (separatorIndex === -1) {
+      return false;
+    }
+
+    return labelPattern.test(item.slice(0, separatorIndex).trim());
+  });
+
+  if (!feature) {
+    return null;
+  }
+
+  const separatorIndex = feature.indexOf(":");
+  const value = feature.slice(separatorIndex + 1).trim();
+
+  return value || null;
+}
+
+function getProductCardDetails(product: CatalogueProduct) {
+  const features = product.features;
+  const colors = getStringList(product.available_colors);
+  const finish =
+    getFeatureValue(features, /^finish$/i) ??
+    product.material?.trim() ??
+    "Not specified";
+  const colours =
+    colors.length > 0
+      ? colors.join(", ")
+      : (getFeatureValue(features, /^colou?rs?$/i) ?? "Not specified");
+  const useCase =
+    getFeatureValue(features, /^use case$/i) ??
+    product.tags?.find((tag) =>
+      /home|hotel|restaurant|retail|gift|hospitality|bulk|office|decor|display|storage|serving|dining/i.test(
+        tag,
+      ),
+    ) ??
+    "Not specified";
+
+  return {
+    code: product.product_code?.trim() || "Code unavailable",
+    finish,
+    colours,
+    useCase,
+  };
+}
+
 export default function ProductCard({
   product,
-  categoryName,
-  subcategoryName,
   eager = false,
 }: {
   product: CatalogueProduct;
-  categoryName: string;
-  subcategoryName: string;
   eager?: boolean;
 }) {
   const gallery = getProductGallery(product);
   const coverImage = gallery[0];
-  const features = product.features;
-  const visibleFeatures = features.slice(0, 2);
-  const remainingFeatures = Math.max(features.length - visibleFeatures.length, 0);
-  const colors = getStringList(product.available_colors);
-  const useCase = product.tags?.find((tag) =>
-    /home|hotel|restaurant|retail|gift|hospitality|bulk|office/i.test(tag),
-  );
   const isRemoteImage = /^https?:\/\//.test(coverImage.url);
+  const details = getProductCardDetails(product);
+  const productHref = `/products/${product.slug}`;
+  const quoteHref = `/contact?product=${encodeURIComponent(product.slug)}`;
 
   return (
     <article className="catalogue-product-card">
       <Link
-        href={`/products/${product.slug}`}
-        className="catalogue-product-card__primary-link"
+        href={productHref}
+        className="catalogue-product-card__image-link"
         aria-label={`View details for ${product.name}`}
       >
-        <div className="catalogue-product-card__media">
+        <span className="catalogue-product-card__media">
           <Image
             src={coverImage.url}
             alt={coverImage.alt}
@@ -44,69 +88,36 @@ export default function ProductCard({
             unoptimized={isRemoteImage}
             className="catalogue-product-card__image"
           />
-          <span className="catalogue-product-card__category">
-            {categoryName}
-          </span>
-          {gallery.length > 1 ? (
-            <span className="catalogue-product-card__image-count">
-              <FiImage aria-hidden="true" />
-              {gallery.length} images
-            </span>
-          ) : null}
-          <span className="catalogue-product-card__view">
-            View Details
-            <FiArrowUpRight aria-hidden="true" />
-          </span>
-        </div>
-
-        <div className="catalogue-product-card__body">
-          <h3>{product.name}</h3>
-          <p className="catalogue-product-card__short-description">
-            {product.short_description}
-          </p>
-
-          {visibleFeatures.length > 0 ? (
-            <div
-              className="catalogue-product-card__features"
-              aria-label="Key features"
-            >
-              {visibleFeatures.map((feature) => (
-                <span key={feature}>{feature}</span>
-              ))}
-              {remainingFeatures > 0 ? (
-                <span>+{remainingFeatures} more</span>
-              ) : null}
-            </div>
-          ) : null}
-
-          <dl className="catalogue-product-card__specs">
-            <div>
-              <dt>Finish</dt>
-              <dd>{product.material ?? "Premium Ceramic"}</dd>
-            </div>
-            {colors.length > 0 ? (
-              <div>
-                <dt>Colours</dt>
-                <dd>{colors.join(", ")}</dd>
-              </div>
-            ) : null}
-            {useCase ? (
-              <div>
-                <dt>Use case</dt>
-                <dd>{useCase}</dd>
-              </div>
-            ) : null}
-          </dl>
-
-          <div className="catalogue-product-card__footer">
-            <span>{subcategoryName}</span>
-            {product.product_code ? <small>{product.product_code}</small> : null}
-          </div>
-        </div>
+        </span>
       </Link>
 
+      <div className="catalogue-product-card__body">
+        <h3>
+          <Link href={productHref}>{product.name}</Link>
+        </h3>
+
+        <dl className="catalogue-product-card__specs">
+          <div className="catalogue-product-card__spec-row catalogue-product-card__spec-row--code">
+            <dt>Product Code</dt>
+            <dd>{details.code}</dd>
+          </div>
+          <div className="catalogue-product-card__spec-row">
+            <dt>Finish</dt>
+            <dd>{details.finish}</dd>
+          </div>
+          <div className="catalogue-product-card__spec-row">
+            <dt>Colours</dt>
+            <dd>{details.colours}</dd>
+          </div>
+          <div className="catalogue-product-card__spec-row">
+            <dt>Use Case</dt>
+            <dd>{details.useCase}</dd>
+          </div>
+        </dl>
+      </div>
+
       <div className="catalogue-product-card__quick-actions">
-        <Link href={`/contact?product=${encodeURIComponent(product.slug)}`}>
+        <Link href={quoteHref}>
           Request Quote
         </Link>
         <a

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -13,6 +12,7 @@ import {
   FiShield,
 } from "react-icons/fi";
 import ProductDetailGallery from "@/components/ProductDetailGallery";
+import ProductCard from "@/components/ProductCard";
 import JsonLd from "@/components/seo/JsonLd";
 import { getProductDetailData } from "@/lib/catalogue";
 import { getStringList } from "@/lib/product-media";
@@ -137,8 +137,7 @@ export default async function ProductDetailPage({
     );
   }
 
-  const { product, category, mainCategory, relatedProducts, categories } =
-    detail;
+  const { product, category, mainCategory, relatedProducts } = detail;
   const colors = getStringList(product.available_colors);
   const features = product.features;
   const breadcrumbs = getProductBreadcrumbs({ product, mainCategory, category });
@@ -316,38 +315,9 @@ export default async function ProductDetailPage({
             </div>
 
             <div className="related-products__grid">
-              {relatedProducts.map((relatedProduct) => {
-                const relatedCategory =
-                  categories.find(
-                    (item) => item.id === relatedProduct.subcategory_id,
-                  ) ?? null;
-                const relatedImage =
-                  relatedProduct.image_url ?? "/images/build-pic-1.png";
-                const isRemoteImage = /^https?:\/\//.test(relatedImage);
-
-                return (
-                  <Link
-                    key={relatedProduct.id}
-                    href={`/products/${relatedProduct.slug}`}
-                    className="related-product-card"
-                  >
-                    <span className="related-product-card__media">
-                      <Image
-                        src={relatedImage}
-                        alt={`${relatedProduct.name} by Hira Industries`}
-                        fill
-                        sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 25vw"
-                        unoptimized={isRemoteImage}
-                      />
-                    </span>
-                    <span className="related-product-card__body">
-                      <strong>{relatedProduct.name}</strong>
-                      <span>{relatedProduct.material ?? "Ceramic"}</span>
-                      <small>{relatedCategory?.name ?? "Hira Collection"}</small>
-                    </span>
-                  </Link>
-                );
-              })}
+              {relatedProducts.map((relatedProduct) => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              ))}
             </div>
           </div>
         </section>

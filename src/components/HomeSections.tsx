@@ -10,6 +10,7 @@ import {
   FiPackage,
   FiShield,
 } from "react-icons/fi";
+import ProductCard from "@/components/ProductCard";
 import type { CatalogueData } from "@/lib/catalogue";
 import {
   getHomepageCategories,
@@ -30,21 +31,6 @@ const iconMap = {
   quality: FiShield,
   packaging: FiPackage,
 };
-
-function getProductCategoryName(
-  catalogue: CatalogueData,
-  productCategoryId: string | null | undefined,
-  fallback = "Hira Collection",
-) {
-  if (!productCategoryId) {
-    return fallback;
-  }
-
-  return (
-    catalogue.mainCategories.find((category) => category.id === productCategoryId)
-      ?.name ?? fallback
-  );
-}
 
 function getSectionStyle(
   content: HomepageContent,
@@ -239,52 +225,13 @@ export default function HomeSections({
           ) : (
             <>
               <div className="home-product-grid">
-                {visibleProducts.map((product, index) => {
-                  const productCategoryName = getProductCategoryName(
-                    catalogue,
-                    product.category_id,
-                  );
-                  const isRemoteImage = /^https?:\/\//.test(product.image_url ?? "");
-
-                  return (
-                    <article key={product.id} className="home-product-card">
-                      <div className="home-product-card__media">
-                        <Image
-                          src={product.image_url ?? "/images/build-pic-1.png"}
-                          alt={`${product.name} by Hira Industries`}
-                          fill
-                          sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                          loading={index < 2 ? "eager" : "lazy"}
-                          unoptimized={isRemoteImage}
-                        />
-                        <span className="home-product-card__badge">
-                          {productCategoryName}
-                        </span>
-                      </div>
-                      <div className="home-product-card__body">
-                        <h3>{product.name}</h3>
-                        <div className="home-product-card__code">
-                          {product.product_code ? `Code: ${product.product_code}` : "Catalogue item"}
-                        </div>
-                        <p>{product.short_description ?? "Premium ceramic catalogue piece."}</p>
-                        <div className="home-product-card__actions">
-                          <Link
-                            href={`/products/${product.slug}`}
-                            className="light-button light-button--outline"
-                          >
-                            View Details
-                          </Link>
-                          <Link
-                            href={`/contact?product=${encodeURIComponent(product.slug)}`}
-                            className="light-button light-button--gold"
-                          >
-                            Request Quote
-                          </Link>
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })}
+                {visibleProducts.map((product, index) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    eager={index < 2}
+                  />
+                ))}
               </div>
 
               <div className="home-section__action">

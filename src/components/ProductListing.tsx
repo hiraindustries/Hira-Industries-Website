@@ -26,14 +26,12 @@ function getWhatsAppHref(collectionName?: string) {
 }
 
 export default function ProductListing({
-  categories,
   mainCategories,
   subcategories,
   products,
   selectedCategory,
   selectedSubcategory,
 }: {
-  categories: ProductCategory[];
   mainCategories: ProductCategory[];
   subcategories: ProductCategory[];
   products: CatalogueProduct[];
@@ -224,25 +222,10 @@ export default function ProductListing({
             }`}
           >
             {filteredProducts.map((product, index) => {
-              const subcategory =
-                categories.find(
-                  (item) => item.id === product.subcategory_id,
-                ) ??
-                null;
-              const mainCategory =
-                mainCategories.find(
-                  (item) => item.id === product.category_id,
-                ) ??
-                null;
-
               return (
                 <ProductCard
                   key={product.id}
                   product={product}
-                  categoryName={mainCategory?.name ?? "Hira Collection"}
-                  subcategoryName={
-                    subcategory?.name ?? mainCategory?.name ?? "Catalogue"
-                  }
                   eager={index < 3}
                 />
               );

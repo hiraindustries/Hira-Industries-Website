@@ -56,7 +56,6 @@ export default function ProductShowcase({
 }) {
   const {
     status,
-    categories,
     mainCategories,
     categoryCards,
     subcategories,
@@ -143,7 +142,6 @@ export default function ProductShowcase({
         </section>
       ) : (
         <ProductListing
-          categories={categories}
           mainCategories={mainCategories}
           subcategories={subcategories}
           products={products}
