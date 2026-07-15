@@ -3095,6 +3095,17 @@ textarea:focus-visible {
     var(--bg-warm);
 }
 
+.catalogue-product-card__media::after {
+  position: absolute;
+  z-index: 1;
+  content: "";
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 4, 3, 0.08), rgba(5, 4, 3, 0.46)),
+    radial-gradient(circle at 50% 48%, rgba(255, 244, 220, 0.1), transparent 54%);
+  pointer-events: none;
+}
+
 .catalogue-product-card__image-link {
   display: block;
   color: inherit;
@@ -3102,14 +3113,33 @@ textarea:focus-visible {
 }
 
 .catalogue-product-card__image {
-  padding: 0.75rem;
-  object-fit: contain;
   transition: transform 450ms ease;
+}
+
+.catalogue-product-card__image--background {
+  z-index: 0;
+  object-fit: cover;
+  opacity: 0.42;
+  filter: blur(18px) saturate(0.95) brightness(0.86);
+  transform: scale(1.14);
+}
+
+.catalogue-product-card__image--foreground {
+  z-index: 2;
+  padding: clamp(0.45rem, 1.4vw, 0.85rem);
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.32));
 }
 
 .catalogue-product-card:hover .catalogue-product-card__image,
 .catalogue-product-card__image-link:focus-visible .catalogue-product-card__image {
-  transform: scale(1.035);
+  transform: scale(1.025);
+}
+
+.catalogue-product-card:hover .catalogue-product-card__image--background,
+.catalogue-product-card__image-link:focus-visible .catalogue-product-card__image--background {
+  transform: scale(1.18);
 }
 
 .catalogue-product-card__body {
@@ -3217,27 +3247,7 @@ textarea:focus-visible {
 }
 
 .catalogue-product-grid.is-list .catalogue-product-card {
-  display: grid;
-  grid-template-columns: minmax(260px, 0.65fr) minmax(0, 1.35fr);
-  align-items: stretch;
-}
-
-.catalogue-product-grid.is-list .catalogue-product-card__image-link {
-  min-height: 100%;
-}
-
-.catalogue-product-grid.is-list .catalogue-product-card__media {
-  height: 100%;
-  min-height: 310px;
-}
-
-.catalogue-product-grid.is-list .catalogue-product-card__body,
-.catalogue-product-grid.is-list .catalogue-product-card__quick-actions {
-  grid-column: 2;
-}
-
-.catalogue-product-grid.is-list .catalogue-product-card__quick-actions {
-  align-self: end;
+  display: flex;
 }
 
 .catalogue-state--compact {
@@ -3700,8 +3710,7 @@ textarea:focus-visible {
     display: flex;
   }
 
-  .catalogue-category-card__visual,
-  .catalogue-product-card__media {
+  .catalogue-category-card__visual {
     min-height: 250px;
   }
 

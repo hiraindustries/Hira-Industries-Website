@@ -67,6 +67,8 @@ export default function ProductCard({
   const gallery = getProductGallery(product);
   const coverImage = gallery[0];
   const isRemoteImage = /^https?:\/\//.test(coverImage.url);
+  const imageSizes =
+    "(max-width: 720px) 100vw, (max-width: 980px) 50vw, (max-width: 1180px) 33vw, 25vw";
   const details = getProductCardDetails(product);
   const productHref = `/products/${product.slug}`;
   const quoteHref = `/contact?product=${encodeURIComponent(product.slug)}`;
@@ -81,12 +83,22 @@ export default function ProductCard({
         <span className="catalogue-product-card__media">
           <Image
             src={coverImage.url}
+            alt=""
+            fill
+            loading="lazy"
+            sizes={imageSizes}
+            unoptimized={isRemoteImage}
+            className="catalogue-product-card__image catalogue-product-card__image--background"
+            aria-hidden="true"
+          />
+          <Image
+            src={coverImage.url}
             alt={coverImage.alt}
             fill
             loading={eager ? "eager" : "lazy"}
-            sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
+            sizes={imageSizes}
             unoptimized={isRemoteImage}
-            className="catalogue-product-card__image"
+            className="catalogue-product-card__image catalogue-product-card__image--foreground"
           />
         </span>
       </Link>
