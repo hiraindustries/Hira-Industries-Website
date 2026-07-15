@@ -3119,28 +3119,27 @@ textarea:focus-visible {
 .catalogue-product-card__image--background {
   z-index: 0;
   object-fit: cover;
-  opacity: 0.36;
-  filter: blur(16px) saturate(0.94) brightness(0.82);
-  transform: scale(1.16);
+  opacity: 0.28;
+  filter: blur(14px) saturate(0.9) brightness(0.78);
+  transform: scale(1.12);
 }
 
 .catalogue-product-card__image--foreground {
   z-index: 2;
-  padding: clamp(0.08rem, 0.45vw, 0.28rem);
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.32));
-  transform: scale(1.1);
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.24));
+  transform: scale(1.01);
 }
 
 .catalogue-product-card:hover .catalogue-product-card__image--background,
 .catalogue-product-card__image-link:focus-visible .catalogue-product-card__image--background {
-  transform: scale(1.2);
+  transform: scale(1.16);
 }
 
 .catalogue-product-card:hover .catalogue-product-card__image--foreground,
 .catalogue-product-card__image-link:focus-visible .catalogue-product-card__image--foreground {
-  transform: scale(1.13);
+  transform: scale(1.045);
 }
 
 .catalogue-product-card__body {
