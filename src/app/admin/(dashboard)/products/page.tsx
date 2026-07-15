@@ -16,6 +16,7 @@ import {
   deleteProductAction,
   toggleProductActiveAction,
 } from "@/app/admin/actions";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import ConfirmSubmitButton from "@/components/admin/ConfirmSubmitButton";
 import { requireAdminPage } from "@/lib/admin/auth";
 import {
@@ -33,7 +34,36 @@ type ProductsSearchParams = Promise<{
   status?: string;
   created?: string;
   updated?: string;
+  page?: string;
 }>;
+
+function formatAdminDate(value: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "medium",
+    timeZone: "Asia/Kolkata",
+  }).format(new Date(value));
+}
+
+function buildProductsPageHref(
+  params: Awaited<ProductsSearchParams>,
+  page: number,
+) {
+  const nextParams = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value && key !== "page") {
+      nextParams.set(key, value);
+    }
+  }
+
+  if (page > 1) {
+    nextParams.set("page", String(page));
+  }
+
+  const query = nextParams.toString();
+
+  return query ? `/admin/products?${query}` : "/admin/products";
+}
 
 export default async function AdminProductsPage({
   searchParams,
@@ -107,22 +137,36 @@ export default async function AdminProductsPage({
       matchesStatus
     );
   });
+  const pageSize = 60;
+  const pageCount = Math.max(1, Math.ceil(filteredProducts.length / pageSize));
+  const currentPage = Math.min(
+    pageCount,
+    Math.max(1, Number(params.page) || 1),
+  );
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
+  const filtersActive = Boolean(
+    params.q || selectedMainCategoryId || selectedSubcategoryId || params.status,
+  );
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <span className="admin-eyebrow">Catalogue records</span>
-          <h1>Products</h1>
-          <p>{filteredProducts.length} products match the current view.</p>
-        </div>
-        <Link
-          href="/admin/products/new"
-          className="admin-button admin-button--primary"
-        >
-          <FiPlus aria-hidden="true" /> Add product
-        </Link>
-      </header>
+      <AdminPageHeader
+        eyebrow="Catalogue records"
+        title="Products"
+        description="Manage product content, images and visibility."
+        status={`${filteredProducts.length} products match the current view.`}
+        actions={
+          <Link
+            href="/admin/products/new"
+            className="admin-button admin-button--primary"
+          >
+            <FiPlus aria-hidden="true" /> Add product
+          </Link>
+        }
+      />
 
       {params.created || params.updated ? (
         <p className="admin-notice admin-notice--success">
@@ -166,13 +210,15 @@ export default async function AdminProductsPage({
         <button className="admin-button admin-button--ghost" type="submit">
           Filter
         </button>
-        <Link href="/admin/products" className="admin-text-link">
-          Clear
-        </Link>
+        {filtersActive ? (
+          <Link href="/admin/products" className="admin-text-link">
+            Clear filters
+          </Link>
+        ) : null}
       </form>
 
       <section className="admin-panel admin-panel--table">
-        {filteredProducts.length > 0 ? (
+        {paginatedProducts.length > 0 ? (
           <div className="admin-table-wrap">
             <table className="admin-table">
               <thead>
@@ -182,11 +228,12 @@ export default async function AdminProductsPage({
                   <th>Code</th>
                   <th>Images</th>
                   <th>Status</th>
+                  <th>Updated</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredProducts.map((product) => {
+                {paginatedProducts.map((product) => {
                   const cover =
                     product.images.find((image) => image.is_primary) ??
                     product.images[0];
@@ -214,13 +261,17 @@ export default async function AdminProductsPage({
                             )}
                           </span>
                           <span>
-                            <strong>{product.name}</strong>
+                            <strong title={product.name}>{product.name}</strong>
                             <small>{product.slug}</small>
                           </span>
                         </div>
                       </td>
-                      <td>{category?.name ?? "Uncategorized"}</td>
-                      <td>{product.product_code ?? "—"}</td>
+                      <td title={category?.name ?? "Uncategorized"}>
+                        {category?.name ?? "Uncategorized"}
+                      </td>
+                      <td title={product.product_code ?? undefined}>
+                        {product.product_code ?? "—"}
+                      </td>
                       <td>
                         <span className="admin-image-count">
                           <FiImage aria-hidden="true" />
@@ -238,18 +289,21 @@ export default async function AdminProductsPage({
                           {product.is_active ? "Active" : "Inactive"}
                         </span>
                       </td>
+                      <td>{formatAdminDate(product.updated_at)}</td>
                       <td>
                         <div className="admin-row-actions">
                           <Link
                             href={`/products/${product.slug}`}
                             target="_blank"
                             aria-label={`Preview ${product.name}`}
+                            title={`Preview ${product.name}`}
                           >
                             <FiEye aria-hidden="true" />
                           </Link>
                           <Link
                             href={`/admin/products/${product.id}/edit`}
                             aria-label={`Edit ${product.name}`}
+                            title={`Edit ${product.name}`}
                           >
                             <FiEdit2 aria-hidden="true" />
                           </Link>
@@ -267,6 +321,7 @@ export default async function AdminProductsPage({
                             <button
                               type="submit"
                               aria-label={`${product.is_active ? "Deactivate" : "Activate"} ${product.name}`}
+                              title={`${product.is_active ? "Deactivate" : "Activate"} ${product.name}`}
                             >
                               <FiPower aria-hidden="true" />
                             </button>
@@ -302,6 +357,27 @@ export default async function AdminProductsPage({
             <p>Adjust the filters or add a new catalogue product.</p>
           </div>
         )}
+        {filteredProducts.length > pageSize ? (
+          <div className="admin-pagination">
+            <span>
+              Showing {(currentPage - 1) * pageSize + 1}-
+              {Math.min(currentPage * pageSize, filteredProducts.length)} of{" "}
+              {filteredProducts.length}
+            </span>
+            <div>
+              {currentPage > 1 ? (
+                <Link href={buildProductsPageHref(params, currentPage - 1)}>
+                  Previous
+                </Link>
+              ) : null}
+              {currentPage < pageCount ? (
+                <Link href={buildProductsPageHref(params, currentPage + 1)}>
+                  Next
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
       </section>
     </main>
   );

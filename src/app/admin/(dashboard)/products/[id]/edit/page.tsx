@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import ProductForm from "@/components/admin/ProductForm";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
@@ -27,15 +28,11 @@ export default async function EditProductPage({
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <span className="admin-eyebrow">Edit catalogue record</span>
-          <h1>{product.name}</h1>
-          <p>
-            Update specifications, visibility, and gallery images.
-          </p>
-        </div>
-      </header>
+      <AdminPageHeader
+        eyebrow="Edit catalogue record"
+        title={product.name}
+        description="Update specifications, visibility, and gallery images."
+      />
       <ProductForm
         product={product}
         mainCategories={categoryTree.mainCategories.filter(

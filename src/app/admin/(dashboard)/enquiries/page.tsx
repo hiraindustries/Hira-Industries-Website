@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { convertEnquiryToLeadAction } from "@/app/admin/crm-actions";
 import { updateContactEnquiryStatusAction } from "@/app/admin/actions";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getCrmAvailability } from "@/lib/admin/crm/availability";
 import { getAdminContactEnquiries } from "@/lib/admin/enquiries";
@@ -89,6 +90,15 @@ function getStatusCounts(enquiries: ContactEnquiry[]) {
       archived: 0,
     } satisfies Record<ContactEnquiryStatus, number>,
   );
+}
+
+function getWhatsAppHref(phone: string, name: string) {
+  const normalizedPhone = phone.replace(/[^\d]/g, "");
+  const message = `Hello ${name}, this is Hira Industries regarding your website enquiry.`;
+
+  return normalizedPhone
+    ? `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(message)}`
+    : null;
 }
 
 function StatusAction({
@@ -194,16 +204,12 @@ export default async function AdminEnquiriesPage() {
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <span className="admin-eyebrow">Lead management</span>
-          <h1>Enquiries</h1>
-          <p>
-            {enquiries.length} website enquiries, including {counts.new} new
-            leads.
-          </p>
-        </div>
-      </header>
+      <AdminPageHeader
+        eyebrow="Customer enquiries"
+        title="Enquiries"
+        description="Review and manage incoming website enquiries."
+        status={`${enquiries.length} website enquiries, including ${counts.new} new submissions.`}
+      />
 
       <section className="admin-stat-grid" aria-label="Enquiry summary">
         <article>
@@ -243,13 +249,19 @@ export default async function AdminEnquiriesPage() {
       <section className="admin-panel">
         {enquiries.length > 0 ? (
           <div className="admin-enquiry-list">
-            {enquiries.map((enquiry) => (
-              <article
-                className={`admin-enquiry-card ${
-                  enquiry.status === "archived" ? "is-muted" : ""
-                }`}
-                key={enquiry.id}
-              >
+            {enquiries.map((enquiry) => {
+              const whatsappHref = getWhatsAppHref(
+                enquiry.phone,
+                enquiry.full_name,
+              );
+
+              return (
+                <article
+                  className={`admin-enquiry-card ${
+                    enquiry.status === "archived" ? "is-muted" : ""
+                  }`}
+                  key={enquiry.id}
+                >
                 <div className="admin-enquiry-card__topline">
                   <div>
                     <div className="admin-enquiry-card__title">
@@ -261,11 +273,17 @@ export default async function AdminEnquiriesPage() {
                     <div className="admin-enquiry-card__meta">
                       <span>
                         <FiPhone aria-hidden="true" />
-                        {enquiry.phone}
+                        <a href={`tel:${enquiry.phone}`}>{enquiry.phone}</a>
                       </span>
                       <span>
                         <FiMail aria-hidden="true" />
-                        {enquiry.email || "Not provided"}
+                        {enquiry.email ? (
+                          <a href={`mailto:${enquiry.email}`}>
+                            {enquiry.email}
+                          </a>
+                        ) : (
+                          "Not provided"
+                        )}
                       </span>
                       <span>
                         <FiMessageSquare aria-hidden="true" />
@@ -323,8 +341,19 @@ export default async function AdminEnquiriesPage() {
                 </details>
 
                 <EnquiryActions enquiry={enquiry} crmReady={crmReady} />
+                {whatsappHref ? (
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="admin-text-link"
+                  >
+                    WhatsApp contact
+                  </a>
+                ) : null}
               </article>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="admin-empty">

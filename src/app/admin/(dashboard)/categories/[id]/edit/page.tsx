@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import CategoryForm from "@/components/admin/CategoryForm";
 import { requireAdminPage } from "@/lib/admin/auth";
 import {
@@ -30,13 +31,11 @@ export default async function EditCategoryPage({
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <span className="admin-eyebrow">Edit hierarchy record</span>
-          <h1>{category.name}</h1>
-          <p>Update category content, image, order, and visibility.</p>
-        </div>
-      </header>
+      <AdminPageHeader
+        eyebrow="Edit hierarchy record"
+        title={category.name}
+        description="Update category content, image, order, and visibility."
+      />
       <CategoryForm
         category={category}
         parentOptions={parentOptions}

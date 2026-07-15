@@ -1,5 +1,6 @@
 import "server-only";
 
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import CategoryForm from "@/components/admin/CategoryForm";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
@@ -17,13 +18,11 @@ export default async function NewCategoryPage() {
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <span className="admin-eyebrow">New hierarchy record</span>
-          <h1>Add category</h1>
-          <p>Create a main category or subcategory for the catalogue.</p>
-        </div>
-      </header>
+      <AdminPageHeader
+        eyebrow="New hierarchy record"
+        title="Add category"
+        description="Create a main category or subcategory for the catalogue."
+      />
       <CategoryForm parentOptions={parentOptions} />
     </main>
   );

@@ -54,8 +54,9 @@ export default async function AdminDashboardLayout({
               Sign out
             </button>
           </form>
-          <span title={admin.email}>
-            {admin.email} · {admin.role}
+          <span title={`${admin.email} · ${admin.role}`}>
+            <strong>{admin.role}</strong>
+            {admin.email}
           </span>
         </div>
       </aside>

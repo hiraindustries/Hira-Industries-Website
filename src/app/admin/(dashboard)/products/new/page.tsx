@@ -1,5 +1,6 @@
 import "server-only";
 
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import ProductForm from "@/components/admin/ProductForm";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
@@ -13,16 +14,11 @@ export default async function NewProductPage() {
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <span className="admin-eyebrow">New catalogue record</span>
-          <h1>Add product</h1>
-          <p>
-            Create one product and attach every alternate or lifestyle
-            image to its gallery.
-          </p>
-        </div>
-      </header>
+      <AdminPageHeader
+        eyebrow="New catalogue record"
+        title="Add product"
+        description="Create one product and attach every alternate or lifestyle image to its gallery."
+      />
       <ProductForm
         mainCategories={categoryTree.mainCategories.filter(
           (category) => category.is_active,

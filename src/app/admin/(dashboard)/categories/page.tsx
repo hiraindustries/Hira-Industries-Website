@@ -11,6 +11,7 @@ import {
   FiToggleLeft,
   FiToggleRight,
 } from "react-icons/fi";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import { getAdminCategoryTree } from "@/lib/admin/categories";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getAdminProducts } from "@/lib/admin/products";
@@ -41,15 +42,18 @@ export default async function AdminCategoriesPage({
   const visibleCategories = categoryTree.all
     .filter((category) => category.id !== categoryTree.root?.id)
     .filter((category) => {
-      if (type === "subcategories" && category.parent_id === null) {
-        return false;
+      const isMainCategory =
+        category.parent_id === null || category.parent_id === categoryTree.root?.id;
+
+      if (type === "main") {
+        return isMainCategory;
       }
 
-      if (type === "all") {
-        return true;
+      if (type === "subcategories") {
+        return !isMainCategory;
       }
 
-      return category.parent_id !== null;
+      return true;
     })
     .filter((category) => {
       if (view === "active") {
@@ -91,22 +95,20 @@ export default async function AdminCategoriesPage({
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <span className="admin-eyebrow">Catalogue hierarchy</span>
-          <h1>Categories</h1>
-          <p>
-            {activeMainCategories.length} active main categories and{" "}
-            {activeSubcategories.length} active subcategories.
-          </p>
-        </div>
-        <Link
-          href="/admin/categories/new"
-          className="admin-button admin-button--primary"
-        >
-          <FiPlus aria-hidden="true" /> Add category
-        </Link>
-      </header>
+      <AdminPageHeader
+        eyebrow="Catalogue hierarchy"
+        title="Categories"
+        description="Organise main categories and subcategories."
+        status={`${activeMainCategories.length} active main categories and ${activeSubcategories.length} active subcategories.`}
+        actions={
+          <Link
+            href="/admin/categories/new"
+            className="admin-button admin-button--primary"
+          >
+            <FiPlus aria-hidden="true" /> Add category
+          </Link>
+        }
+      />
 
       {params.created || params.updated ? (
         <p className="admin-notice admin-notice--success">
@@ -115,7 +117,7 @@ export default async function AdminCategoriesPage({
       ) : null}
 
       <section className="admin-panel admin-panel--table">
-        <div className="admin-filter-row" style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1rem" }}>
+        <div className="admin-filter-row">
           <Link
             href="/admin/categories?view=active"
             className={`admin-text-link ${view === "active" ? "is-active" : ""}`}
@@ -145,6 +147,12 @@ export default async function AdminCategoriesPage({
             className={`admin-text-link ${type === "subcategories" ? "is-active" : ""}`}
           >
             <FiToggleLeft aria-hidden="true" /> Subcategories
+          </Link>
+          <Link
+            href={`/admin/categories?view=${view}&type=main`}
+            className={`admin-text-link ${type === "main" ? "is-active" : ""}`}
+          >
+            <FiToggleRight aria-hidden="true" /> Main categories
           </Link>
         </div>
 
@@ -200,9 +208,10 @@ export default async function AdminCategoriesPage({
                       </div>
                     </td>
                     <td>
-                      {parent?.id === categoryTree.root?.id
-                        ? "Main category"
-                        : parent?.name ?? "No parent"}
+                      {parent?.id === categoryTree.root?.id ||
+                      category.parent_id === null
+                        ? "—"
+                        : parent?.name ?? "Unassigned"}
                     </td>
                     <td>{productCount}</td>
                     <td>{category.sort_order}</td>
