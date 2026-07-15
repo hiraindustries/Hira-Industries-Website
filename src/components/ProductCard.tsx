@@ -1,61 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiMessageCircle } from "react-icons/fi";
-import { getProductGallery, getStringList } from "@/lib/product-media";
+import { getProductGallery } from "@/lib/product-media";
 import { businessInfo } from "@/lib/site-data";
 import type { CatalogueProduct } from "@/lib/supabase/database.types";
-
-function getFeatureValue(
-  features: string[],
-  labelPattern: RegExp,
-): string | null {
-  const feature = features.find((item) => {
-    const separatorIndex = item.indexOf(":");
-
-    if (separatorIndex === -1) {
-      return false;
-    }
-
-    return labelPattern.test(item.slice(0, separatorIndex).trim());
-  });
-
-  if (!feature) {
-    return null;
-  }
-
-  const separatorIndex = feature.indexOf(":");
-  const value = feature.slice(separatorIndex + 1).trim();
-
-  return value || null;
-}
-
-function getProductCardDetails(product: CatalogueProduct) {
-  const features = product.features;
-  const colors = getStringList(product.available_colors);
-  const finish =
-    getFeatureValue(features, /^finish$/i) ??
-    product.material?.trim() ??
-    "Not specified";
-  const colours =
-    colors.length > 0
-      ? colors.join(", ")
-      : (getFeatureValue(features, /^colou?rs?$/i) ?? "Not specified");
-  const useCase =
-    getFeatureValue(features, /^use case$/i) ??
-    product.tags?.find((tag) =>
-      /home|hotel|restaurant|retail|gift|hospitality|bulk|office|decor|display|storage|serving|dining/i.test(
-        tag,
-      ),
-    ) ??
-    "Not specified";
-
-  return {
-    code: product.product_code?.trim() || "Code unavailable",
-    finish,
-    colours,
-    useCase,
-  };
-}
 
 export default function ProductCard({
   product,
@@ -69,7 +17,7 @@ export default function ProductCard({
   const isRemoteImage = /^https?:\/\//.test(coverImage.url);
   const imageSizes =
     "(max-width: 720px) 100vw, (max-width: 980px) 50vw, (max-width: 1180px) 33vw, 25vw";
-  const details = getProductCardDetails(product);
+  const productCode = product.product_code?.trim() || "Code unavailable";
   const productHref = `/products/${product.slug}`;
   const quoteHref = `/contact?product=${encodeURIComponent(product.slug)}`;
 
@@ -108,24 +56,10 @@ export default function ProductCard({
           <Link href={productHref}>{product.name}</Link>
         </h3>
 
-        <dl className="catalogue-product-card__specs">
-          <div className="catalogue-product-card__spec-row catalogue-product-card__spec-row--code">
-            <dt>Product Code</dt>
-            <dd>{details.code}</dd>
-          </div>
-          <div className="catalogue-product-card__spec-row">
-            <dt>Finish</dt>
-            <dd>{details.finish}</dd>
-          </div>
-          <div className="catalogue-product-card__spec-row">
-            <dt>Colours</dt>
-            <dd>{details.colours}</dd>
-          </div>
-          <div className="catalogue-product-card__spec-row">
-            <dt>Use Case</dt>
-            <dd>{details.useCase}</dd>
-          </div>
-        </dl>
+        <p className="catalogue-product-card__code">
+          <span>Product Code</span>
+          <strong>{productCode}</strong>
+        </p>
       </div>
 
       <div className="catalogue-product-card__quick-actions">
