@@ -84,19 +84,19 @@ const customerCards = [
 
 const owners = [
   {
-    name: "Salman Beg Sahab",
+    name: "Salman Beg",
     role: "Owner, Hira Industries",
     description:
       "Focused on product quality, finishing standards, and maintaining strong relationships with buyers and trade partners.",
   },
   {
-    name: "Arbaz Beg Sahab",
+    name: "Arbaz Beg",
     role: "Owner, Hira Industries",
     description:
       "Supports operations, execution, and customer commitment, ensuring dependable service and smooth coordination across the business.",
   },
   {
-    name: "Shanu Beg Sahab",
+    name: "Shanu Beg",
     role: "Owner, Hira Industries",
     description:
       "Contributes strategic direction and business leadership, helping strengthen the brand’s market presence and long-term growth.",
