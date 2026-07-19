@@ -671,71 +671,17 @@ main {
   z-index: 1;
 }
 
-.hero-showcase__slide::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.08) 56%, rgba(0, 0, 0, var(--hero-slide-edge-shade)) 100%),
-    linear-gradient(180deg, rgba(5, 4, 3, 0.08), rgba(5, 4, 3, var(--hero-slide-overlay-shade)));
-}
-
 .hero-showcase__slide.is-active {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   z-index: 2;
 }
 
-.hero-showcase__backdrop,
-.hero-showcase__foreground {
-  position: absolute;
-  inset: 0;
-}
-
-.hero-showcase__backdrop {
-  z-index: 1;
-  overflow: hidden;
-  background: rgba(5, 4, 3, 0.78);
-}
-
-.hero-showcase__backdrop-image {
+.hero-showcase__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: var(--hero-slide-background-position);
-  opacity: var(--hero-slide-background-opacity);
-  filter: blur(18px) saturate(1.08) contrast(1.08);
-  transform: scale(1.09);
-}
-
-.hero-showcase__foreground {
-  z-index: 3;
-  display: grid;
-  place-items: center;
-}
-
-.hero-showcase__foreground::before {
-  content: "";
-  position: absolute;
-  inset: 11%;
-  border-radius: 999px;
-  background: radial-gradient(circle, var(--hero-slide-stage-glow), transparent 68%);
-  filter: blur(18px);
-}
-
-.hero-showcase__foreground-image {
-  width: 100%;
-  height: 100%;
-  padding: clamp(0.38rem, 1.15vw, 0.78rem);
-  object-fit: contain;
-  object-position: var(--hero-slide-object-position);
-  filter:
-    drop-shadow(0 20px 34px rgba(0, 0, 0, 0.38))
-    saturate(1.03)
-    contrast(1.02);
-  transform: scale(var(--hero-slide-foreground-scale));
+  object-position: center;
 }
 
 .hero-showcase__dots {
@@ -2656,10 +2602,6 @@ main {
     padding-inline: 1rem;
   }
 
-  .hero-showcase__foreground-image {
-    padding: 0.36rem;
-  }
-
   .showcase,
   .contact-form,
   .contact-panel,
@@ -2672,7 +2614,6 @@ main {
 @media (prefers-reduced-motion: reduce) {
   .hero-showcase__slide,
   .hero-showcase__dot::before,
-  .hero-showcase__foreground-image,
   .collection-card,
   .collection-card::before,
   .collection-card::after,
