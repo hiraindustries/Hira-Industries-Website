@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import {
   FiMail,
   FiMapPin,
-  FiMessageCircle,
   FiPhone,
 } from "react-icons/fi";
 import { businessInfo, footerGroups } from "@/lib/site-data";
@@ -34,15 +34,26 @@ export default function Footer() {
               trade buyers, manufactured with a focus on dependable quality and
               polished presentation.
             </p>
-            <a
-              href={businessInfo.whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-whatsapp"
-            >
-              <FiMessageCircle aria-hidden="true" />
-              WhatsApp Now
-            </a>
+            <div className="footer-social" aria-label="Social links">
+              <a
+                href={businessInfo.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social__link"
+                aria-label="Chat with Hira Industries on WhatsApp"
+              >
+                <FaWhatsapp aria-hidden="true" />
+              </a>
+              <a
+                href="https://www.instagram.com/hira_industries_khurja/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social__link"
+                aria-label="Visit Hira Industries on Instagram"
+              >
+                <FaInstagram aria-hidden="true" />
+              </a>
+            </div>
           </div>
 
           {footerGroups.map((group) => (
