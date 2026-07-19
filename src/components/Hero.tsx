@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import HeroDisplaySlider from "@/components/HeroDisplaySlider";
 import type { HomepageHeroContent } from "@/lib/cms/homepage";
 import { heroStats } from "@/lib/site-data";
 
@@ -44,14 +44,7 @@ export default function Hero({ content }: { content: HomepageHeroContent }) {
     <div className="hero-visual__frame">
       <div className="hero-visual__glow" aria-hidden="true" />
       <div className="hero-visual__media">
-        <Image
-          src={content.imageUrl}
-          alt={content.imageAlt}
-          fill
-          sizes="(max-width: 768px) 92vw, 42vw"
-          priority
-          className="hero-visual__image"
-        />
+        <HeroDisplaySlider />
       </div>
     </div>
   );
