@@ -3,9 +3,11 @@
 import Image from "next/image";
 import {
   useEffect,
+  useRef,
   useState,
   type CSSProperties,
   type FocusEvent,
+  type MouseEvent,
 } from "react";
 
 type HeroSlide = {
@@ -94,8 +96,7 @@ const heroShowcaseImages = [
   },
 ] satisfies HeroSlide[];
 
-const autoRotateDelayMs = 4500;
-const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
+const autoRotateDelayMs = 3500;
 const imageSizes =
   "(max-width: 720px) calc(100vw - 3rem), (max-width: 980px) 520px, (max-width: 1200px) 42vw, 560px";
 
@@ -114,39 +115,25 @@ function getSlideStyle(slide: HeroSlide): HeroSlideStyle {
 }
 
 export default function HeroDisplaySlider() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isTabHidden, setIsTabHidden] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [timerResetKey, setTimerResetKey] = useState(0);
+  const pointerSelectionRef = useRef(false);
 
   useEffect(() => {
-    if (isPaused || isTabHidden || prefersReducedMotion) {
+    if (isPaused || isTabHidden) {
       return;
     }
 
     const intervalId = window.setInterval(() => {
-      setActiveIndex((currentIndex) =>
-        (currentIndex + 1) % heroShowcaseImages.length,
+      setCurrentIndex((previousIndex) =>
+        (previousIndex + 1) % heroShowcaseImages.length,
       );
     }, autoRotateDelayMs);
 
     return () => window.clearInterval(intervalId);
-  }, [isPaused, isTabHidden, prefersReducedMotion, timerResetKey]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(reducedMotionQuery);
-    const updateMotionPreference = () => {
-      setPrefersReducedMotion(mediaQuery.matches);
-    };
-
-    updateMotionPreference();
-    mediaQuery.addEventListener("change", updateMotionPreference);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateMotionPreference);
-    };
-  }, []);
+  }, [isPaused, isTabHidden, timerResetKey]);
 
   useEffect(() => {
     const updateVisibility = () => {
@@ -168,8 +155,20 @@ export default function HeroDisplaySlider() {
   }
 
   function selectSlide(index: number) {
-    setActiveIndex(index);
+    setCurrentIndex(index);
     setTimerResetKey((currentKey) => currentKey + 1);
+  }
+
+  function handleIndicatorClick(
+    index: number,
+    event: MouseEvent<HTMLButtonElement>,
+  ) {
+    selectSlide(index);
+
+    if (pointerSelectionRef.current) {
+      pointerSelectionRef.current = false;
+      event.currentTarget.blur();
+    }
   }
 
   return (
@@ -188,7 +187,7 @@ export default function HeroDisplaySlider() {
     >
       <div className="hero-showcase__slides">
         {heroShowcaseImages.map((image, index) => {
-          const isActive = index === activeIndex;
+          const isActive = index === currentIndex;
 
           return (
             <div
@@ -225,7 +224,7 @@ export default function HeroDisplaySlider() {
 
       <div className="hero-showcase__dots" aria-label="Choose showcase image">
         {heroShowcaseImages.map((image, index) => {
-          const isActive = index === activeIndex;
+          const isActive = index === currentIndex;
 
           return (
             <button
@@ -234,7 +233,13 @@ export default function HeroDisplaySlider() {
               className={`hero-showcase__dot${isActive ? " is-active" : ""}`}
               aria-label={`Show ${image.label}`}
               aria-pressed={isActive}
-              onClick={() => selectSlide(index)}
+              onPointerDown={() => {
+                pointerSelectionRef.current = true;
+              }}
+              onKeyDown={() => {
+                pointerSelectionRef.current = false;
+              }}
+              onClick={(event) => handleIndicatorClick(index, event)}
             >
               <span className="sr-only">{image.label}</span>
             </button>
