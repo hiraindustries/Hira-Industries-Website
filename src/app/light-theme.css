@@ -4335,8 +4335,18 @@ textarea:focus-visible {
   @media (max-width: 980px) {
     .manufacturing-page .process-block {
       grid-template-columns: 1fr;
+      grid-template-areas:
+        "image"
+        "text";
       gap: 2rem;
       padding: clamp(28px, 6vw, 48px) 0;
+    }
+
+    .manufacturing-page .process-block:nth-child(odd),
+    .manufacturing-page .process-block:nth-child(even) {
+      grid-template-areas:
+        "image"
+        "text";
     }
 
     .manufacturing-page .process-block__image {

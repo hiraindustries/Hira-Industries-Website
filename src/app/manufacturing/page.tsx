@@ -32,8 +32,9 @@ const processSteps = [
     description:
       "Materials are selected for ceramic crockery production with attention to consistency, form, and finish requirements.",
     icon: FiLayers,
-    image: "/images/Material Selection.png",
-    alt: "Material Selection at Hira Industries",
+    image: "/images/01-raw-material-mixing-and-preparation.webp",
+    alt: "Raw ceramic material mixing and preparation at Hira Industries",
+    objectPosition: "center",
   },
   {
     step: "Step 02",
@@ -41,8 +42,9 @@ const processSteps = [
     description:
       "Products are shaped and prepared through established ceramic production steps, with attention to form, dimensions, and finishing needs.",
     icon: FiPackage,
-    image: "/images/Product Making & Sourcing.png",
-    alt: "Product Making and Sourcing at Hira Industries",
+    image: "/images/02-ceramic-moulding-and-product-forming.webp",
+    alt: "Ceramic moulding and product forming at Hira Industries",
+    objectPosition: "center",
   },
   {
     step: "Step 03",
@@ -50,8 +52,9 @@ const processSteps = [
     description:
       "Design and finishing work focuses on clean presentation, visible pattern quality, glaze consistency, and collection-specific detailing.",
     icon: FiDroplet,
-    image: "/images/Design & Finishing.png",
-    alt: "Design and Finishing process at Hira Industries",
+    image: "/images/03-hand-finishing-and-detailing.webp",
+    alt: "Hand finishing and detailing of ceramic products at Hira Industries",
+    objectPosition: "center",
   },
   {
     step: "Step 04",
@@ -59,8 +62,9 @@ const processSteps = [
     description:
       "Pieces are checked for visible finish, shape consistency, glaze quality, and handling readiness before packing.",
     icon: FiShield,
-    image: "/images/Quality Checking.png",
-    alt: "Quality Checking process at Hira Industries",
+    image: "/images/04-drying-and-rack-arrangement.webp",
+    alt: "Ceramic products drying and arranged on racks at Hira Industries",
+    objectPosition: "center",
   },
   {
     step: "Step 05",
@@ -68,8 +72,9 @@ const processSteps = [
     description:
       "Packaging is planned to support storage, handling, and dispatch. Buyers should confirm packaging and delivery requirements for the selected products before ordering.",
     icon: FiPackage,
-    image: "/images/Packaging Process.png",
-    alt: "Packaging Process at Hira Industries",
+    image: "/images/05-kiln-loading-and-firing.webp",
+    alt: "Kiln loading and ceramic firing at Hira Industries",
+    objectPosition: "center",
   },
   {
     step: "Step 06",
@@ -77,8 +82,9 @@ const processSteps = [
     description:
       "For bulk enquiries, the team coordinates product details, packing expectations, and dispatch requirements. Availability, timelines, and transport terms should be confirmed directly.",
     icon: FiLayers,
-    image: "/images/Bulk Order Handling.png",
-    alt: "Bulk Order Handling at Hira Industries",
+    image: "/images/06-finished-goods-storage-and-dispatch.webp",
+    alt: "Finished ceramic goods storage and dispatch at Hira Industries",
+    objectPosition: "center",
   },
 ];
 
@@ -189,6 +195,10 @@ export default function ManufacturingPage() {
                         fill
                         loading="eager"
                         sizes="(max-width: 900px) 100vw, 48vw"
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: step.objectPosition,
+                        }}
                       />
                     </div>
                   </>
@@ -201,6 +211,10 @@ export default function ManufacturingPage() {
                         fill
                         loading="eager"
                         sizes="(max-width: 900px) 100vw, 48vw"
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: step.objectPosition,
+                        }}
                       />
                     </div>
                     <div className="process-block__summary">
