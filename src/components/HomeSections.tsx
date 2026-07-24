@@ -70,6 +70,11 @@ export default function HomeSections({
               <p key={paragraph}>{paragraph}</p>
             ))}
 
+            <div className="home-seo-links" aria-label="Helpful buyer guides">
+              <Link href="/khurja-crockery">Khurja crockery manufacturer</Link>
+              <Link href="/premium-crockery">Explore premium ceramic crockery</Link>
+            </div>
+
             <div className="about-stats">
               {companyMilestones.map((item) => (
                 <div key={item.label} className="about-stat">

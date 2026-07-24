@@ -53,10 +53,23 @@ export function dedupeSitemap(
 
 export function getStaticSitemapEntries(): MetadataRoute.Sitemap {
   const now = new Date();
+  const seoLandingLastModified = new Date("2026-07-24T00:00:00.000Z");
   const staticPages: SitemapEntryInput[] = [
     { path: "/", changeFrequency: "weekly", priority: 1 },
     { path: "/company", changeFrequency: "monthly", priority: 0.8 },
     { path: "/products", changeFrequency: "weekly", priority: 0.9 },
+    {
+      path: "/khurja-crockery",
+      lastModified: seoLandingLastModified,
+      changeFrequency: "monthly",
+      priority: 0.72,
+    },
+    {
+      path: "/premium-crockery",
+      lastModified: seoLandingLastModified,
+      changeFrequency: "monthly",
+      priority: 0.72,
+    },
     { path: "/collections", changeFrequency: "monthly", priority: 0.7 },
     { path: "/gallery", changeFrequency: "monthly", priority: 0.6 },
     { path: "/manufacturing", changeFrequency: "monthly", priority: 0.8 },
@@ -68,7 +81,7 @@ export function getStaticSitemapEntries(): MetadataRoute.Sitemap {
 
   return [
     ...staticPages.map((entry) =>
-      createSitemapEntry({ lastModified: now, ...entry }),
+      createSitemapEntry({ lastModified: entry.lastModified ?? now, ...entry }),
     ),
     ...resourcePages.map((page) =>
       createSitemapEntry({

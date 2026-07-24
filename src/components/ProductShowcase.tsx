@@ -6,6 +6,7 @@ import {
   FiMessageCircle,
 } from "react-icons/fi";
 import CategoryExplorer from "@/components/CategoryExplorer";
+import PageHero, { type PageHeroBreadcrumbItem } from "@/components/PageHero";
 import ProductListing from "@/components/ProductListing";
 import type { CatalogueData } from "@/lib/catalogue";
 import { businessInfo } from "@/lib/site-data";
@@ -75,46 +76,44 @@ export default function ProductShowcase({
     (viewAll
       ? "Browse the complete Hira Industries catalogue and refine the range by category, product name, code, or material."
       : "Explore premium ceramic crockery collections for homes, hotels, restaurants, retailers, wholesalers, and gifting buyers.");
+  const breadcrumbItems: PageHeroBreadcrumbItem[] = [
+    { label: "Home", href: "/" },
+    ...(selectedCategory || viewAll
+      ? [{ label: "Products", href: "/products" }]
+      : []),
+    ...(selectedCategory && selectedSubcategory
+      ? [
+          {
+            label: selectedCategory.name,
+            href: `/products?category=${selectedCategory.slug}`,
+          },
+        ]
+      : []),
+    { label: pageTitle },
+  ];
 
   return (
     <div className="products-page products-catalogue">
-      <header className="catalogue-page-head">
-        <div className="site-shell">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span>/</span>
-            {selectedCategory || viewAll ? (
-              <>
-                <Link href="/products">Products</Link>
-                <span>/</span>
-              </>
-            ) : null}
-            {selectedCategory && selectedSubcategory ? (
-              <>
-                <Link href={`/products?category=${selectedCategory.slug}`}>
-                  {selectedCategory.name}
-                </Link>
-                <span>/</span>
-              </>
-            ) : null}
-            <span>{pageTitle}</span>
-          </nav>
-
-          <div className="catalogue-page-head__content">
-            <div>
-              <div className="section-kicker">Premium Catalogue</div>
-              <h1>{pageTitle}</h1>
-              <p>{pageDescription}</p>
-            </div>
-            {showListing ? (
-              <Link href="/products" className="catalogue-back-link">
-                <FiArrowLeft aria-hidden="true" />
-                View All Categories
-              </Link>
-            ) : null}
-          </div>
+      <PageHero
+        image="/images/dinnerware showcase.webp"
+        breadcrumbItems={breadcrumbItems}
+        eyebrow="Premium Catalogue"
+        title={pageTitle}
+        description={pageDescription}
+        objectPosition="center 56%"
+        overlayStrength="strong"
+      >
+        <div className="catalogue-page-head__links" aria-label="Related crockery guides">
+          <Link href="/premium-crockery">Premium crockery guide</Link>
+          <Link href="/khurja-crockery">Khurja crockery buying guide</Link>
         </div>
-      </header>
+        {showListing ? (
+          <Link href="/products" className="catalogue-back-link catalogue-back-link--hero">
+            <FiArrowLeft aria-hidden="true" />
+            View All Categories
+          </Link>
+        ) : null}
+      </PageHero>
 
       {status === "category-error" || status === "not-configured" ? (
         <section className="catalogue-section">

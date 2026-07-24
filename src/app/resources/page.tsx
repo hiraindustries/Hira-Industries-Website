@@ -50,6 +50,10 @@ export default function ResourcesPage() {
               manufacturers, wholesale products, hotel and restaurant crockery,
               special requirements, bulk orders and dinnerware sets.
             </p>
+            <div className="seo-secondary-links" aria-label="Related crockery pages">
+              <Link href="/khurja-crockery">Khurja crockery supplier information</Link>
+              <Link href="/premium-crockery">Premium crockery collection guide</Link>
+            </div>
           </div>
           <div className="resources-hero__image">
             <Image

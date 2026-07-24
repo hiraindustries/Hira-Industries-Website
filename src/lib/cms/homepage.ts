@@ -166,7 +166,7 @@ export const fallbackHomepageContent: HomepageContent = {
   hero: {
     visible: true,
     eyebrow: "Crafting Elegance",
-    heading: "Hira Industries Khurja",
+    heading: "Hira Industries",
     highlightedText: "",
     description:
       "Hira Industries is a ceramic crockery manufacturer and supplier in Khurja, Uttar Pradesh. Premium ceramic tableware for buyers who need polished design, consistent finishing, and dependable support for retail, hospitality, gifting, and bulk enquiries.",
@@ -184,7 +184,7 @@ export const fallbackHomepageContent: HomepageContent = {
     highlightedText: "Ceramic Crockery",
     paragraphs: [
       "Hira Industries is a manufacturer and supplier of premium ceramic crockery, serving homes, hotels, restaurants, retailers, and wholesale buyers with dependable product collections.",
-      "From dinner sets and tea service to buyer-ready hospitality ranges, every collection is developed for polished presentation, reliable daily use, and practical bulk sourcing.",
+      "From dinner sets, tea and coffee sets, cups and mugs, bowls, and serveware to buyer-ready hotel crockery, every collection is developed for polished presentation, reliable daily use, and practical bulk sourcing.",
       "Explore our products, learn more about our manufacturing process, review our quality standards, or contact us for bulk orders and catalogue support.",
     ],
     imageUrl: "/images/Hira-office.webp",

@@ -73,7 +73,7 @@ export const businessProfile = {
   // TODO_VERIFY: Add the canonical Google Business Profile URL when the owner confirms it.
   googleBusinessProfileUrl: "TODO_VERIFY_GOOGLE_BUSINESS_PROFILE_URL",
   socialProfiles: {
-    instagram: "TODO_VERIFY_INSTAGRAM_URL",
+    instagram: "https://www.instagram.com/hira_industries_khurja/",
     facebook: "TODO_VERIFY_FACEBOOK_URL",
     linkedin: "TODO_VERIFY_LINKEDIN_URL",
     youtube: "TODO_VERIFY_YOUTUBE_URL",

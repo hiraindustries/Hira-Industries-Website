@@ -12,6 +12,7 @@ import {
   FiShield,
   FiTruck,
 } from "react-icons/fi";
+import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
@@ -92,30 +93,17 @@ export default function QualityPage() {
           ],
         }}
       />
-      <section className="quality-hero">
-        <Image
-          src="/images/Product Making & Sourcing.png"
-          alt=""
-          fill
-          preload
-          sizes="100vw"
-          className="quality-hero__image"
-        />
-        <div className="quality-hero__overlay" aria-hidden="true" />
-        <div className="quality-shell quality-hero__content">
-          <nav className="quality-breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <span>Quality</span>
-          </nav>
-          <h1>Quality Assurance</h1>
-          <div className="quality-heading-rule" aria-hidden="true" />
-          <p>
-            Quality is part of every buyer conversation, from product selection
-            to finishing and packing expectations.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        image="/images/Quality Checking.png"
+        breadcrumbItems={[
+          { label: "Home", href: "/" },
+          { label: "Quality" },
+        ]}
+        title="Quality Assurance"
+        description="Quality is part of every buyer conversation, from product selection to finishing and packing expectations."
+        objectPosition="center 50%"
+        overlayStrength="strong"
+      />
 
       <section className="quality-promise">
         <div className="quality-shell quality-promise__layout">
@@ -132,6 +120,11 @@ export default function QualityPage() {
             <p>
               Products are reviewed for visible finish, surface quality, shape,
               and packing readiness before being prepared for buyer enquiries.
+            </p>
+            <p>
+              Buyers comparing presentation-led collections can review our{" "}
+              <Link href="/premium-crockery">premium ceramic crockery guide</Link>{" "}
+              alongside these quality notes.
             </p>
             <p>
               Whether you&apos;re buying for your home, hotel, restaurant, or retail

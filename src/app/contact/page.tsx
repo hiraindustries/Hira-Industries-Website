@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import {
   FiClock,
   FiMail,
@@ -8,6 +6,7 @@ import {
   FiPhone,
 } from "react-icons/fi";
 import ContactForm from "@/components/ContactForm";
+import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
@@ -83,30 +82,17 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
           ],
         }}
       />
-      <section className="contact-hero">
-        <Image
-          src="/images/set.jpeg"
-          alt=""
-          fill
-          loading="eager"
-          sizes="100vw"
-          className="contact-hero__image"
-        />
-        <div className="contact-hero__overlay" aria-hidden="true" />
-        <div className="site-shell contact-hero__content">
-          <nav className="contact-breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <span>Contact</span>
-          </nav>
-          <h1>Contact Us</h1>
-          <div className="contact-heading-rule" aria-hidden="true" />
-          <p>
-            Get in touch for product enquiries, bulk orders, catalogue requests,
-            or business discussions.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        image="/images/hira-industries-outlet.webp"
+        breadcrumbItems={[
+          { label: "Home", href: "/" },
+          { label: "Contact" },
+        ]}
+        title="Contact Us"
+        description="Get in touch for product enquiries, bulk orders, catalogue requests, or business discussions."
+        objectPosition="center 55%"
+        overlayStrength="strong"
+      />
 
       <section className="contact-main">
         <div className="contact-shell contact-main__grid">

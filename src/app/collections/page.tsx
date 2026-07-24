@@ -1,4 +1,4 @@
-import { GalleryContent } from "../gallery/page";
+import GalleryContent from "@/components/GalleryContent";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({

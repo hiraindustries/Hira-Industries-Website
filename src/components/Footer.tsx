@@ -45,7 +45,7 @@ export default function Footer() {
                 <FaWhatsapp aria-hidden="true" />
               </a>
               <a
-                href="https://www.instagram.com/hira_industries_khurja/"
+                href={businessInfo.instagramHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-social__link"

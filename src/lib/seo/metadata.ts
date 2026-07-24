@@ -24,21 +24,29 @@ export function createPageMetadata({
   description,
   path,
   imagePath,
+  openGraphTitle,
+  openGraphDescription,
+  absoluteTitle = false,
   noIndex = false,
 }: {
   title: string;
   description: string;
   path: string;
   imagePath?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
+  absoluteTitle?: boolean;
   noIndex?: boolean;
 }): Metadata {
   const canonicalUrl = withBusinessUrl(path);
   const imageUrl = withBusinessUrl(
     imagePath ?? businessProfile.defaultShareImagePath,
   );
+  const resolvedOpenGraphTitle = openGraphTitle ?? title;
+  const resolvedOpenGraphDescription = openGraphDescription ?? description;
 
   return {
-    title,
+    title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: {
       canonical: canonicalUrl,
@@ -46,8 +54,8 @@ export function createPageMetadata({
     openGraph: {
       type: "website",
       siteName: businessProfile.officialName,
-      title,
-      description,
+      title: resolvedOpenGraphTitle,
+      description: resolvedOpenGraphDescription,
       url: canonicalUrl,
       images: [
         {
@@ -59,8 +67,8 @@ export function createPageMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: resolvedOpenGraphTitle,
+      description: resolvedOpenGraphDescription,
       images: [imageUrl],
     },
     robots: noIndex
@@ -80,7 +88,7 @@ export function createRootMetadata(): Metadata {
     metadataBase: new URL(businessProfile.websiteUrl),
     title: {
       default:
-        "Hira Industries Khurja | Ceramic Crockery Manufacturer & Supplier",
+        "Hira Industries | Premium Ceramic Crockery Manufacturer",
       template: "%s | Hira Industries",
     },
     description: businessProfile.description,
@@ -89,8 +97,7 @@ export function createRootMetadata(): Metadata {
     openGraph: {
       type: "website",
       siteName: businessProfile.officialName,
-      title:
-        "Hira Industries Khurja | Ceramic Crockery Manufacturer & Supplier",
+      title: "Hira Industries | Premium Ceramic Crockery Manufacturer",
       description: businessProfile.description,
       url: businessProfile.websiteUrl,
       images: [
@@ -103,8 +110,7 @@ export function createRootMetadata(): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title:
-        "Hira Industries Khurja | Ceramic Crockery Manufacturer & Supplier",
+      title: "Hira Industries | Premium Ceramic Crockery Manufacturer",
       description: businessProfile.description,
       images: [withBusinessUrl(businessProfile.defaultShareImagePath)],
     },

@@ -6,10 +6,14 @@ export type BreadcrumbItem = {
   path: string;
 };
 
-export function buildBreadcrumbListSchema(items: BreadcrumbItem[]): JsonLdObject {
+export function buildBreadcrumbListSchema(
+  items: BreadcrumbItem[],
+  id?: string,
+): JsonLdObject {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": id,
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,

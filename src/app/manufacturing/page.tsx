@@ -7,13 +7,14 @@ import {
   FiPackage,
   FiShield,
 } from "react-icons/fi";
+import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
 import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
 
 const pageDescription =
-  "Discover how Hira Industries presents ceramic crockery manufacturing, quality control, packaging and bulk order enquiries.";
+  "Discover how Hira Industries presents ceramic raw material preparation, product forming, hand finishing, drying, kiln firing and finished goods dispatch.";
 const breadcrumbs = [
   { name: "Home", path: "/" },
   { name: "Manufacturing", path: "/manufacturing" },
@@ -28,19 +29,19 @@ export const metadata = createPageMetadata({
 const processSteps = [
   {
     step: "Step 01",
-    title: "Material Selection",
+    title: "Raw Material Mixing & Preparation",
     description:
-      "Materials are selected for ceramic crockery production with attention to consistency, form, and finish requirements.",
+      "Ceramic raw materials are measured, blended, and prepared to achieve the required consistency before the forming process begins.",
     icon: FiLayers,
     image: "/images/01-raw-material-mixing-and-preparation.webp",
-    alt: "Raw ceramic material mixing and preparation at Hira Industries",
+    alt: "Raw material mixing and preparation at Hira Industries",
     objectPosition: "center",
   },
   {
     step: "Step 02",
-    title: "Product Making & Sourcing",
+    title: "Ceramic Moulding & Product Forming",
     description:
-      "Products are shaped and prepared through established ceramic production steps, with attention to form, dimensions, and finishing needs.",
+      "Prepared ceramic material is shaped using production moulds and forming equipment to create consistent product forms and dimensions.",
     icon: FiPackage,
     image: "/images/02-ceramic-moulding-and-product-forming.webp",
     alt: "Ceramic moulding and product forming at Hira Industries",
@@ -48,42 +49,42 @@ const processSteps = [
   },
   {
     step: "Step 03",
-    title: "Design & Finishing",
+    title: "Hand Finishing & Detailing",
     description:
-      "Design and finishing work focuses on clean presentation, visible pattern quality, glaze consistency, and collection-specific detailing.",
+      "Each formed piece is carefully refined by hand to smooth surfaces, correct edges, and prepare it for the next production stage.",
     icon: FiDroplet,
     image: "/images/03-hand-finishing-and-detailing.webp",
-    alt: "Hand finishing and detailing of ceramic products at Hira Industries",
+    alt: "Hand finishing and detailing at Hira Industries",
     objectPosition: "center",
   },
   {
     step: "Step 04",
-    title: "Quality Checking",
+    title: "Drying & Rack Arrangement",
     description:
-      "Pieces are checked for visible finish, shape consistency, glaze quality, and handling readiness before packing.",
+      "Formed ceramic pieces are arranged systematically on racks and allowed to dry under controlled conditions before firing.",
     icon: FiShield,
     image: "/images/04-drying-and-rack-arrangement.webp",
-    alt: "Ceramic products drying and arranged on racks at Hira Industries",
+    alt: "Drying and rack arrangement at Hira Industries",
     objectPosition: "center",
   },
   {
     step: "Step 05",
-    title: "Packaging Process",
+    title: "Kiln Loading & Firing",
     description:
-      "Packaging is planned to support storage, handling, and dispatch. Buyers should confirm packaging and delivery requirements for the selected products before ordering.",
+      "Dried pieces are loaded carefully into the kiln and fired at controlled temperatures to develop strength, durability, and finish.",
     icon: FiPackage,
     image: "/images/05-kiln-loading-and-firing.webp",
-    alt: "Kiln loading and ceramic firing at Hira Industries",
+    alt: "Kiln loading and firing at Hira Industries",
     objectPosition: "center",
   },
   {
     step: "Step 06",
-    title: "Bulk Order Handling",
+    title: "Finished Goods Storage & Dispatch",
     description:
-      "For bulk enquiries, the team coordinates product details, packing expectations, and dispatch requirements. Availability, timelines, and transport terms should be confirmed directly.",
+      "Finished products are organised, stored, and prepared for secure packing and dispatch according to order requirements.",
     icon: FiLayers,
     image: "/images/06-finished-goods-storage-and-dispatch.webp",
-    alt: "Finished ceramic goods storage and dispatch at Hira Industries",
+    alt: "Finished goods storage and dispatch at Hira Industries",
     objectPosition: "center",
   },
 ];
@@ -123,33 +124,18 @@ export default function ManufacturingPage() {
           ],
         }}
       />
-      <section className="internal-hero internal-hero--image">
-        <div className="internal-hero__bg">
-          <Image
-            src="/images/build-pic-2.png"
-            alt="Manufacturing ceramic crockery at Hira Industries"
-            fill
-            priority
-            sizes="100vw"
-          />
-        </div>
-        <div className="internal-hero__overlay" />
-        <div className="light-shell">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <span>Manufacturing</span>
-          </nav>
-          <div className="internal-hero__content">
-            <div className="light-kicker">Manufacturing Process</div>
-            <h1>Manufacturing Process</h1>
-            <p>
-              From raw materials to finished products — experience our commitment
-              to quality at every step.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        image="/images/02-ceramic-moulding-and-product-forming.webp"
+        breadcrumbItems={[
+          { label: "Home", href: "/" },
+          { label: "Manufacturing" },
+        ]}
+        eyebrow="Manufacturing Process"
+        title="Manufacturing Process"
+        description="From raw materials to finished products — experience our commitment to quality at every step."
+        objectPosition="center 52%"
+        overlayStrength="strong"
+      />
 
       <section className="internal-section internal-section--dark manufacturing-intro">
         <div className="manufacturing-intro__inner">
@@ -163,6 +149,10 @@ export default function ManufacturingPage() {
             </p>
             <p className="internal-copy">
               Every piece that carries the Hira Industries name goes through a carefully controlled production pipeline — from material selection to final packaging.
+            </p>
+            <p className="internal-copy">
+              Buyers reviewing ceramic production in Khurja can also read our{" "}
+              <Link href="/khurja-crockery">Khurja crockery manufacturer guide</Link>.
             </p>
           </div>
         </div>

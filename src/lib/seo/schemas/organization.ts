@@ -16,8 +16,7 @@ export function buildOrganizationSchema(): JsonLdObject {
     "@type": "Organization",
     "@id": organizationId,
     name: businessProfile.officialName,
-    alternateName: businessProfile.alternateName,
-    url: businessProfile.websiteUrl,
+    url: withBusinessUrl("/"),
     logo: withBusinessUrl(businessProfile.logoPath),
     image: withBusinessUrl(businessProfile.defaultShareImagePath),
     description: businessProfile.description,
@@ -45,8 +44,7 @@ export function buildLocalBusinessSchema(): JsonLdObject {
     "@type": "LocalBusiness",
     "@id": localBusinessId,
     name: businessProfile.officialName,
-    alternateName: businessProfile.alternateName,
-    url: businessProfile.websiteUrl,
+    url: withBusinessUrl("/"),
     image: withBusinessUrl(businessProfile.defaultShareImagePath),
     logo: withBusinessUrl(businessProfile.logoPath),
     description: businessProfile.description,
@@ -61,7 +59,10 @@ export function buildLocalBusinessSchema(): JsonLdObject {
             longitude,
           }
         : undefined,
-    openingHours: businessProfile.openingHours,
+    openingHours:
+      businessProfile.openingHours.length > 0
+        ? businessProfile.openingHours
+        : undefined,
     areaServed: businessProfile.serviceArea,
     parentOrganization: {
       "@id": organizationId,
@@ -74,7 +75,7 @@ export function buildWebsiteSchema(): JsonLdObject {
     "@type": "WebSite",
     "@id": websiteId,
     name: businessProfile.officialName,
-    url: businessProfile.websiteUrl,
+    url: withBusinessUrl("/"),
     inLanguage: "en-IN",
     publisher: {
       "@id": organizationId,

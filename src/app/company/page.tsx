@@ -200,7 +200,8 @@ export default function CompanyPage() {
             <p className="internal-copy">
               We focus on clean presentation, dependable product selection, and
               practical support for everyday, retail, hospitality, and bulk
-              requirements.
+              requirements. Buyers comparing the local ceramic cluster can also
+              review our <Link href="/khurja-crockery">Khurja crockery guide</Link>.
             </p>
           </div>
         </div>

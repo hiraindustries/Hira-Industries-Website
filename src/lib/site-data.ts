@@ -30,6 +30,7 @@ export const businessInfo = {
   whatsappHref: `https://wa.me/${businessProfile.whatsappNumber}`,
   whatsappCatalogueHref:
     `https://wa.me/${businessProfile.whatsappNumber}?text=Hello%20Hira%20Industries%2C%20please%20share%20your%20product%20catalogue.`,
+  instagramHref: businessProfile.socialProfiles.instagram,
   location: `${businessProfile.address.city}, ${businessProfile.address.state}, India`,
   mapsQuery: "Hira Industries Khurja Uttar Pradesh India",
   mapsEmbedHref:
@@ -306,6 +307,8 @@ export const footerGroups = [
     title: "Quick Links",
     links: [
       { label: "About Us", href: "/company" },
+      { label: "Khurja Crockery", href: "/khurja-crockery" },
+      { label: "Premium Crockery", href: "/premium-crockery" },
       { label: "Manufacturing", href: "/manufacturing" },
       { label: "Quality", href: "/quality" },
       { label: "Gallery", href: "/collections" },

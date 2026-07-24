@@ -6,11 +6,13 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { buildHomeGraphSchema } from "@/lib/seo/schemas/organization";
 
 export const metadata = createPageMetadata({
-  title:
-    "Hira Industries Khurja | Ceramic Crockery Manufacturer & Supplier",
+  title: "Hira Industries | Premium Ceramic Crockery Manufacturer",
   description:
-    "Hira Industries is a ceramic crockery manufacturer and supplier in Khurja, offering dinner sets, tea sets, mugs, bowls, serveware, hotel crockery and bulk order solutions.",
+    "Hira Industries manufactures and supplies premium ceramic crockery, dinner sets, tea sets, mugs, bowls and hotel crockery for retail and bulk buyers.",
+  openGraphDescription:
+    "Hira Industries manufactures and supplies premium ceramic crockery for homes, hotels, retailers, gifting and bulk buyers.",
   path: "/",
+  absoluteTitle: true,
 });
 
 export const revalidate = 300;

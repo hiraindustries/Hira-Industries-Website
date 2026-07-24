@@ -56,18 +56,26 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
       </div>
 
       <div className="gallery-grid" aria-live="polite">
-        {visibleItems.map((item) => (
-          <article className="gallery-card" key={item.src}>
-            <Image
-              src={item.src}
-              alt={item.alt}
-              width={900}
-              height={650}
-              className="gallery-image"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
-          </article>
-        ))}
+        {visibleItems.map((item) => {
+          const bypassOptimizer = item.src.includes("&");
+          const imageSrc = bypassOptimizer
+            ? item.src.replaceAll("&", "%26")
+            : item.src;
+
+          return (
+            <article className="gallery-card" key={item.src}>
+              <Image
+                src={imageSrc}
+                alt={item.alt}
+                width={900}
+                height={650}
+                className="gallery-image"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                unoptimized={bypassOptimizer}
+              />
+            </article>
+          );
+        })}
       </div>
     </>
   );

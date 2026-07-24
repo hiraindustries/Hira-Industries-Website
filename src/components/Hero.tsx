@@ -6,12 +6,8 @@ import HeroDisplaySlider from "@/components/HeroDisplaySlider";
 import type { HomepageHeroContent } from "@/lib/cms/homepage";
 import { heroStats } from "@/lib/site-data";
 
-function getVisibleHeroHeading(heading: string) {
-  return heading.replace(/\s+Khurja\s*$/i, "");
-}
-
 export default function Hero({ content }: { content: HomepageHeroContent }) {
-  const visibleHeading = getVisibleHeroHeading(content.heading);
+  const visibleHeading = "Hira Industries";
   const heroCopyContent = (
     <>
       <div className="hero-kicker">{content.eyebrow}</div>
