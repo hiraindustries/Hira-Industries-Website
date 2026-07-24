@@ -17,9 +17,10 @@ import JsonLd from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
 import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
+import { businessInfo } from "@/lib/site-data";
 
 const pageDescription =
-  "Learn about Hira Industries, a Khurja-based ceramic crockery manufacturer serving homes, hotels, restaurants, retailers, wholesalers, and gifting buyers.";
+  "Learn about Hira Industries, its ceramic crockery collections, manufacturing approach and commitment to dependable product presentation for retail, hospitality and bulk buyers.";
 const breadcrumbs = [
   { name: "Home", path: "/" },
   { name: "About Us", path: "/company" },
@@ -29,6 +30,8 @@ export const metadata = createPageMetadata({
   title: "About Hira Industries | Ceramic Crockery Manufacturer",
   description: pageDescription,
   path: "/company",
+  imagePath: "/images/hira-industries-outlet.webp",
+  absoluteTitle: true,
 });
 
 const missionVisionCards = [
@@ -298,10 +301,10 @@ export default function CompanyPage() {
               <FiArrowRight aria-hidden="true" />
             </Link>
             <a
-              href="https://wa.me/919783805565?text=Hello%20Hira%20Industries%2C%20please%20share%20your%20product%20catalogue."
+              href={businessInfo.whatsappCatalogueHref}
               className="light-button light-button--whatsapp"
               target="_blank"
-              rel="noreferrer noopener"
+              rel="noopener noreferrer"
             >
               WhatsApp Now
             </a>

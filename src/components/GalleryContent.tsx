@@ -4,7 +4,7 @@ import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
 import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
-import { businessInfo } from "@/lib/site-data";
+import { createWhatsAppUrl } from "@/lib/site/business-info";
 
 const galleryItems = [
   {
@@ -107,7 +107,9 @@ export default function GalleryContent({
             requirements.
           </p>
           <a
-            href={`${businessInfo.whatsappHref}?text=Hello%20Hira%20Industries%2C%20I%20would%20like%20to%20explore%20your%20product%20range.`}
+            href={createWhatsAppUrl(
+              "Hello Hira Industries, I would like to explore your product range.",
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="gallery-cta__button"

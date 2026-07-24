@@ -235,6 +235,7 @@ export default function Header() {
             target="_blank"
             rel="noopener noreferrer"
             className="header-whatsapp header-whatsapp--mobile"
+            onClick={closeMenu}
           >
             <FiMessageCircle aria-hidden="true" />
             WhatsApp Hira Industries

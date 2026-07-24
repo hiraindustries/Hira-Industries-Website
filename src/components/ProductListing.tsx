@@ -11,7 +11,7 @@ import {
   FiSearch,
 } from "react-icons/fi";
 import ProductCard from "@/components/ProductCard";
-import { businessInfo } from "@/lib/site-data";
+import { createWhatsAppUrl } from "@/lib/site/business-info";
 import type {
   CatalogueProduct,
   ProductCategory,
@@ -22,7 +22,7 @@ function getWhatsAppHref(collectionName?: string) {
     ? `Hello Hira Industries, please share details for the ${collectionName} collection.`
     : "Hello Hira Industries, please share your latest product catalogue.";
 
-  return `https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  return createWhatsAppUrl(message);
 }
 
 export default function ProductListing({

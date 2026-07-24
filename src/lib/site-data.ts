@@ -1,4 +1,9 @@
-import { businessProfile, withBusinessUrl } from "@/lib/site/business-info";
+import {
+  businessInfo as publicBusinessInfo,
+  businessProfile,
+  createWhatsAppUrl,
+  withBusinessUrl,
+} from "@/lib/site/business-info";
 
 export type NavLink = {
   href: string;
@@ -22,16 +27,18 @@ export type DownloadItem = {
 };
 
 export const businessInfo = {
-  companyName: businessProfile.officialName,
-  email: businessProfile.email,
-  phoneDisplay: businessProfile.telephoneDisplay,
-  phoneHref: `tel:${businessProfile.telephone}`,
-  whatsappNumber: businessProfile.whatsappNumber,
-  whatsappHref: `https://wa.me/${businessProfile.whatsappNumber}`,
-  whatsappCatalogueHref:
-    `https://wa.me/${businessProfile.whatsappNumber}?text=Hello%20Hira%20Industries%2C%20please%20share%20your%20product%20catalogue.`,
-  instagramHref: businessProfile.socialProfiles.instagram,
-  location: `${businessProfile.address.city}, ${businessProfile.address.state}, India`,
+  companyName: publicBusinessInfo.name,
+  email: publicBusinessInfo.email,
+  phoneDisplay: publicBusinessInfo.phoneDisplay,
+  phoneHref: `tel:${publicBusinessInfo.phoneE164}`,
+  whatsappNumber: publicBusinessInfo.whatsappNumber,
+  whatsappHref: publicBusinessInfo.whatsappUrl,
+  whatsappCatalogueHref: createWhatsAppUrl(
+    "Hello Hira Industries, please share your product catalogue.",
+  ),
+  instagramHref: publicBusinessInfo.instagramUrl,
+  location: publicBusinessInfo.location,
+  addressLines: [publicBusinessInfo.name, publicBusinessInfo.location],
   mapsQuery: "Hira Industries Khurja Uttar Pradesh India",
   mapsEmbedHref:
     "https://www.google.com/maps?q=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India&output=embed",
@@ -39,7 +46,55 @@ export const businessInfo = {
     "https://www.google.com/maps/search/?api=1&query=Hira%20Industries%20Khurja%20Uttar%20Pradesh%20India",
   businessHours: "Please contact before visiting",
   sundayHours: "Current hours should be confirmed directly",
+  copyrightText: publicBusinessInfo.copyrightText,
 } as const;
+
+export const productNavigationLinks: NavLink[] = [
+  {
+    label: "Dinner Sets",
+    href: "/products?category=dinner-sets",
+  },
+  {
+    label: "Tea & Coffee Sets",
+    href: "/products?category=tea-coffee-sets",
+  },
+  {
+    label: "Cups & Mugs",
+    href: "/products?category=cups-mugs",
+  },
+  {
+    label: "Plates",
+    href: "/products?category=plates",
+  },
+  {
+    label: "Bowls",
+    href: "/products?category=bowls",
+  },
+  {
+    label: "Serving Sets",
+    href: "/products?category=serving-sets",
+  },
+  {
+    label: "Gift Sets",
+    href: "/products?category=gift-sets",
+  },
+  {
+    label: "Bathroom Accessories",
+    href: "/products?category=bathroom-accessories",
+  },
+  {
+    label: "Glassware & Drinkware",
+    href: "/products?category=glassware-drinkware",
+  },
+  {
+    label: "Home Decor & Accents",
+    href: "/products?category=home-decor-accents",
+  },
+  {
+    label: "Jar & Storage",
+    href: "/products?category=jar-storage",
+  },
+];
 
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
@@ -47,60 +102,11 @@ export const navLinks: NavLink[] = [
   {
     href: "/products",
     label: "Products",
-    children: [
-      {
-        label: "Dinner Sets",
-        href: "/products?category=dinner-sets",
-      },
-      {
-        label: "Tea & Coffee Sets",
-        href: "/products?category=tea-coffee-sets",
-      },
-      {
-        label: "Cups & Mugs",
-        href: "/products?category=cups-mugs",
-      },
-      {
-        label: "Plates",
-        href: "/products?category=plates",
-      },
-      {
-        label: "Bowls",
-        href: "/products?category=bowls",
-      },
-      {
-        label: "Serving Sets",
-        href: "/products?category=serving-sets",
-      },
-      {
-        label: "Gift Sets",
-        href: "/products?category=gift-sets",
-      },
-      {
-        label: "Hotel / Bulk Orders",
-        href: "/products?category=hotel-bulk-orders",
-      },
-      {
-        label: "Bathroom Accessories",
-        href: "/products?category=bathroom-accessories",
-      },
-      {
-        label: "Glassware & Drinkware",
-        href: "/products?category=glassware-drinkware",
-      },
-      {
-        label: "Home Decor & Accents",
-        href: "/products?category=home-decor-accents",
-      },
-      {
-        label: "Jar & Storage",
-        href: "/products?category=jar-storage",
-      },
-    ],
+    children: productNavigationLinks,
   },
   { href: "/manufacturing", label: "Manufacturing" },
   { href: "/quality", label: "Quality" },
-  { href: "/collections", label: "Gallery" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/resources", label: "Resources" },
   { href: "/contact", label: "Contact" },
 ];
@@ -252,56 +258,7 @@ export const contactDetails = [
 export const footerGroups = [
   {
     title: "Products",
-    links: [
-      {
-        label: "Dinner Sets",
-        href: "/products?category=dinner-sets",
-      },
-      {
-        label: "Tea & Coffee Sets",
-        href: "/products?category=tea-coffee-sets",
-      },
-      {
-        label: "Cups & Mugs",
-        href: "/products?category=cups-mugs",
-      },
-      {
-        label: "Plates",
-        href: "/products?category=plates",
-      },
-      {
-        label: "Bowls",
-        href: "/products?category=bowls",
-      },
-      {
-        label: "Serving Sets",
-        href: "/products?category=serving-sets",
-      },
-      {
-        label: "Gift Sets",
-        href: "/products?category=gift-sets",
-      },
-      {
-        label: "Hotel / Bulk Orders",
-        href: "/products?category=hotel-bulk-orders",
-      },
-      {
-        label: "Bathroom Accessories",
-        href: "/products?category=bathroom-accessories",
-      },
-      {
-        label: "Glassware & Drinkware",
-        href: "/products?category=glassware-drinkware",
-      },
-      {
-        label: "Home Decor & Accents",
-        href: "/products?category=home-decor-accents",
-      },
-      {
-        label: "Jar & Storage",
-        href: "/products?category=jar-storage",
-      },
-    ],
+    links: productNavigationLinks,
   },
   {
     title: "Quick Links",
@@ -311,7 +268,7 @@ export const footerGroups = [
       { label: "Premium Crockery", href: "/premium-crockery" },
       { label: "Manufacturing", href: "/manufacturing" },
       { label: "Quality", href: "/quality" },
-      { label: "Gallery", href: "/collections" },
+      { label: "Gallery", href: "/gallery" },
       { label: "Buyer Resources", href: "/resources" },
       { label: "Contact Us", href: "/contact" },
     ],

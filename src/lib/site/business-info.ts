@@ -26,40 +26,52 @@ export type BusinessProfile = {
   defaultShareImagePath: string;
   googleBusinessProfileUrl: string;
   socialProfiles: {
-    instagram: string;
-    facebook: string;
-    linkedin: string;
-    youtube: string;
+    instagram: string | null;
+    facebook: string | null;
+    linkedin: string | null;
+    youtube: string | null;
   };
   foundingDate: OptionalVerifiedValue;
   serviceArea: string[];
   knowsAbout: string[];
 };
 
-const websiteUrl = "https://www.hiraindustrieskhurja.com";
-
 export const TODO_VERIFY = "TODO_VERIFY";
 
+export const businessInfo = {
+  name: "Hira Industries",
+  location: "Khurja, Uttar Pradesh, India",
+  city: "Khurja",
+  state: "Uttar Pradesh",
+  country: "India",
+  countryCode: "IN",
+  phoneDisplay: "+91 97838 05565",
+  phoneE164: "+919783805565",
+  whatsappNumber: "919783805565",
+  whatsappUrl: "https://wa.me/919783805565",
+  email: "hiraindustrieskhurja@gmail.com",
+  instagramUrl: "https://www.instagram.com/hira_industries_khurja/",
+  canonicalHost: "https://www.hiraindustrieskhurja.com",
+  copyrightText: "© 2026 Hira Industries. All rights reserved.",
+} as const;
+
 export const businessProfile = {
-  officialName: "Hira Industries",
-  alternateName: "Hira Industries Khurja",
-  websiteUrl,
+  officialName: businessInfo.name,
+  alternateName: businessInfo.name,
+  websiteUrl: businessInfo.canonicalHost,
   description:
     "Hira Industries is a ceramic crockery manufacturer and supplier in Khurja, Uttar Pradesh, offering dinner sets, tea and coffee sets, cups, mugs, plates, bowls, serveware and hospitality crockery.",
-  telephone: "+919783805565",
-  telephoneDisplay: "+91 97838 05565",
-  whatsappNumber: "919783805565",
-  email: "info@hiraindustries.com",
+  telephone: businessInfo.phoneE164,
+  telephoneDisplay: businessInfo.phoneDisplay,
+  whatsappNumber: businessInfo.whatsappNumber,
+  email: businessInfo.email,
   address: {
-    // TODO_VERIFY: Replace with the full verified street/factory/showroom address before adding PostalAddress JSON-LD.
-    streetAddress: "TODO_VERIFY_FULL_ADDRESS",
-    city: "Khurja",
-    // TODO_VERIFY: Confirm the district from the business owner before publishing it in structured data.
-    district: "TODO_VERIFY_DISTRICT",
-    state: "Uttar Pradesh",
-    // TODO_VERIFY: Confirm the postal code from the business owner before publishing it in structured data.
-    postalCode: "TODO_VERIFY_POSTAL_CODE",
-    country: "IN",
+    streetAddress: "",
+    city: businessInfo.city,
+    district: "",
+    state: businessInfo.state,
+    postalCode: "",
+    country: businessInfo.countryCode,
   },
   geo: {
     // TODO_VERIFY: Add verified coordinates only from the official business profile or owner.
@@ -73,14 +85,14 @@ export const businessProfile = {
   // TODO_VERIFY: Add the canonical Google Business Profile URL when the owner confirms it.
   googleBusinessProfileUrl: "TODO_VERIFY_GOOGLE_BUSINESS_PROFILE_URL",
   socialProfiles: {
-    instagram: "https://www.instagram.com/hira_industries_khurja/",
-    facebook: "TODO_VERIFY_FACEBOOK_URL",
-    linkedin: "TODO_VERIFY_LINKEDIN_URL",
-    youtube: "TODO_VERIFY_YOUTUBE_URL",
+    instagram: businessInfo.instagramUrl,
+    facebook: null,
+    linkedin: null,
+    youtube: null,
   },
   // TODO_VERIFY: Add a founding date only after owner verification.
   foundingDate: null,
-  serviceArea: ["Khurja", "Uttar Pradesh", "India"],
+  serviceArea: [businessInfo.city, businessInfo.state, businessInfo.country],
   knowsAbout: [
     "Ceramic crockery",
     "Dinner sets",
@@ -93,6 +105,16 @@ export const businessProfile = {
     "Bulk crockery enquiries",
   ],
 } as const satisfies BusinessProfile;
+
+export function createWhatsAppUrl(message?: string) {
+  const normalizedMessage = message?.trim();
+
+  if (!normalizedMessage) {
+    return businessInfo.whatsappUrl;
+  }
+
+  return `${businessInfo.whatsappUrl}?text=${encodeURIComponent(normalizedMessage)}`;
+}
 
 export function isVerifiedValue(value: unknown): value is string {
   return (
@@ -141,10 +163,8 @@ export function getVerifiedPostalAddress() {
   const { address } = businessProfile;
 
   if (
-    !isVerifiedValue(address.streetAddress) ||
     !isVerifiedValue(address.city) ||
     !isVerifiedValue(address.state) ||
-    !isVerifiedValue(address.postalCode) ||
     !isVerifiedValue(address.country)
   ) {
     return null;
@@ -152,10 +172,14 @@ export function getVerifiedPostalAddress() {
 
   return {
     "@type": "PostalAddress",
-    streetAddress: address.streetAddress,
+    streetAddress: isVerifiedValue(address.streetAddress)
+      ? address.streetAddress
+      : undefined,
     addressLocality: address.city,
     addressRegion: address.state,
-    postalCode: address.postalCode,
+    postalCode: isVerifiedValue(address.postalCode)
+      ? address.postalCode
+      : undefined,
     addressCountry: address.country,
   };
 }

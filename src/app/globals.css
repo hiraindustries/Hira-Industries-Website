@@ -2964,6 +2964,19 @@ a.contact-info-card:hover {
   overflow-wrap: anywhere;
 }
 
+.contact-info-card__copy address {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0;
+  color: var(--muted);
+  font-style: normal;
+}
+
+.contact-info-card__copy address span,
+.footer-contact address span {
+  overflow-wrap: anywhere;
+}
+
 .contact-form-card {
   scroll-margin-top: 112px;
   padding: 42px;

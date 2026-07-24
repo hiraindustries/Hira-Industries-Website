@@ -116,7 +116,15 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                     </span>
                     <span className="contact-info-card__copy">
                       <strong>{item.label}</strong>
-                      <span>{item.value}</span>
+                      {item.label === "Business Address" ? (
+                        <address>
+                          {businessInfo.addressLines.map((line) => (
+                            <span key={line}>{line}</span>
+                          ))}
+                        </address>
+                      ) : (
+                        <span>{item.value}</span>
+                      )}
                     </span>
                   </>
                 );

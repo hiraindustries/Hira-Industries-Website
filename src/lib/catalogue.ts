@@ -347,6 +347,15 @@ function productBelongsToCategoryIds(
   );
 }
 
+function getCategoryProducts(
+  products: CatalogueProduct[],
+  categoryIds: Set<string>,
+) {
+  return products.filter((product) =>
+    productBelongsToCategoryIds(product, categoryIds),
+  );
+}
+
 function sortProductImageCandidates(products: CatalogueProduct[]) {
   return [...products].sort(
     (left, right) =>
@@ -392,21 +401,32 @@ export function buildPublicCategoryCards({
     subcategoriesByParentId.set(category.parent_id, current);
   }
 
-  return mainCategories.map((category) => {
-    const subcategories = sortCategories(
+  return mainCategories.flatMap((category) => {
+    const allSubcategories = sortCategories(
       subcategoriesByParentId.get(category.id) ?? [],
     );
     const categoryIds = new Set([
       category.id,
-      ...subcategories.map((subcategory) => subcategory.id),
+      ...allSubcategories.map((subcategory) => subcategory.id),
     ]);
     const subcategoryIds = new Set(
-      subcategories.map((subcategory) => subcategory.id),
+      allSubcategories.map((subcategory) => subcategory.id),
     );
-    const categoryProducts = products.filter((product) =>
-      productBelongsToCategoryIds(product, categoryIds),
-    );
+    const categoryProducts = getCategoryProducts(products, categoryIds);
     const productCount = categoryProducts.length;
+
+    if (productCount === 0) {
+      return [];
+    }
+
+    const subcategories = allSubcategories.filter((subcategory) => {
+      const productsInSubcategory = getCategoryProducts(
+        products,
+        new Set([subcategory.id]),
+      );
+
+      return productsInSubcategory.length > 0;
+    });
     const categoryImage = normalizePublicImagePath(category.image_url);
     const directProductImage = getFirstProductWithImage(
       categoryProducts.filter(
@@ -442,7 +462,7 @@ export function buildPublicCategoryCards({
           ? "static-fallback"
           : "fallback-icon";
 
-    return {
+    return [{
       id: category.id,
       name: category.name,
       slug: category.slug,
@@ -462,8 +482,46 @@ export function buildPublicCategoryCards({
       },
       icon: category.icon,
       subcategories,
-    };
+    }];
   });
+}
+
+function getPublicMainCategories(
+  mainCategories: ProductCategory[],
+  categoryCards: PublicCategoryCard[],
+) {
+  const publicCategoryIds = new Set(
+    categoryCards.map((category) => category.id),
+  );
+
+  return mainCategories.filter((category) =>
+    publicCategoryIds.has(category.id),
+  );
+}
+
+function getPublicSubcategoriesForCategory({
+  selectedCategory,
+  subcategories,
+  categoryCards,
+}: {
+  selectedCategory: ProductCategory | null;
+  subcategories: ProductCategory[];
+  categoryCards: PublicCategoryCard[];
+}) {
+  if (!selectedCategory) {
+    return [];
+  }
+
+  const categoryCard = categoryCards.find(
+    (category) => category.id === selectedCategory.id,
+  );
+  const publicSubcategoryIds = new Set(
+    categoryCard?.subcategories.map((subcategory) => subcategory.id) ?? [],
+  );
+
+  return subcategories.filter((subcategory) =>
+    publicSubcategoryIds.has(subcategory.id),
+  );
 }
 
 function resolveCategorySelection(
@@ -585,8 +643,6 @@ async function loadCatalogueData(
       subcategorySlug,
     );
 
-  let activeProducts: CatalogueProduct[];
-
   try {
     const activeCategoryIds = new Set(activeCategories.map((category) => category.id));
 
@@ -629,35 +685,60 @@ async function loadCatalogueData(
       };
     }
 
-    const visibleProducts = (products ?? []).filter((product) => {
+    const allActiveProducts = attachProductImages(
+      (products ?? []).filter((product) => {
+        return (
+          activeCategoryIds.has(product.category_id) ||
+          (product.subcategory_id
+            ? activeCategoryIds.has(product.subcategory_id)
+            : false)
+        );
+      }),
+      productImages ?? [],
+    );
+    const visibleProducts = allActiveProducts.filter((product) => {
       if (selectedSubcategory) {
-        return product.subcategory_id === selectedSubcategory.id;
+        return productBelongsToCategoryIds(
+          product,
+          new Set([selectedSubcategory.id]),
+        );
       }
 
       if (selectedCategory) {
-        if (product.subcategory_id) {
-          const subcategory = activeCategories.find(
-            (category) => category.id === product.subcategory_id,
-          );
+        const selectedSubcategoryIds = activeCategories
+          .filter((category) => category.parent_id === selectedCategory.id)
+          .map((category) => category.id);
+        const categoryIds = new Set([
+          selectedCategory.id,
+          ...selectedSubcategoryIds,
+        ]);
 
-          return subcategory?.parent_id === selectedCategory.id;
-        }
-
-        return product.category_id === selectedCategory.id;
+        return productBelongsToCategoryIds(product, categoryIds);
       }
 
-      return (
-        activeCategoryIds.has(product.category_id) ||
-        (product.subcategory_id
-          ? activeCategoryIds.has(product.subcategory_id)
-          : false)
-      );
+      return true;
+    });
+    const categoryCards = buildPublicCategoryCards({
+      categories: activeCategories,
+      mainCategories,
+      products: allActiveProducts,
     });
 
-    activeProducts = attachProductImages(
-      visibleProducts,
-      productImages ?? [],
-    );
+    return {
+      status: "ok",
+      categories: activeCategories,
+      mainCategories: getPublicMainCategories(mainCategories, categoryCards),
+      subcategories: getPublicSubcategoriesForCategory({
+        selectedCategory,
+        subcategories,
+        categoryCards,
+      }),
+      categoryCards,
+      products: visibleProducts,
+      selectedCategory,
+      selectedSubcategory,
+      message: null,
+    };
   } catch (error) {
     logDevelopmentError(
       "Unexpected error while loading active catalogue products:",
@@ -680,21 +761,6 @@ async function loadCatalogueData(
     };
   }
 
-  return {
-    status: "ok",
-    categories: activeCategories,
-    mainCategories,
-    subcategories,
-    categoryCards: buildPublicCategoryCards({
-      categories: activeCategories,
-      mainCategories,
-      products: activeProducts,
-    }),
-    products: activeProducts,
-    selectedCategory,
-    selectedSubcategory,
-    message: null,
-  };
 }
 
 export const getCatalogueData = cache(loadCatalogueData);

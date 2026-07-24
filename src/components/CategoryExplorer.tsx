@@ -145,23 +145,25 @@ export default function CategoryExplorer({
                       `Explore the ${category.name.toLowerCase()} collection.`}
                   </p>
 
-                  <details className="catalogue-category-card__subcategories">
-                    <summary>
-                      <span>View Subcategories</span>
-                      <FiChevronDown aria-hidden="true" />
-                    </summary>
-                    <div>
-                      {category.subcategories.map((subcategory) => (
-                        <Link
-                          key={subcategory.id}
-                          href={`/products?category=${category.slug}&subcategory=${subcategory.slug}`}
-                        >
-                          {subcategory.name}
-                          <FiArrowRight aria-hidden="true" />
-                        </Link>
-                      ))}
-                    </div>
-                  </details>
+                  {category.subcategories.length > 0 ? (
+                    <details className="catalogue-category-card__subcategories">
+                      <summary>
+                        <span>View Subcategories</span>
+                        <FiChevronDown aria-hidden="true" />
+                      </summary>
+                      <div>
+                        {category.subcategories.map((subcategory) => (
+                          <Link
+                            key={subcategory.id}
+                            href={`/products?category=${category.slug}&subcategory=${subcategory.slug}`}
+                          >
+                            {subcategory.name}
+                            <FiArrowRight aria-hidden="true" />
+                          </Link>
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
 
                   <div className="catalogue-category-card__actions">
                     <Link

@@ -80,7 +80,11 @@ export default function Footer() {
               rel="noopener noreferrer"
             >
               <FiMapPin aria-hidden="true" />
-              <span>{businessInfo.location}</span>
+              <address>
+                {businessInfo.addressLines.map((line) => (
+                  <span key={line}>{line}</span>
+                ))}
+              </address>
             </a>
             <a href={businessInfo.phoneHref}>
               <FiPhone aria-hidden="true" />
@@ -95,8 +99,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <span>
-            Copyright 2026 Hira Industries. All rights reserved. Designed &amp;
-            Developed by{" "}
+            {businessInfo.copyrightText} Designed &amp; Developed by{" "}
             <a
               href="https://www.vidhyatech.com/"
               target="_blank"

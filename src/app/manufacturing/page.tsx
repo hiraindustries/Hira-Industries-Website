@@ -14,16 +14,18 @@ import { buildBreadcrumbListSchema } from "@/lib/seo/schemas/breadcrumb";
 import { buildWebPageSchema } from "@/lib/seo/schemas/web-page";
 
 const pageDescription =
-  "Discover how Hira Industries presents ceramic raw material preparation, product forming, hand finishing, drying, kiln firing and finished goods dispatch.";
+  "Explore the Hira Industries ceramic crockery manufacturing process, from raw material preparation and product forming to finishing, firing, storage and dispatch.";
 const breadcrumbs = [
   { name: "Home", path: "/" },
   { name: "Manufacturing", path: "/manufacturing" },
 ];
 
 export const metadata = createPageMetadata({
-  title: "Manufacturing | Ceramic Crockery Production",
+  title: "Ceramic Crockery Manufacturing Process | Hira Industries",
   description: pageDescription,
   path: "/manufacturing",
+  imagePath: "/images/02-ceramic-moulding-and-product-forming.webp",
+  absoluteTitle: true,
 });
 
 const processSteps = [

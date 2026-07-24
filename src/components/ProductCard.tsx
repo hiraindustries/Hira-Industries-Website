@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiMessageCircle } from "react-icons/fi";
 import { getProductGallery } from "@/lib/product-media";
-import { businessInfo } from "@/lib/site-data";
+import { createWhatsAppUrl } from "@/lib/site/business-info";
 import type { CatalogueProduct } from "@/lib/supabase/database.types";
 
 export default function ProductCard({
@@ -67,7 +67,9 @@ export default function ProductCard({
           Request Quote
         </Link>
         <a
-          href={`https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(`Hello Hira Industries, I am interested in ${product.name}. Please share details and quotation.`)}`}
+          href={createWhatsAppUrl(
+            `Hello Hira Industries, I am interested in ${product.name}. Please share details and quotation.`,
+          )}
           target="_blank"
           rel="noopener noreferrer"
         >

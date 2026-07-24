@@ -9,13 +9,13 @@ import CategoryExplorer from "@/components/CategoryExplorer";
 import PageHero, { type PageHeroBreadcrumbItem } from "@/components/PageHero";
 import ProductListing from "@/components/ProductListing";
 import type { CatalogueData } from "@/lib/catalogue";
-import { businessInfo } from "@/lib/site-data";
+import { createWhatsAppUrl } from "@/lib/site/business-info";
 
 function getWhatsAppHref() {
   const message =
     "Hello Hira Industries, please share your latest product catalogue.";
 
-  return `https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  return createWhatsAppUrl(message);
 }
 
 function CatalogueUnavailable({ message }: { message: string }) {

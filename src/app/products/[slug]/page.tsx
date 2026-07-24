@@ -19,7 +19,7 @@ import { getStringList } from "@/lib/product-media";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import type { BreadcrumbItem } from "@/lib/seo/schemas/breadcrumb";
 import { buildProductPageGraph } from "@/lib/seo/schemas/product";
-import { businessInfo } from "@/lib/site-data";
+import { createWhatsAppUrl } from "@/lib/site/business-info";
 import type {
   CatalogueProduct,
   ProductCategory,
@@ -32,7 +32,7 @@ type ProductPageProps = {
 function getWhatsAppHref(productName: string) {
   const message = `Hello Hira Industries, I am interested in ${productName}. Please share details and quotation.`;
 
-  return `https://wa.me/${businessInfo.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  return createWhatsAppUrl(message);
 }
 
 function getProductDescription(product: CatalogueProduct) {
